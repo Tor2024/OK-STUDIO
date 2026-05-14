@@ -57,8 +57,16 @@ export async function readFile(cfg: GithubConfig, filePath: string): Promise<{ c
 /** Write (create or update) a file */
 export async function writeFile(cfg: GithubConfig, filePath: string, content: string, message: string, sha?: string) {
   // Proper UTF-8 encoding for GitHub API
+  // Convert string to UTF-8 bytes, then to base64
   const utf8Bytes = new TextEncoder().encode(content);
-  const base64 = btoa(String.fromCharCode(...utf8Bytes));
+  
+  // Convert Uint8Array to base64 properly
+  let binary = '';
+  const len = utf8Bytes.byteLength;
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(utf8Bytes[i]);
+  }
+  const base64 = btoa(binary);
   
   const body: Record<string, string> = {
     message,
