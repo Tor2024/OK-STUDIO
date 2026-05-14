@@ -1,0 +1,54 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Admin check
+    function isAdmin() {
+      return request.auth != null && 
+             request.auth.token.email == 'kalchenko2022@gmail.com';
+    }
+
+    // Publicly readable collections
+    match /projects/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /insights/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /clients/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /settings/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /faqs/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Contact messages (Anyone can send, only admin can read)
+    match /contacts/{id} {
+      allow create: if true;
+      allow read, write: if isAdmin();
+    }
+
+    // Internal/Audit data
+    match /audit/{id} {
+      allow read, write: if isAdmin();
+    }
+
+    // Connectivity test
+    match /test/connection {
+      allow read: if true;
+    }
+
+    // Deny all other access by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

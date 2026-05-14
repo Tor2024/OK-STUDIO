@@ -1,0 +1,122 @@
+{
+  "entities": {
+    "Project": {
+      "title": "Project",
+      "description": "Portfolio work item",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "image": { "type": "string" },
+        "description": { "type": "string" },
+        "fullDescription": { "type": "string" },
+        "completedAt": { "type": "string" },
+        "order": { "type": "number" },
+        "featured": { "type": "boolean" }
+      },
+      "required": ["title", "category", "image"]
+    },
+    "Insight": {
+      "title": "Insight",
+      "description": "Article or blog post",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string" },
+        "title": { "type": "string" },
+        "tag": { "type": "string" },
+        "author": { "type": "string" },
+        "content": { "type": "string" },
+        "published": { "type": "boolean" }
+      },
+      "required": ["title", "date", "author"]
+    },
+    "SystemSetting": {
+      "title": "SystemSetting",
+      "description": "Global dynamic configuration",
+      "type": "object",
+      "properties": {
+        "key": { "type": "string" },
+        "value": { "type": "string" },
+        "label": { "type": "string" }
+      }
+    },
+    "Client": {
+      "title": "Client",
+      "description": "Trusted entity or global actor",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "link": { "type": "string" },
+        "order": { "type": "number" }
+      },
+      "required": ["name"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "System event record",
+      "type": "object",
+      "properties": {
+        "timestamp": { "type": "string" },
+        "action": { "type": "string" },
+        "user": { "type": "string" },
+        "details": { "type": "string" }
+      }
+    },
+    "ContactSubmission": {
+      "title": "ContactSubmission",
+      "description": "Leads from contact form",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "subject": { "type": "string" },
+        "projectType": { "type": "string" },
+        "budget": { "type": "string" },
+        "startDate": { "type": "string" },
+        "message": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "status": { "type": "string", "enum": ["NEW", "READ", "ARCHIVED"] }
+      }
+    },
+    "FAQ": {
+      "title": "FAQ",
+      "description": "Frequently asked questions",
+      "type": "object",
+      "properties": {
+        "question": { "type": "string" },
+        "answer": { "type": "string" },
+        "order": { "type": "number" }
+      }
+    }
+  },
+  "firestore": {
+    "/projects/{projectId}": {
+      "schema": "Project",
+      "description": "Collection of portfolio projects"
+    },
+    "/contacts/{contactId}": {
+      "schema": "ContactSubmission",
+      "description": "Inbound leads"
+    },
+    "/faqs/{faqId}": {
+      "schema": "FAQ",
+      "description": "Manage FAQ list"
+    },
+    "/insights/{insightId}": {
+      "schema": "Insight",
+      "description": "Collection of knowledge insights"
+    },
+    "/settings/{settingId}": {
+      "schema": "SystemSetting",
+      "description": "Application settings"
+    },
+    "/clients/{clientId}": {
+      "schema": "Client",
+      "description": "Network of trusted entities"
+    },
+    "/audit/{logId}": {
+      "schema": "AuditLog",
+      "description": "System telemetry and audit logs"
+    }
+  }
+}

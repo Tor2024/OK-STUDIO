@@ -1,0 +1,26 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <!-- Фон -->
+  <rect width="1200" height="630" fill="#F1F3EA"/>
+  
+  <!-- Рамка -->
+  <rect x="40" y="40" width="1120" height="550" fill="none" stroke="#141414" stroke-width="4"/>
+  
+  <!-- Цветной акцент -->
+  <rect x="60" y="60" width="8" height="510" fill="#616752"/>
+  
+  <!-- Логотип -->
+  <text x="100" y="120" font-family="Arial, sans-serif" font-size="32" font-weight="900" fill="#141414">OK STUDIO</text>
+  
+  <!-- Категория/Тег -->
+  <text x="100" y="180" font-family="monospace" font-size="14" fill="#616752" letter-spacing="2">STRATEGIE</text>
+  
+  <!-- Заголовок -->
+  <text x="100" y="250" font-family="Arial, sans-serif" font-size="48" font-weight="700" fill="#141414">
+    <tspan x="100" dy="0">Warum die meisten Websites kein Geld ver</tspan>
+    <tspan x="100" dy="60">dienen (und wie Sie das ändern)</tspan>
+    
+  </text>
+  
+  <!-- Футер -->
+  <text x="100" y="560" font-family="monospace" font-size="12" fill="#737373">webstudio-ok.de</text>
+</svg>

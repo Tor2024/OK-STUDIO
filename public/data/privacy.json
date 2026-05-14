@@ -1,0 +1,36 @@
+{
+  "title": "Datenschutzerklärung",
+  "subtitle": "DATENSCHUTZ_PROTOKOLL",
+  "sections": [
+    {
+      "id": "1",
+      "title": "1. DATENSCHUTZ AUF EINEN BLICK",
+      "content": "Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen.",
+      "order": 1
+    },
+    {
+      "id": "2",
+      "title": "2. DATENERFASSUNG AUF DIESER WEBSITE",
+      "content": "**Wie erfassen wir Ihre Daten?** Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen. Hierbei kann es sich z. B. um Daten handeln, die Sie in ein Kontaktformular eingeben. Andere Daten werden automatisch beim Besuch der Website durch unsere IT-Systeme erfasst.",
+      "order": 2
+    },
+    {
+      "id": "3",
+      "title": "3. ANALYSE-TOOLS UND TOOLS VON DRITTANBIETERN",
+      "content": "Beim Besuch dieser Website kann Ihr Surf-Verhalten statistisch ausgewertet werden. Dies geschieht vor allem mit sogenannten Analyseprogrammen.",
+      "order": 3
+    },
+    {
+      "id": "4",
+      "title": "4. KONTAKTFORMULAR",
+      "content": "Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.",
+      "order": 4
+    },
+    {
+      "id": "5",
+      "title": "5. FIREBASE & HOSTING",
+      "content": "Wir nutzen Firebase (Google) zur Bereitstellung von Datenbankdiensten und Hosting. Die Datenverarbeitung erfolgt auf Basis unserer berechtigten Interessen an einer sicheren und effizienten Bereitstellung unseres Onlineangebots (Art. 6 Abs. 1 lit. f. DSGVO).",
+      "order": 5
+    }
+  ]
+}

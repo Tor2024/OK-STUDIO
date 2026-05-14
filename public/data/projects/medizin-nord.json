@@ -1,0 +1,10 @@
+{
+  "id": "medizin-nord",
+  "title": "MEDIZIN NORD",
+  "category": "System Dev",
+  "description": "Patientenportal und Buchungssystem für eine Facharztpraxis in NRW. Vollständig DSGVO-konform mit Ende-zu-Ende-Verschlüsselung.",
+  "fullDescription": "## Herausforderung\n\nEine Facharztpraxis mit 3 Standorten benötigte ein einheitliches digitales System für Terminbuchung und Patientenkommunikation.\n\n## Technische Architektur\n\nDas System wurde als Progressive Web App entwickelt.\n\n### Technologie-Stack\n\n- React 19 + TypeScript Frontend\n- DSGVO-konformes Hosting in der EU\n- End-to-End-Verschlüsselung für Patientendaten\n- Automatische Erinnerungen via SMS/Email\n\n## Ergebnisse\n\n- **85%** der Termine werden jetzt online gebucht\n- **40min** täglich gespart pro Mitarbeiter\n- **0** Datenschutzvorfälle seit Launch",
+  "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=1200",
+  "completedAt": "JAN 2025",
+  "order": 2
+}

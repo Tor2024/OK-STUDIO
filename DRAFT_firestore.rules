@@ -1,0 +1,128 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ==========================================
+    // 1. GLOBAL HELPERS & SAFETY NET
+    // ==========================================
+    
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function emailVerified() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isAdmin() {
+      return emailVerified() && request.auth.token.email == 'kalchenko2022@gmail.com';
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // ==========================================
+    // 2. ENTITY VALIDATIONS
+    // ==========================================
+
+    function isValidProject(data) {
+      return data.title is string && data.title.size() <= 200 &&
+             data.category is string && data.category.size() <= 100 &&
+             data.image is string && data.image.size() <= 1000;
+             // Add other fields as per blueprint
+    }
+
+    function isValidInsight(data) {
+      return data.title is string && data.title.size() <= 300 &&
+             data.date is string && data.author is string;
+    }
+
+    function isValidClient(data) {
+      return data.name is string && data.name.size() <= 200;
+    }
+
+    function isValidSetting(data) {
+      return data.key is string && data.key.size() <= 100;
+    }
+
+    function isValidContact(data) {
+      return data.name is string && data.name.size() <= 200 &&
+             data.email is string && data.email.size() <= 200 &&
+             data.message is string && data.message.size() <= 5000;
+    }
+
+    // ==========================================
+    // 3. COLLECTION RULES
+    // ==========================================
+
+    // Projects
+    match /projects/{projectId} {
+      allow get, list: if true;
+      allow create: if isAdmin() && isValidProject(incoming());
+      allow update: if isAdmin() && isValidProject(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // Insights
+    match /insights/{insightId} {
+      allow get, list: if true;
+      allow create: if isAdmin() && isValidInsight(incoming());
+      allow update: if isAdmin() && isValidInsight(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // Clients
+    match /clients/{clientId} {
+      allow get, list: if true;
+      allow create: if isAdmin() && isValidClient(incoming());
+      allow update: if isAdmin() && isValidClient(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // Settings
+    match /settings/{settingId} {
+      allow get, list: if true;
+      allow create: if isAdmin() && isValidSetting(incoming());
+      allow update: if isAdmin() && isValidSetting(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // Contacts (Inbound leads)
+    match /contacts/{contactId} {
+      allow create: if isValidContact(incoming());
+      allow get, list: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // FAQs
+    match /faqs/{faqId} {
+      allow get, list: if true;
+      allow create, update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Audit Logs
+    match /audit/{logId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin(); // Or system-only
+    }
+
+    // Connectivity test
+    match /test/connection {
+      allow read: if true;
+    }
+  }
+}

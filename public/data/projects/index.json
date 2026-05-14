@@ -1,0 +1,29 @@
+[
+  {
+    "id": "kraftwerk-digital",
+    "title": "KRAFTWERK DIGITAL",
+    "category": "Web Relaunch",
+    "description": "Kompletter digitaler Relaunch für einen mittelständischen Industriebetrieb. Neue Markenidentität, Lead-Generierung und Performance-Optimierung.",
+    "image": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200",
+    "completedAt": "MRZ 2025",
+    "order": 1
+  },
+  {
+    "id": "medizin-nord",
+    "title": "MEDIZIN NORD",
+    "category": "System Dev",
+    "description": "Patientenportal und Buchungssystem für eine Facharztpraxis in NRW. Vollständig DSGVO-konform mit Ende-zu-Ende-Verschlüsselung.",
+    "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=1200",
+    "completedAt": "JAN 2025",
+    "order": 2
+  },
+  {
+    "id": "logistik-pro",
+    "title": "LOGISTIK PRO",
+    "category": "AI & Automation",
+    "description": "KI-gestützte Routenoptimierung und automatisiertes Reporting für ein regionales Logistikunternehmen mit 120 Fahrzeugen.",
+    "image": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1200",
+    "completedAt": "NOV 2024",
+    "order": 3
+  }
+]

@@ -1,0 +1,148 @@
+name: SEO Automation
+
+on:
+  # При каждом push в main
+  push:
+    branches: [main]
+    paths:
+      - 'public/data/insights/**'
+      - 'public/data/projects/**'
+  
+  # Еженедельно по понедельникам в 9:00
+  schedule:
+    - cron: '0 9 * * 1'
+  
+  # Ручной запуск
+  workflow_dispatch:
+
+jobs:
+  # Job 1: Генерация OG Images при новом контенте
+  generate-og-images:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: |
+          npm install
+          npm install puppeteer
+      
+      - name: Generate OG Images
+        run: npm run og:generate
+      
+      - name: Commit OG Images
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "🖼️ Auto-generate OG images"
+          file_pattern: "public/og-images/*.png"
+
+  # Job 2: Еженедельные отчеты
+  weekly-reports:
+    if: github.event.schedule == '0 9 * * 1' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Generate Analytics Report
+        env:
+          GA4_MEASUREMENT_ID: ${{ secrets.GA4_MEASUREMENT_ID }}
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GOOGLE_ANALYTICS_CREDENTIALS: ${{ secrets.GOOGLE_ANALYTICS_CREDENTIALS }}
+        run: npm run analytics:report
+      
+      - name: Check Backlinks
+        run: npm run backlinks:check
+      
+      - name: Send Review Requests
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          GOOGLE_REVIEW_LINK: ${{ secrets.GOOGLE_REVIEW_LINK }}
+        run: npm run reviews:batch clients.json || echo "No clients to process"
+      
+      - name: Upload Reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: weekly-reports
+          path: |
+            analytics-reports/
+            backlink-data/
+            review-requests.json
+
+  # Job 3: Оптимизация изображений при загрузке
+  optimize-images:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: |
+          npm install
+          npm install sharp
+      
+      - name: Check for new images
+        id: check-images
+        run: |
+          if git diff --name-only HEAD~1 HEAD | grep -E 'public/images/.*\.(jpg|jpeg|png)$'; then
+            echo "has_images=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_images=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Optimize Images
+        if: steps.check-images.outputs.has_images == 'true'
+        run: npm run images:optimize public/images/
+      
+      - name: Commit Optimized Images
+        if: steps.check-images.outputs.has_images == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "🖼️ Auto-optimize images"
+          file_pattern: "public/images/*.webp"
+
+  # Job 4: Обновление Sitemap
+  update-sitemap:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Generate Sitemap
+        run: npm run sitemap
+      
+      - name: Commit Sitemap
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "🗺️ Auto-update sitemap"
+          file_pattern: "public/sitemap.xml"
+      
+      - name: Ping Google
+        run: |
+          curl "https://www.google.com/ping?sitemap=https://webstudio-ok.de/sitemap.xml" || echo "Google ping failed"

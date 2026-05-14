@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "question": "Wie lange dauert ein typisches Webprojekt?",
+    "answer": "Ein Standard-Relaunch dauert bei uns 4-8 Wochen — von der ersten Analyse bis zum Go-Live. Komplexere Systeme mit individuellen Funktionen können 10-16 Wochen in Anspruch nehmen. Wir arbeiten in klaren Phasen mit festen Meilensteinen, damit Sie immer wissen, wo wir stehen.",
+    "order": 1
+  },
+  {
+    "id": "2",
+    "question": "Was kostet eine neue Website?",
+    "answer": "Unsere Projekte starten ab 5.000€ für einen professionellen Relaunch. Der genaue Preis hängt vom Umfang, den gewünschten Funktionen und der Komplexität ab. Wir erstellen immer ein transparentes Festpreisangebot — keine versteckten Kosten, keine Überraschungen.",
+    "order": 2
+  },
+  {
+    "id": "3",
+    "question": "Übernehmen Sie auch Hosting und Wartung?",
+    "answer": "Ja. Wir bieten schlüsselfertige Lösungen inklusive Hosting, SSL, regelmäßigen Updates und technischem Support. Sie müssen sich um nichts kümmern — wir halten Ihr System am Laufen.",
+    "order": 3
+  }
+]

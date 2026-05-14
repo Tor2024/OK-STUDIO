@@ -1,0 +1,6 @@
+[
+  { "id": "1", "name": "Kraftwerk GmbH", "link": "", "order": 1 },
+  { "id": "2", "name": "Medizin Nord", "link": "", "order": 2 },
+  { "id": "3", "name": "Logistik Pro", "link": "", "order": 3 },
+  { "id": "4", "name": "Bau & Technik AG", "link": "", "order": 4 }
+]

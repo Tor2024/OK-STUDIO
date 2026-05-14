@@ -1,0 +1,31 @@
+{
+  "title": "Impressum",
+  "subtitle": "RECHTLICHE_ANGABEN",
+  "sections": [
+    {
+      "id": "1",
+      "title": "ANGABEN GEMÄSS § 5 TMG",
+      "content": "Web Studio OK\nHeidestraße 123\n57223 Kreuztal\nDeutschland",
+      "order": 1
+    },
+    {
+      "id": "2",
+      "title": "KONTAKT",
+      "content": "Telefon: +49 (0) 2732 123 456\nE-Mail: hello@webstudio-ok.de",
+      "order": 2
+    },
+    {
+      "id": "3",
+      "title": "VERTRETEN DURCH",
+      "content": "Oleh Kalchenko",
+      "order": 3
+    },
+    {
+      "id": "4",
+      "title": "REDAKTIONELL VERANTWORTLICH",
+      "content": "Oleh Kalchenko",
+      "order": 4
+    }
+  ],
+  "disclaimer": "Haftungsausschluss: Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen."
+}

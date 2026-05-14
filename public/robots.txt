@@ -1,0 +1,9 @@
+# Web Studio OK - Robots.txt
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://webstudio-ok.de/sitemap.xml
+
+# Disallow admin and API routes
+Disallow: /api/
