@@ -803,13 +803,49 @@ export default function Admin() {
                       <input className="admin-input" placeholder="Abgeschlossen (z.B. MRZ 2025)" value={editingProject ? editingProject.completedAt : newProject.completedAt} onChange={e => editingProject ? setEditingProject({...editingProject, completedAt: e.target.value}) : setNewProject({...newProject, completedAt: e.target.value})} />
                       <textarea className="admin-input h-16" placeholder="Kurzbeschreibung" value={editingProject ? editingProject.description : newProject.description} onChange={e => editingProject ? setEditingProject({...editingProject, description: e.target.value}) : setNewProject({...newProject, description: e.target.value})} />
                       
-                      {/* Markdown field with help */}
+                      {/* Markdown field with AI helper */}
                       <div className="space-y-2">
-                        <label className="telemetry-label text-[9px] block">VOLLTEXT (MARKDOWN)</label>
+                        <div className="flex items-center justify-between">
+                          <label className="telemetry-label text-[9px] block">VOLLTEXT (MARKDOWN)</label>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const prompt = `Formatiere den folgenden Text als Markdown für eine Portfolio-Projektbeschreibung auf Deutsch. Verwende:
+
+## Überschriften für Hauptabschnitte
+### Unterüberschriften für Details
+**Fettdruck** für wichtige Begriffe
+*Kursiv* für Betonung
+- Aufzählungslisten für Features/Vorteile
+> Blockzitate für Kundenzitate
+[Linktext](URL) für klickbare Links
+
+Struktur:
+1. Kurze Einleitung (1-2 Sätze)
+2. Herausforderung/Problem
+3. Lösung/Umsetzung
+4. Ergebnisse/Erfolge
+5. Verwendete Technologien (als Liste)
+
+Mein Text:
+---
+[HIER DEINEN TEXT EINFÜGEN]
+---`;
+                              navigator.clipboard.writeText(prompt);
+                              setSaveMsg('✓ AI-Prompt kopiert! Füge ihn in ChatGPT/Claude ein.');
+                              setTimeout(() => setSaveMsg(''), 3000);
+                            }}
+                            className="px-3 py-1 bg-purple-500 text-white font-mono text-[9px] tracking-wider hover:bg-purple-600 transition-colors flex items-center gap-1"
+                          >
+                            <Zap size={12} />
+                            AI FORMATIERUNG
+                          </button>
+                        </div>
                         <textarea className="admin-input h-40 font-mono text-xs" placeholder="Volltext mit Markdown-Formatierung&#10;&#10;## Überschrift&#10;Text hier...&#10;&#10;**Fett** *Kursiv*&#10;- Listenpunkt" value={editingProject ? editingProject.fullDescription : newProject.fullDescription} onChange={e => editingProject ? setEditingProject({...editingProject, fullDescription: e.target.value}) : setNewProject({...newProject, fullDescription: e.target.value})} />
                         <div className="bg-[#F1F3EA] border border-[#C5C5C5] p-3 font-mono text-[9px] space-y-1">
                           <div className="font-bold mb-1">MARKDOWN FORMATIERUNG:</div>
                           <div>## Überschrift | **fett** | *kursiv* | - Liste | &gt; Zitat | [Link](url)</div>
+                          <div className="text-purple-600 mt-2">💡 Klicke "AI FORMATIERUNG" → Füge Prompt + Text in ChatGPT/Claude ein → Kopiere Ergebnis hierher</div>
                         </div>
                       </div>
                       
@@ -861,7 +897,7 @@ export default function Admin() {
                       
                       {/* Markdown Editor with Preview */}
                       <div className="space-y-2">
-                        <div className="flex gap-2 items-center justify-between">
+                        <div className="flex gap-2 items-center justify-between flex-wrap">
                           <div className="flex gap-2">
                             <button type="button" onClick={() => setShowPreview(false)} className={`px-3 py-1 font-mono text-[9px] border ${!showPreview ? 'bg-[#616752] text-white border-[#616752]' : 'bg-white text-gray-600 border-[#C5C5C5]'}`}>
                               EDITOR
@@ -870,9 +906,44 @@ export default function Admin() {
                               VORSCHAU
                             </button>
                           </div>
-                          <button type="button" onClick={() => setShowMarkdownHelp(!showMarkdownHelp)} className="font-mono text-[9px] text-[#616752] hover:underline">
-                            {showMarkdownHelp ? 'HILFE AUSBLENDEN' : 'MARKDOWN HILFE'}
-                          </button>
+                          <div className="flex gap-2">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const prompt = `Formatiere den folgenden Text als Markdown für einen professionellen Blog-Artikel auf Deutsch. Verwende:
+
+## Hauptüberschrift für den Titel/Thema
+### Unterüberschriften für Abschnitte
+**Fettdruck** für Schlüsselbegriffe und wichtige Punkte
+*Kursiv* für Betonung und Fachbegriffe
+- Aufzählungslisten für Vorteile, Features, Schritte
+> Blockzitate für wichtige Aussagen oder Expertenmeinungen
+[Linktext](URL) für klickbare externe Links
+
+Struktur für Blog-Artikel:
+1. Einleitung (Problem/Frage aufwerfen)
+2. Hauptteil mit 3-5 Abschnitten
+3. Praktische Beispiele oder Tipps
+4. Fazit/Zusammenfassung
+5. Call-to-Action (optional)
+
+Mein Text:
+---
+[HIER DEINEN TEXT EINFÜGEN]
+---`;
+                                navigator.clipboard.writeText(prompt);
+                                setSaveMsg('✓ AI-Prompt kopiert! Füge ihn in ChatGPT/Claude ein.');
+                                setTimeout(() => setSaveMsg(''), 3000);
+                              }}
+                              className="px-3 py-1 bg-purple-500 text-white font-mono text-[9px] tracking-wider hover:bg-purple-600 transition-colors flex items-center gap-1"
+                            >
+                              <Zap size={12} />
+                              AI FORMATIERUNG
+                            </button>
+                            <button type="button" onClick={() => setShowMarkdownHelp(!showMarkdownHelp)} className="font-mono text-[9px] text-[#616752] hover:underline">
+                              {showMarkdownHelp ? 'HILFE AUSBLENDEN' : 'MARKDOWN HILFE'}
+                            </button>
+                          </div>
                         </div>
                         
                         {showMarkdownHelp && (
@@ -884,6 +955,7 @@ export default function Admin() {
                             <div><strong>- Listenpunkt</strong> → Aufzählung</div>
                             <div><strong>&gt; Zitat</strong> → Blockzitat</div>
                             <div><strong>[Link](url)</strong> → Hyperlink</div>
+                            <div className="text-purple-600 mt-2 pt-2 border-t border-[#C5C5C5]">💡 Klicke "AI FORMATIERUNG" → Füge Prompt + Text in ChatGPT/Claude ein → Kopiere Ergebnis hierher</div>
                           </div>
                         )}
                         
