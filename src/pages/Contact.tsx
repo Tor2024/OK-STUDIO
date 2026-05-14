@@ -59,17 +59,28 @@ export default function Contact() {
     if (!validate()) return;
     setStatus('submitting');
     try {
-      await fetch('/api/notify', {
+      const response = await fetch('/api/notify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formState, timestamp: new Date().toISOString() })
       });
-      setStatus('success');
-      setErrors({});
-      setFormState({ name: '', email: '', subject: '', projectType: 'Project Design', budget: 'Tier 1 (unter 5k)', startDate: '', message: '' });
+      
+      const data = await response.json();
+      
+      if (response.ok && data.success) {
+        setStatus('success');
+        setErrors({});
+        setFormState({ name: '', email: '', subject: '', projectType: 'Project Design', budget: 'Tier 1 (unter 5k)', startDate: '', message: '' });
+        setConsent(false);
+      } else {
+        console.error('API error:', data);
+        setStatus('error');
+        setErrors({ submit: data.hint || data.error || 'Fehler beim Senden' });
+      }
     } catch (err) {
       console.error('Submit error:', err);
       setStatus('error');
+      setErrors({ submit: 'Netzwerkfehler. Bitte versuchen Sie es später erneut.' });
     }
   };
 
@@ -266,6 +277,13 @@ export default function Contact() {
             </div>
 
           </div>
+
+          {/* Error message */}
+          {status === 'error' && errors.submit && (
+            <div className="mt-6 p-4 border-l-4 border-l-red-500 border border-red-200 bg-red-50">
+              <p className="font-mono text-xs text-red-700">{errors.submit}</p>
+            </div>
+          )}
 
           {/* Submit */}
           <button

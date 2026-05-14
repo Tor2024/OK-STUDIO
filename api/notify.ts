@@ -1,6 +1,17 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+
+  // Handle OPTIONS request
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   // Only allow POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -22,6 +33,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const results = {
       telegram: false,
       email: false,
+      errors: [] as string[],
     };
 
     // Send to Telegram
@@ -58,10 +70,16 @@ ${message}
 
         if (telegramResponse.ok) {
           results.telegram = true;
+        } else {
+          const errorData = await telegramResponse.json();
+          results.errors.push(`Telegram: ${errorData.description || 'Unknown error'}`);
         }
       } catch (error) {
         console.error('Telegram error:', error);
+        results.errors.push(`Telegram: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
+    } else {
+      results.errors.push('Telegram: Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID');
     }
 
     // Send Email via Resend
@@ -154,10 +172,16 @@ ${message}
 
         if (emailResponse.ok) {
           results.email = true;
+        } else {
+          const errorData = await emailResponse.json();
+          results.errors.push(`Email: ${errorData.message || 'Unknown error'}`);
         }
       } catch (error) {
         console.error('Email error:', error);
+        results.errors.push(`Email: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
+    } else {
+      results.errors.push('Email: Missing RESEND_API_KEY');
     }
 
     // Return success if at least one notification was sent
@@ -169,12 +193,19 @@ ${message}
       });
     } else {
       return res.status(500).json({ 
-        error: 'Failed to send notifications. Please check environment variables.' 
+        success: false,
+        error: 'Failed to send notifications',
+        details: results.errors,
+        hint: 'Please configure environment variables on Vercel: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, RESEND_API_KEY, OFFICIAL_CONTACT_EMAIL'
       });
     }
 
   } catch (error) {
     console.error('Handler error:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ 
+      success: false,
+      error: 'Internal server error',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 }
