@@ -210,10 +210,22 @@ export default function Home() {
             <div className="space-y-4 md:space-y-6">
               {sortedClients.map((client: any) => (
                 <StaggerItem key={client.id}>
-                  <div className="flex justify-between items-center border-b border-[#F1F3EA]/10 pb-2 group cursor-pointer hover:border-[#F1F3EA]/50 transition-colors">
-                    <span className="font-display text-base md:text-lg uppercase tracking-widest">{client.name}</span>
-                    <ArrowUpRight size={14} className="opacity-30 group-hover:opacity-100 transition-opacity" />
-                  </div>
+                  {client.link ? (
+                    <a 
+                      href={client.link} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex justify-between items-center border-b border-[#F1F3EA]/10 pb-2 group cursor-pointer hover:border-[#F1F3EA]/50 transition-colors"
+                    >
+                      <span className="font-display text-base md:text-lg uppercase tracking-widest">{client.name}</span>
+                      <ArrowUpRight size={14} className="opacity-30 group-hover:opacity-100 transition-opacity" />
+                    </a>
+                  ) : (
+                    <div className="flex justify-between items-center border-b border-[#F1F3EA]/10 pb-2 group cursor-pointer hover:border-[#F1F3EA]/50 transition-colors">
+                      <span className="font-display text-base md:text-lg uppercase tracking-widest">{client.name}</span>
+                      <ArrowUpRight size={14} className="opacity-30 group-hover:opacity-100 transition-colors" />
+                    </div>
+                  )}
                 </StaggerItem>
               ))}
               {sortedClients.length === 0 && (
