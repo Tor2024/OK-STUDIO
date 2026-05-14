@@ -3,7 +3,7 @@
     "id": "kraftwerk-digital",
     "title": "KRAFTWERK DIGITAL",
     "category": "Web Relaunch",
-    "description": "Kompletter digitaler Relaunch fÃ¼r einen mittelstÃ¤ndischen Industriebetrieb. Neue MarkenidentitÃ¤t, Lead-Generierung und Performance-Optimierung.",
+    "description": "Kompletter digitaler Relaunch für einen mittelständischen Industriebetrieb. Neue Markenidentität, Lead-Generierung und Performance-Optimierung.",
     "image": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200",
     "completedAt": "MRZ 2025",
     "order": 1
@@ -12,7 +12,7 @@
     "id": "medizin-nord",
     "title": "MEDIZIN NORD",
     "category": "System Dev",
-    "description": "Patientenportal und Buchungssystem fÃ¼r eine Facharztpraxis in NRW. VollstÃ¤ndig DSGVO-konform mit Ende-zu-Ende-VerschlÃ¼sselung.",
+    "description": "Patientenportal und Buchungssystem für eine Facharztpraxis in NRW. Vollständig DSGVO-konform mit Ende-zu-Ende-Verschlüsselung.",
     "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=1200",
     "completedAt": "JAN 2025",
     "order": 2
@@ -21,7 +21,7 @@
     "id": "logistik-pro",
     "title": "LOGISTIK PRO",
     "category": "AI & Automation",
-    "description": "KI-gestÃ¼tzte Routenoptimierung und automatisiertes Reporting fÃ¼r ein regionales Logistikunternehmen mit 120 Fahrzeugen.",
+    "description": "KI-gestützte Routenoptimierung und automatisiertes Reporting für ein regionales Logistikunternehmen mit 120 Fahrzeugen.",
     "image": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1200",
     "completedAt": "NOV 2024",
     "order": 3
@@ -30,7 +30,7 @@
     "title": "Kreuztaler Werkstatt",
     "category": "Web Relaunch",
     "image": "https://my-flask-site-5pkl.onrender.com/static/images/2025.jpg",
-    "description": "Website fÃ¼r eine Autowerkstatt mit Geschichte seit 1946",
+    "description": "Website für eine Autowerkstatt mit Geschichte seit 1946",
     "completedAt": "MAI 2023",
     "order": 4,
     "id": "kreuztaler-werkstatt"
