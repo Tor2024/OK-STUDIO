@@ -281,17 +281,14 @@ function LoginScreen({ onLogin, onDemoMode }: { onLogin: (cfg: GithubConfig) => 
 // ─── Main Admin component ─────────────────────────────────────────────────────
 export default function Admin() {
   usePageTitle('Admin');
+  
+  // ALL HOOKS MUST BE AT THE TOP - BEFORE ANY CONDITIONAL RETURNS
   const [isAuthenticated, setIsAuthenticated] = useState(getPasswordAuth);
   const [cfg, setCfg] = useState<GithubConfig | null>(getGithubConfig);
   const [isDemoMode, setIsDemoMode] = useState(false);
   const [tab, setTab] = useState<Tab>('dashboard');
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
-
-  // Password protection
-  if (!isAuthenticated) {
-    return <PasswordScreen onAuth={() => setIsAuthenticated(true)} />;
-  }
 
   // Data state
   const [projects, setProjects]   = useState<Project[]>([]);
@@ -321,6 +318,11 @@ export default function Admin() {
   const [editingInsight, setEditingInsight] = useState<Insight | null>(null);
   const [editingClient, setEditingClient] = useState<Client | null>(null);
   const [editingFaq, setEditingFaq] = useState<Faq | null>(null);
+
+  // Password protection - AFTER all hooks
+  if (!isAuthenticated) {
+    return <PasswordScreen onAuth={() => setIsAuthenticated(true)} />;
+  }
 
   // Load all data from GitHub or local files
   useEffect(() => {
