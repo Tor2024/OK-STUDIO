@@ -957,9 +957,23 @@ export default function Admin() {
                             onChange={e => editingInsight ? setEditingInsight({...editingInsight, content: e.target.value}) : setNewInsight({...newInsight, content: e.target.value})} 
                           />
                         ) : (
-                          <div className="admin-input h-64 overflow-y-auto prose prose-sm max-w-none">
+                          <div className="admin-input h-64 overflow-y-auto prose prose-sm max-w-none admin-preview">
                             {(editingInsight?.content || newInsight.content) ? (
-                              <ReactMarkdown remarkPlugins={[remarkGfm]}>{editingInsight?.content || newInsight.content}</ReactMarkdown>
+                              <ReactMarkdown 
+                                remarkPlugins={[remarkGfm]}
+                                components={{
+                                  a: ({ node, ...props }) => (
+                                    <a 
+                                      {...props} 
+                                      target="_blank" 
+                                      rel="noopener noreferrer"
+                                      className="admin-link"
+                                    />
+                                  ),
+                                }}
+                              >
+                                {editingInsight?.content || newInsight.content}
+                              </ReactMarkdown>
                             ) : (
                               <p className="text-gray-400 italic">Keine Vorschau verfügbar. Schreiben Sie Markdown-Inhalt im Editor.</p>
                             )}
@@ -1408,6 +1422,8 @@ export default function Admin() {
         }
         .admin-input:focus { border-color: #616752; background: #fff; }
         textarea.admin-input { resize: vertical; }
+        .admin-link{color:#616752;text-decoration:underline;font-weight:600;transition:opacity .2s ease;text-decoration-thickness:1px;text-underline-offset:2px}
+        .admin-link:hover{opacity:.7}
       `}</style>
     </div>
   );

@@ -45,13 +45,31 @@ export default function Privacy() {
           {privacy.sections.sort((a, b) => a.order - b.order).map(section => (
             <section key={section.id} className="space-y-2">
               <h2 className="text-sm font-bold text-black">{section.title}</h2>
-              <div className="prose prose-sm max-w-none">
-                <ReactMarkdown>{section.content}</ReactMarkdown>
+              <div className="prose prose-sm max-w-none privacy-content">
+                <ReactMarkdown
+                  components={{
+                    a: ({ node, ...props }) => (
+                      <a 
+                        {...props} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="privacy-link"
+                      />
+                    ),
+                  }}
+                >
+                  {section.content}
+                </ReactMarkdown>
               </div>
             </section>
           ))}
         </div>
       </motion.div>
+      
+      <style>{`
+        .privacy-link{color:#616752;text-decoration:underline;font-weight:600;transition:opacity .2s ease;text-decoration-thickness:1px;text-underline-offset:2px}
+        .privacy-link:hover{opacity:.7}
+      `}</style>
     </div>
     </>
   );

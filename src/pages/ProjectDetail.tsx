@@ -73,7 +73,19 @@ export default function ProjectDetail() {
       <div className="grid grid-cols-1 md:grid-cols-12 max-w-7xl mx-auto p-6 md:p-12 gap-8 md:gap-12">
         <div className="col-span-1 md:col-span-8 order-2 md:order-1">
           <div className="prose prose-neutral max-w-none markdown-container">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown 
+              remarkPlugins={[remarkGfm]}
+              components={{
+                a: ({ node, ...props }) => (
+                  <a 
+                    {...props} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="markdown-link"
+                  />
+                ),
+              }}
+            >
               {project.fullDescription || project.description || 'Keine detaillierte Beschreibung verfügbar.'}
             </ReactMarkdown>
           </div>
@@ -110,6 +122,8 @@ export default function ProjectDetail() {
         .markdown-container li{margin-bottom:.5rem;opacity:.8}
         .markdown-container blockquote{border-left:3px solid #616752;padding-left:1.5rem;margin:2rem 0;font-family:var(--font-serif);font-style:italic;font-size:1.25rem;opacity:.7}
         .markdown-container strong{font-weight:700;color:#141414}
+        .markdown-link{color:#616752;text-decoration:underline;font-weight:600;transition:opacity .2s ease;text-decoration-thickness:2px;text-underline-offset:3px}
+        .markdown-link:hover{opacity:.7}
       `}</style>
     </motion.div>
   );

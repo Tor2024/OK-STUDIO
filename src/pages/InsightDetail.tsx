@@ -75,7 +75,21 @@ export default function InsightDetail() {
         />}
         {insight.content ? (
           <div className="insight-md">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{insight.content}</ReactMarkdown>
+            <ReactMarkdown 
+              remarkPlugins={[remarkGfm]}
+              components={{
+                a: ({ node, ...props }) => (
+                  <a 
+                    {...props} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="insight-link"
+                  />
+                ),
+              }}
+            >
+              {insight.content}
+            </ReactMarkdown>
           </div>
         ) : (
           <div className="border border-[#C5C5C5] p-12 text-center bg-[#F1F3EA]">
@@ -99,7 +113,8 @@ export default function InsightDetail() {
         .insight-md li{margin-bottom:.5rem;opacity:.8}
         .insight-md blockquote{border-left:3px solid #616752;padding-left:1.5rem;margin:2rem 0;font-family:var(--font-serif);font-style:italic;font-size:1.25rem;opacity:.7}
         .insight-md strong{font-weight:700;color:#141414}
-        .insight-md a{color:#616752;text-decoration:underline}
+        .insight-link{color:#616752;text-decoration:underline;font-weight:600;transition:opacity .2s ease;text-decoration-thickness:2px;text-underline-offset:3px}
+        .insight-link:hover{opacity:.7}
       `}</style>
     </motion.div>
   );
