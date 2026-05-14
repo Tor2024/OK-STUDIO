@@ -810,29 +810,24 @@ export default function Admin() {
                           <button
                             type="button"
                             onClick={() => {
-                              const prompt = `Formatiere den folgenden Text als Markdown für eine Portfolio-Projektbeschreibung auf Deutsch. Verwende:
+                              const prompt = `Отформатируй этот текст используя Markdown коды:
 
-## Überschriften für Hauptabschnitte
-### Unterüberschriften für Details
-**Fettdruck** für wichtige Begriffe
-*Kursiv* für Betonung
-- Aufzählungslisten für Features/Vorteile
-> Blockzitate für Kundenzitate
-[Linktext](URL) für klickbare Links
+## Überschrift (главный заголовок)
+### Unterüberschrift (подзаголовок)
+**жирный текст**
+*курсив*
+- пункт списка
+> цитата
+[текст ссылки](URL)
 
-Struktur:
-1. Kurze Einleitung (1-2 Sätze)
-2. Herausforderung/Problem
-3. Lösung/Umsetzung
-4. Ergebnisse/Erfolge
-5. Verwendete Technologien (als Liste)
-
-Mein Text:
+Текст:
 ---
-[HIER DEINEN TEXT EINFÜGEN]
----`;
+[ВСТАВЬ СЮДА СВОЙ ТЕКСТ]
+---
+
+Верни мне текст с этими кодами Markdown.`;
                               navigator.clipboard.writeText(prompt);
-                              setSaveMsg('✓ AI-Prompt kopiert! Füge ihn in ChatGPT/Claude ein.');
+                              setSaveMsg('✓ AI-Prompt kopiert! Füge ihn in ChatGPT/Claude/Gemini ein.');
                               setTimeout(() => setSaveMsg(''), 3000);
                             }}
                             className="px-3 py-1 bg-purple-500 text-white font-mono text-[9px] tracking-wider hover:bg-purple-600 transition-colors flex items-center gap-1"
@@ -910,29 +905,24 @@ Mein Text:
                             <button
                               type="button"
                               onClick={() => {
-                                const prompt = `Formatiere den folgenden Text als Markdown für einen professionellen Blog-Artikel auf Deutsch. Verwende:
+                                const prompt = `Отформатируй этот текст используя Markdown коды:
 
-## Hauptüberschrift für den Titel/Thema
-### Unterüberschriften für Abschnitte
-**Fettdruck** für Schlüsselbegriffe und wichtige Punkte
-*Kursiv* für Betonung und Fachbegriffe
-- Aufzählungslisten für Vorteile, Features, Schritte
-> Blockzitate für wichtige Aussagen oder Expertenmeinungen
-[Linktext](URL) für klickbare externe Links
+## Überschrift (главный заголовок)
+### Unterüberschrift (подзаголовок)
+**жирный текст**
+*курсив*
+- пункт списка
+> цитата
+[текст ссылки](URL)
 
-Struktur für Blog-Artikel:
-1. Einleitung (Problem/Frage aufwerfen)
-2. Hauptteil mit 3-5 Abschnitten
-3. Praktische Beispiele oder Tipps
-4. Fazit/Zusammenfassung
-5. Call-to-Action (optional)
-
-Mein Text:
+Текст:
 ---
-[HIER DEINEN TEXT EINFÜGEN]
----`;
+[ВСТАВЬ СЮДА СВОЙ ТЕКСТ]
+---
+
+Верни мне текст с этими кодами Markdown.`;
                                 navigator.clipboard.writeText(prompt);
-                                setSaveMsg('✓ AI-Prompt kopiert! Füge ihn in ChatGPT/Claude ein.');
+                                setSaveMsg('✓ AI-Prompt kopiert! Füge ihn in ChatGPT/Claude/Gemini ein.');
                                 setTimeout(() => setSaveMsg(''), 3000);
                               }}
                               className="px-3 py-1 bg-purple-500 text-white font-mono text-[9px] tracking-wider hover:bg-purple-600 transition-colors flex items-center gap-1"

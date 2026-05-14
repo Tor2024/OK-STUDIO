@@ -55,6 +55,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://webstudio-ok.de/work/kreuztaler-werkstatt</loc>
+    <lastmod>2023-05-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://webstudio-ok.de/insights/warum-die-meisten-websites-kein-geld-verdienen</loc>
     <lastmod>2025-05-01</lastmod>
     <changefreq>monthly</changefreq>
