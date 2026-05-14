@@ -344,10 +344,7 @@ export default function Admin() {
     
     const load = async () => {
       try {
-        console.log('Loading data... isDemoMode:', isDemoMode, 'cfg:', cfg);
-        
         if (isDemoMode) {
-          console.log('Loading from local files...');
           // Load from local public folder
           const [p, i, c, f, s, pr, im] = await Promise.all([
             fetch('/data/projects/index.json').then(r => r.json()),
@@ -358,11 +355,6 @@ export default function Admin() {
             fetch('/data/privacy.json').then(r => r.json()),
             fetch('/data/impressum.json').then(r => r.json()),
           ]);
-          console.log('Loaded projects:', p);
-          console.log('Loaded insights:', i);
-          console.log('Loaded clients:', c);
-          console.log('Loaded faqs:', f);
-          console.log('Loaded settings:', s);
           setProjects(p);
           setInsights(i);
           setClients(c);
@@ -372,7 +364,6 @@ export default function Admin() {
           setImpressum(im);
           setDataLoaded(true);
         } else if (cfg) {
-          console.log('Loading from GitHub...');
           // Load from GitHub
           const [p, i, c, f, s, pr, im] = await Promise.all([
             readDataFile<Project[]>(cfg, 'projects'),
