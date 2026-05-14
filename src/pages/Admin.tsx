@@ -332,13 +332,9 @@ export default function Admin() {
   const [editingClient, setEditingClient] = useState<Client | null>(null);
   const [editingFaq, setEditingFaq] = useState<Faq | null>(null);
 
-  // Password protection - AFTER all hooks
-  if (!isAuthenticated) {
-    return <PasswordScreen onAuth={() => setIsAuthenticated(true)} />;
-  }
-
-  // Load all data from GitHub or local files
+  // Load all data from GitHub or local files - MUST BE BEFORE CONDITIONAL RETURN
   useEffect(() => {
+    if (!isAuthenticated) return; // Don't load if not authenticated
     if (!cfg && !isDemoMode) return;
     if (dataLoaded) return; // Prevent re-loading
     
@@ -397,7 +393,12 @@ export default function Admin() {
     return () => {
       isMounted = false; // Cleanup on unmount
     };
-  }, [cfg?.token, isDemoMode]);
+  }, [isAuthenticated, cfg?.token, isDemoMode]);
+
+  // Password protection - AFTER all hooks
+  if (!isAuthenticated) {
+    return <PasswordScreen onAuth={() => setIsAuthenticated(true)} />;
+  }
 
   const save = async <T,>(name: string, data: T, action: string) => {
     if (isDemoMode) {
