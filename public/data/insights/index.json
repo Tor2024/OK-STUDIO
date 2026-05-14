@@ -19,5 +19,26 @@
     "date": "Mrz 2025",
     "tag": "DESIGN",
     "author": "Oleh Kalchenko"
+  },
+  {
+    "title": "Künstliche Intelligenz im deutschen Mittelstand: Von der Vision zur wertschöpfenden Realität",
+    "date": "DEC 2025",
+    "tag": "KI",
+    "author": "Oleh Kalchenko",
+    "id": "kuenstliche-intelligenz-im-deutschen-mittelstand-von-der-vision-zur-wertschoepfenden-realitaet"
+  },
+  {
+    "title": "Digitales Design 2025: Warum Ästhetik allein nicht mehr verkauft",
+    "date": "JAN 2026",
+    "tag": "DESIGN",
+    "author": "Oleh Kalchenko",
+    "id": "digitales-design-2025-warum-aesthetik-allein-nicht-mehr-verkauft"
+  },
+  {
+    "title": "Die technische Evolution: React 19 und die Zukunft der Webentwicklung",
+    "date": "FEB 2026",
+    "tag": "Zukunft",
+    "author": "Oleh Kalchenko",
+    "id": "die-technische-evolution-react-19-und-die-zukunft-der-webentwicklung"
   }
 ]
