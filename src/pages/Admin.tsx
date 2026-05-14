@@ -342,6 +342,8 @@ export default function Admin() {
     if (!cfg && !isDemoMode) return;
     if (dataLoaded) return; // Prevent re-loading
     
+    let isMounted = true; // Prevent state updates after unmount
+    
     const load = async () => {
       try {
         if (isDemoMode) {
@@ -355,6 +357,7 @@ export default function Admin() {
             fetch('/data/privacy.json').then(r => r.json()),
             fetch('/data/impressum.json').then(r => r.json()),
           ]);
+          if (!isMounted) return;
           setProjects(p);
           setInsights(i);
           setClients(c);
@@ -374,6 +377,7 @@ export default function Admin() {
             readDataFile<PrivacyData>(cfg, 'privacy'),
             readDataFile<ImpressumData>(cfg, 'impressum'),
           ]);
+          if (!isMounted) return;
           setProjects(p.data); setShas(prev => ({...prev, projects: p.sha}));
           setInsights(i.data); setShas(prev => ({...prev, insights: i.sha}));
           setClients(c.data);  setShas(prev => ({...prev, clients: c.sha}));
@@ -385,11 +389,15 @@ export default function Admin() {
         }
       } catch (err) {
         console.error('Load error:', err);
-        setDataLoaded(true);
+        if (isMounted) setDataLoaded(true);
       }
     };
     load();
-  }, [cfg?.token, isDemoMode, dataLoaded]);
+    
+    return () => {
+      isMounted = false; // Cleanup on unmount
+    };
+  }, [cfg?.token, isDemoMode]);
 
   const save = async <T,>(name: string, data: T, action: string) => {
     if (isDemoMode) {
