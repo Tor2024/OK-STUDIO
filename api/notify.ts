@@ -39,6 +39,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Send to Telegram
     if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
       try {
+        console.log('Telegram: Sending message to chat_id:', TELEGRAM_CHAT_ID);
         const telegramMessage = `
 🔔 <b>Neue Kontaktanfrage</b>
 
@@ -68,17 +69,22 @@ ${message}
           }
         );
 
+        const responseData = await telegramResponse.json();
+        console.log('Telegram API response:', responseData);
+
         if (telegramResponse.ok) {
           results.telegram = true;
+          console.log('Telegram: Message sent successfully');
         } else {
-          const errorData = await telegramResponse.json();
-          results.errors.push(`Telegram: ${errorData.description || 'Unknown error'}`);
+          console.error('Telegram API error:', responseData);
+          results.errors.push(`Telegram: ${responseData.description || 'Unknown error'}`);
         }
       } catch (error) {
         console.error('Telegram error:', error);
         results.errors.push(`Telegram: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     } else {
+      console.error('Telegram: Missing credentials. BOT_TOKEN:', !!TELEGRAM_BOT_TOKEN, 'CHAT_ID:', !!TELEGRAM_CHAT_ID);
       results.errors.push('Telegram: Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID');
     }
 
