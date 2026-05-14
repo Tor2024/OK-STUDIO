@@ -3,7 +3,7 @@
     "id": "kraftwerk-digital",
     "title": "KRAFTWERK DIGITAL",
     "category": "Web Relaunch",
-    "description": "Kompletter digitaler Relaunch fÃ¼r einen mittelstÃ¤ndischen Industriebetrieb. Neue MarkenidentitÃ¤t, Lead-Generierung und Performance-Optimierung.",
+    "description": "Kompletter digitaler Relaunch fÃÂ¼r einen mittelstÃÂ¤ndischen Industriebetrieb. Neue MarkenidentitÃÂ¤t, Lead-Generierung und Performance-Optimierung.",
     "image": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200",
     "completedAt": "MRZ 2025",
     "order": 1
@@ -12,7 +12,7 @@
     "id": "medizin-nord",
     "title": "MEDIZIN NORD",
     "category": "System Dev",
-    "description": "Patientenportal und Buchungssystem fÃ¼r eine Facharztpraxis in NRW. VollstÃ¤ndig DSGVO-konform mit Ende-zu-Ende-VerschlÃ¼sselung.",
+    "description": "Patientenportal und Buchungssystem fÃÂ¼r eine Facharztpraxis in NRW. VollstÃÂ¤ndig DSGVO-konform mit Ende-zu-Ende-VerschlÃÂ¼sselung.",
     "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=1200",
     "completedAt": "JAN 2025",
     "order": 2
@@ -21,18 +21,9 @@
     "id": "logistik-pro",
     "title": "LOGISTIK PRO",
     "category": "AI & Automation",
-    "description": "KI-gestÃ¼tzte Routenoptimierung und automatisiertes Reporting fÃ¼r ein regionales Logistikunternehmen mit 120 Fahrzeugen.",
+    "description": "KI-gestÃÂ¼tzte Routenoptimierung und automatisiertes Reporting fÃÂ¼r ein regionales Logistikunternehmen mit 120 Fahrzeugen.",
     "image": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1200",
     "completedAt": "NOV 2024",
     "order": 3
-  },
-  {
-    "title": "Kreuztaler Werkstatt",
-    "category": "Web Projekt",
-    "image": "https://images.pexels.com/photos/8310738/pexels-photo-8310738.jpeg",
-    "description": "Website für eine Autowerkstatt mit Geschichte seit 1946",
-    "completedAt": "MAI 2023",
-    "order": 0,
-    "id": "kreuztaler-werkstatt"
   }
 ]
