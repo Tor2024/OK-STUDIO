@@ -16,5 +16,41 @@
     "question": "Übernehmen Sie auch Hosting und Wartung?",
     "answer": "Ja. Wir bieten schlüsselfertige Lösungen inklusive Hosting, SSL, regelmäßigen Updates und technischem Support. Sie müssen sich um nichts kümmern — wir halten Ihr System am Laufen.",
     "order": 3
+  },
+  {
+    "question": "Bieten Sie persönliche Beratungsgespräche in Kreuztal oder Siegen an?",
+    "answer": "Ja, gerne! Als Webagentur aus Kreuztal unterstützen wir lokale Unternehmen und Privatpersonen im gesamten Kreis Siegen-Wittgenstein. Wir können uns persönlich treffen, um Ihr Projekt vor Ort zu besprechen.",
+    "order": 4,
+    "id": "mp60o2zr9ai8"
+  },
+  {
+    "question": "Warum sollte ich eine lokale Webagentur aus dem Siegerland wählen?",
+    "answer": "Kurze Wege, schnelle Kommunikation und die Kenntnis des regionalen Marktes. Wir sind für den Mittelstand in Kreuztal und Umgebung greifbar.",
+    "order": 5,
+    "id": "mp60ozxr8rnm"
+  },
+  {
+    "question": "Erstellen Sie auch Landingpages für Handwerker oder Dienstleister?",
+    "answer": "Ja, wir spezialisieren uns auf zielgerichtete Websites für den Mittelstand — von der ersten Web-Visitenkarte bis zum komplexen Firmenportal.",
+    "order": 6,
+    "id": "mp60pvhj7e94"
+  },
+  {
+    "question": "Wie hilft mir eine neue Website bei der Gewinnung von Neukunden?",
+    "answer": "Durch gezielte lokale SEO-Optimierung sorgen wir dafür, dass Ihr Business in Kreuztal gefunden wird, wenn Kunden nach Ihren Leistungen suchen.",
+    "order": 7,
+    "id": "mp60qd5y20x0"
+  },
+  {
+    "question": "Erstellen Sie auch Websites für Vereine oder private Projekte?",
+    "answer": "Ja, wir bieten maßgeschneiderte Lösungen für Privatpersonen und Vereine an, die einen professionellen Auftritt zum fairen Preis suchen.",
+    "order": 8,
+    "id": "mp60qzzjuqf8"
+  },
+  {
+    "question": "Was passiert, wenn ich nach dem Launch Hilfe brauche?",
+    "answer": "Wir lassen Sie nicht allein. Wir bieten Support-Pakete an, damit Ihre Website immer aktuell und sicher bleibt.",
+    "order": 9,
+    "id": "mp60rm4m9ine"
   }
 ]
