@@ -340,6 +340,7 @@ export default function Admin() {
   // Load all data from GitHub or local files
   useEffect(() => {
     if (!cfg && !isDemoMode) return;
+    if (dataLoaded) return; // Prevent re-loading
     
     const load = async () => {
       try {
@@ -397,7 +398,7 @@ export default function Admin() {
       }
     };
     load();
-  }, [cfg, isDemoMode]);
+  }, [cfg?.token, isDemoMode, dataLoaded]);
 
   const save = async <T,>(name: string, data: T, action: string) => {
     if (isDemoMode) {
