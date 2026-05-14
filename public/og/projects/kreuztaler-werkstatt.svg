@@ -12,11 +12,11 @@
   <text x="100" y="120" font-family="Arial, sans-serif" font-size="32" font-weight="900" fill="#141414">OK STUDIO</text>
   
   <!-- Категория/Тег -->
-  <text x="100" y="180" font-family="monospace" font-size="14" fill="#616752" letter-spacing="2">WEB PROJEKT</text>
+  <text x="100" y="180" font-family="monospace" font-size="14" fill="#616752" letter-spacing="2">WEB DESIGN</text>
   
   <!-- Заголовок -->
   <text x="100" y="250" font-family="Arial, sans-serif" font-size="48" font-weight="700" fill="#141414">
-    <tspan x="100" dy="0">Kreuztaler Werkstatt</tspan>
+    <tspan x="100" dy="0">KREUZTALER WERKSTATT</tspan>
     
     
   </text>
