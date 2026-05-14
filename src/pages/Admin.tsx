@@ -35,7 +35,10 @@ function slugify(s: string) {
 }
 
 // ─── Password Auth ────────────────────────────────────────────────────────────
-const ADMIN_PASSWORD_HASH = '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'; // "password" - CHANGE THIS!
+// Пароль можно задать через Environment Variable: VITE_ADMIN_PASSWORD_HASH
+// Или использовать дефолтный: "password"
+const DEFAULT_PASSWORD_HASH = '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'; // "password"
+const ADMIN_PASSWORD_HASH = import.meta.env.VITE_ADMIN_PASSWORD_HASH || DEFAULT_PASSWORD_HASH;
 
 function hashPassword(password: string): Promise<string> {
   const encoder = new TextEncoder();
