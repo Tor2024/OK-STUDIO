@@ -40,21 +40,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
       try {
         console.log('Telegram: Sending message to chat_id:', TELEGRAM_CHAT_ID);
-        const telegramMessage = `
-🔔 <b>Neue Kontaktanfrage</b>
+        const telegramMessage = `🔔 Neue Kontaktanfrage
 
-👤 <b>Name:</b> ${name}
-📧 <b>Email:</b> ${email}
-${subject ? `📝 <b>Betreff:</b> ${subject}\n` : ''}
-${projectType ? `📂 <b>Kategorie:</b> ${projectType}\n` : ''}
-${budget ? `💰 <b>Budget:</b> ${budget}\n` : ''}
-${startDate ? `📅 <b>Start:</b> ${startDate}\n` : ''}
-
-💬 <b>Nachricht:</b>
+Name: ${name}
+Email: ${email}
+${subject ? `Betreff: ${subject}\n` : ''}${projectType ? `Kategorie: ${projectType}\n` : ''}${budget ? `Budget: ${budget}\n` : ''}${startDate ? `Start: ${startDate}\n` : ''}
+Nachricht:
 ${message}
 
-⏰ ${new Date(timestamp).toLocaleString('de-DE')}
-        `.trim();
+${new Date(timestamp).toLocaleString('de-DE')}`;
 
         const telegramResponse = await fetch(
           `https://api.telegram.com/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
@@ -64,20 +58,28 @@ ${message}
             body: JSON.stringify({
               chat_id: TELEGRAM_CHAT_ID,
               text: telegramMessage,
-              parse_mode: 'HTML',
             }),
           }
         );
 
-        const responseData = await telegramResponse.json();
-        console.log('Telegram API response:', responseData);
+        const responseData = await telegramResponse.text();
+        console.log('Telegram API raw response (first 200 chars):', responseData.substring(0, 200));
+        
+        let parsedData;
+        try {
+          parsedData = JSON.parse(responseData);
+          console.log('Telegram API response:', parsedData);
+        } catch (parseError) {
+          console.error('Failed to parse Telegram response. Telegram API may be blocked on Vercel.');
+          throw new Error('Telegram API blocked or unavailable');
+        }
 
-        if (telegramResponse.ok) {
+        if (telegramResponse.ok && parsedData.ok) {
           results.telegram = true;
           console.log('Telegram: Message sent successfully');
         } else {
-          console.error('Telegram API error:', responseData);
-          results.errors.push(`Telegram: ${responseData.description || 'Unknown error'}`);
+          console.error('Telegram API error:', parsedData);
+          results.errors.push(`Telegram: ${parsedData.description || 'Unknown error'}`);
         }
       } catch (error) {
         console.error('Telegram error:', error);
