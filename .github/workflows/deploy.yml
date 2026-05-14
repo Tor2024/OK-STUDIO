@@ -1,8 +1,7 @@
 name: Deploy to Vercel
 
 on:
-  push:
-    branches: [main]
+  # Disabled - Vercel auto-deploys from GitHub
   workflow_dispatch:
 
 jobs:

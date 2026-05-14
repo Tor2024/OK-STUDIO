@@ -1,18 +1,8 @@
 name: SEO Automation
 
 on:
-  # При каждом push в main
-  push:
-    branches: [main]
-    paths:
-      - 'public/data/insights/**'
-      - 'public/data/projects/**'
-  
-  # Еженедельно по понедельникам в 9:00
-  schedule:
-    - cron: '0 9 * * 1'
-  
-  # Ручной запуск
+  # Disabled auto-run, only manual trigger
+  # Vercel handles build automatically
   workflow_dispatch:
 
 jobs:
