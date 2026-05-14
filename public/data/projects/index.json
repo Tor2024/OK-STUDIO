@@ -28,11 +28,11 @@
   },
   {
     "id": "kreuztaler-werkstatt",
-    "title": "KREUZTALER WERKSTATT",
-    "category": "Web Design",
-    "description": "Moderne Website für eine Autowerkstatt mit Online-Terminbuchung und Kundenportal.",
-    "image": "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=1200",
-    "completedAt": "DEZ 2024",
+    "title": "Kreuztaler Werkstatt",
+    "category": "Web Relaunch",
+    "description": "Website für eine Autowerkstatt mit Geschichte seit 1946",
+    "image": "https://images.pexels.com/photos/8310738/pexels-photo-8310738.jpeg",
+    "completedAt": "MAI 2023",
     "order": 4
   }
 ]
