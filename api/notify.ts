@@ -25,8 +25,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-    const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+    const TELEGRAM_BOT_TOKEN = process.env.TELEGRAMM_TOKEN || process.env.TELEGRAM_BOT_TOKEN || process.env.TELEGRAM_TOKEN;
+    const TELEGRAM_CHAT_ID = process.env.TELEGRAMM_ID || process.env.TELEGRAM_CHAT_ID;
     const RESEND_API_KEY = process.env.RESEND_API_KEY;
     const CONTACT_EMAIL = process.env.OFFICIAL_CONTACT_EMAIL || 'hello@webstudio-ok.de';
 
