@@ -50,7 +50,16 @@ async function apiRequest(cfg: GithubConfig, path: string, options?: RequestInit
 /** Read a file and return its content + sha */
 export async function readFile(cfg: GithubConfig, filePath: string): Promise<{ content: string; sha: string }> {
   const data = await apiRequest(cfg, `contents/${filePath}?ref=${cfg.branch}`);
-  const content = atob(data.content.replace(/\n/g, ''));
+  
+  // Proper UTF-8 decoding from base64
+  const base64 = data.content.replace(/\n/g, '');
+  const binaryString = atob(base64);
+  const bytes = new Uint8Array(binaryString.length);
+  for (let i = 0; i < binaryString.length; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  const content = new TextDecoder('utf-8').decode(bytes);
+  
   return { content, sha: data.sha };
 }
 
