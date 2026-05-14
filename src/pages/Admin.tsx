@@ -282,9 +282,22 @@ function LoginScreen({ onLogin, onDemoMode }: { onLogin: (cfg: GithubConfig) => 
 export default function Admin() {
   usePageTitle('Admin');
   
+  // Auto-load GitHub config from environment variables
+  const getAutoConfig = (): GithubConfig | null => {
+    const token = import.meta.env.VITE_GITHUB_TOKEN;
+    const owner = import.meta.env.VITE_GITHUB_OWNER;
+    const repo = import.meta.env.VITE_GITHUB_REPO;
+    const branch = import.meta.env.VITE_GITHUB_BRANCH || 'main';
+    
+    if (token && owner && repo) {
+      return { token, owner, repo, branch };
+    }
+    return getGithubConfig();
+  };
+  
   // ALL HOOKS MUST BE AT THE TOP - BEFORE ANY CONDITIONAL RETURNS
   const [isAuthenticated, setIsAuthenticated] = useState(getPasswordAuth);
-  const [cfg, setCfg] = useState<GithubConfig | null>(getGithubConfig);
+  const [cfg, setCfg] = useState<GithubConfig | null>(getAutoConfig);
   const [isDemoMode, setIsDemoMode] = useState(false);
   const [tab, setTab] = useState<Tab>('dashboard');
   const [saving, setSaving] = useState(false);
