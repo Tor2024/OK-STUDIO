@@ -1131,7 +1131,7 @@ export default function Admin() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
                           <h3 className="font-display font-bold uppercase truncate">{p.title}</h3>
-                          {!p.published && <span className="bg-red-500 text-white text-[8px] px-1.5 py-0.5 font-mono">DRAFT</span>}
+                          {p.published === false && <span className="bg-red-500 text-white text-[8px] px-1.5 py-0.5 font-mono">DRAFT</span>}
                         </div>
                         <p className="font-mono text-[9px] opacity-40">{p.category} · {p.completedAt}</p>
                       </div>
@@ -1240,7 +1240,7 @@ export default function Admin() {
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
                           <h3 className="font-display font-bold uppercase truncate">{l.city} — {l.title}</h3>
-                          {!l.published && <span className="bg-red-500 text-white text-[8px] px-1.5 py-0.5 font-mono">DRAFT</span>}
+                          {l.published === false && <span className="bg-red-500 text-white text-[8px] px-1.5 py-0.5 font-mono">DRAFT</span>}
                         </div>
                         <p className="font-mono text-[9px] opacity-40">URL: /local/{l.id}</p>
                       </div>
@@ -1424,7 +1424,10 @@ export default function Admin() {
                         <FileText size={16} className="opacity-30" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-display font-bold uppercase text-sm truncate">{i.title}</h3>
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-display font-bold uppercase text-sm truncate">{i.title}</h3>
+                          {i.published === false && <span className="bg-red-500 text-white text-[8px] px-1.5 py-0.5 font-mono">DRAFT</span>}
+                        </div>
                         <p className="font-mono text-[9px] opacity-40">{i.date} · {i.tag}</p>
                       </div>
                       <button onClick={() => startEditInsight(i.id)} className="shrink-0 p-2 text-blue-300 hover:text-blue-600 transition-colors"><Edit2 size={16} /></button>
