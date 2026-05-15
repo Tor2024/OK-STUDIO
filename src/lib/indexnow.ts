@@ -13,33 +13,24 @@ interface IndexNowResponse {
 
 /**
  * Отправляет URL в IndexNow для быстрой индексации
+ * Использует серверную функцию для обхода CORS
  */
 export async function submitToIndexNow(urls: string[]): Promise<IndexNowResponse> {
   try {
-    const response = await fetch('https://api.indexnow.org/indexnow', {
+    const fullUrls = urls.map(url => url.startsWith('http') ? url : `${SITE_URL}${url}`);
+    
+    const response = await fetch('/api/indexnow', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        host: SITE_URL.replace('https://', ''),
-        key: INDEXNOW_KEY,
-        urlList: urls.map(url => url.startsWith('http') ? url : `${SITE_URL}${url}`),
+        urls: fullUrls,
       }),
     });
 
-    if (response.ok || response.status === 202) {
-      return {
-        success: true,
-        message: `✅ ${urls.length} URL(s) отправлено в IndexNow`,
-      };
-    } else {
-      const error = await response.text();
-      return {
-        success: false,
-        message: `❌ Ошибка IndexNow: ${error}`,
-      };
-    }
+    const data = await response.json();
+    return data;
   } catch (error) {
     return {
       success: false,
