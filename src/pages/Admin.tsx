@@ -338,6 +338,9 @@ export default function Admin() {
   const [editingClient, setEditingClient] = useState<Client | null>(null);
   const [editingFaq, setEditingFaq] = useState<Faq | null>(null);
 
+  // AI State
+  const [isGeneratingSEO, setIsGeneratingSEO] = useState(false);
+
   // Load all data from GitHub or local files - MUST BE BEFORE CONDITIONAL RETURN
   useEffect(() => {
     if (!isAuthenticated) return; // Don't load if not authenticated
@@ -431,6 +434,80 @@ export default function Admin() {
       setSaveMsg(`✗ ${err.message}`);
     }
     setSaving(false);
+  };
+
+  // ─── AI SEO Generator ───────────────────────────────────────────────────────
+  const generateSEO = async (type: 'project' | 'insight' | 'landing', contentText: string) => {
+    if (!contentText || contentText.trim().length < 50) {
+      alert("Der Text ist zu kurz für eine KI-Analyse. Bitte füllen Sie zuerst den Inhalt aus.");
+      return;
+    }
+    
+    setIsGeneratingSEO(true);
+    try {
+      // @ts-ignore
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+      if (!apiKey) {
+        alert("Fehler: VITE_GEMINI_API_KEY fehlt in den Umgebungsvariablen. KI kann nicht genutzt werden.");
+        setIsGeneratingSEO(false);
+        return;
+      }
+
+      const prompt = `Du bist ein erstklassiger SEO-Experte. 
+Analysiere den folgenden Text und generiere perfekte SEO-Metadaten auf Deutsch.
+Regeln:
+1. "keywords": 2-4 hochrelevante Suchbegriffe, komma-getrennt.
+2. "seoTitle": max. 60 Zeichen. MUSS das wichtigste Keyword enthalten.
+3. "seoDescription": max. 160 Zeichen. Spannend formuliert, weckt Klick-Interesse (CTR-optimiert).
+
+Antworte AUSSCHLIESSLICH mit einem gültigen JSON-Objekt. Keine Markdown-Blöcke, nur reines JSON.
+
+Text zur Analyse:
+${contentText.substring(0, 4000)}`;
+
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.2 }
+        })
+      });
+
+      if (!res.ok) throw new Error("API-Fehler bei Google Gemini");
+      const data = await res.json();
+      
+      let text = data.candidates[0].content.parts[0].text;
+      text = text.replace(/```json/g, '').replace(/```/g, '').trim();
+      
+      const parsed = JSON.parse(text);
+      
+      if (type === 'project') {
+        if (editingProject) {
+          setEditingProject(prev => ({ ...prev!, keywords: parsed.keywords, seoTitle: parsed.seoTitle, seoDescription: parsed.seoDescription }));
+        } else {
+          setNewProject(prev => ({ ...prev, keywords: parsed.keywords, seoTitle: parsed.seoTitle, seoDescription: parsed.seoDescription }));
+        }
+      } else if (type === 'insight') {
+        if (editingInsight) {
+          setEditingInsight(prev => ({ ...prev!, keywords: parsed.keywords, seoTitle: parsed.seoTitle, seoDescription: parsed.seoDescription }));
+        } else {
+          setNewInsight(prev => ({ ...prev, keywords: parsed.keywords, seoTitle: parsed.seoTitle, seoDescription: parsed.seoDescription }));
+        }
+      } else if (type === 'landing') {
+        if (editingLanding) {
+          setEditingLanding(prev => ({ ...prev!, keywords: parsed.keywords, description: parsed.seoDescription }));
+        } else {
+          setNewLanding(prev => ({ ...prev, keywords: parsed.keywords, description: parsed.seoDescription }));
+        }
+      }
+      
+    } catch (e: any) {
+      console.error(e);
+      alert("Fehler bei der KI-Generierung: " + e.message);
+    } finally {
+      setIsGeneratingSEO(false);
+    }
   };
 
   // ─── Semantic Audit Helper ──────────────────────────────────────────────────
@@ -923,7 +1000,12 @@ export default function Admin() {
                       <input className="admin-input" placeholder="Abgeschlossen (z.B. MRZ 2025)" value={editingProject ? editingProject.completedAt : newProject.completedAt} onChange={e => editingProject ? setEditingProject({...editingProject, completedAt: e.target.value}) : setNewProject({...newProject, completedAt: e.target.value})} />
                       
                       <div className="border border-[#C5C5C5] p-4 bg-[#F1F3EA] space-y-3">
-                        <span className="telemetry-label mb-2 block font-bold">SEO_OPTIMIERUNG</span>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="telemetry-label block font-bold">SEO_OPTIMIERUNG</span>
+                          <button type="button" onClick={() => generateSEO('project', editingProject ? (editingProject.fullDescription || editingProject.description) : (newProject.fullDescription || newProject.description))} disabled={isGeneratingSEO} className="bg-[#A467D2] text-white px-3 py-1 font-mono text-[9px] hover:opacity-90 disabled:opacity-50 transition-opacity">
+                            {isGeneratingSEO ? 'LÄDT...' : '✨ KI GENERIEREN'}
+                          </button>
+                        </div>
                         <div>
                           <input className="admin-input bg-white" placeholder="Fokus-Keywords (kommagetrennt)" value={editingProject ? editingProject.keywords : newProject.keywords} onChange={e => editingProject ? setEditingProject({...editingProject, keywords: e.target.value}) : setNewProject({...newProject, keywords: e.target.value})} />
                           <div className="mt-1.5 text-[10px] bg-white/60 p-2 border border-[#C5C5C5] text-[#141414]">
@@ -1065,7 +1147,12 @@ export default function Admin() {
                       <input className="admin-input" placeholder="H1 Titel" value={editingLanding ? editingLanding.title : newLanding.title} onChange={e => editingLanding ? setEditingLanding({...editingLanding, title: e.target.value}) : setNewLanding({...newLanding, title: e.target.value})} required />
                       
                       <div className="border border-[#C5C5C5] p-4 bg-[#F1F3EA] space-y-3">
-                        <span className="telemetry-label mb-2 block font-bold">SEO_OPTIMIERUNG</span>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="telemetry-label block font-bold">SEO_OPTIMIERUNG</span>
+                          <button type="button" onClick={() => generateSEO('landing', editingLanding ? editingLanding.content : newLanding.content)} disabled={isGeneratingSEO} className="bg-[#A467D2] text-white px-3 py-1 font-mono text-[9px] hover:opacity-90 disabled:opacity-50 transition-opacity">
+                            {isGeneratingSEO ? 'LÄDT...' : '✨ KI GENERIEREN'}
+                          </button>
+                        </div>
                         <div>
                           <input className="admin-input bg-white" placeholder="Fokus-Keywords (kommagetrennt)" value={editingLanding ? editingLanding.keywords : newLanding.keywords} onChange={e => editingLanding ? setEditingLanding({...editingLanding, keywords: e.target.value}) : setNewLanding({...newLanding, keywords: e.target.value})} />
                           <div className="mt-1.5 text-[10px] bg-white/60 p-2 border border-[#C5C5C5] text-[#141414]">
@@ -1164,7 +1251,12 @@ export default function Admin() {
                       <input className="admin-input" placeholder="Autor" value={editingInsight ? editingInsight.author : newInsight.author} onChange={e => editingInsight ? setEditingInsight({...editingInsight, author: e.target.value}) : setNewInsight({...newInsight, author: e.target.value})} />
                       
                       <div className="border border-[#C5C5C5] p-4 bg-[#F1F3EA] space-y-3">
-                        <span className="telemetry-label mb-2 block font-bold">SEO_OPTIMIERUNG</span>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="telemetry-label block font-bold">SEO_OPTIMIERUNG</span>
+                          <button type="button" onClick={() => generateSEO('insight', editingInsight ? editingInsight.content || '' : newInsight.content || '')} disabled={isGeneratingSEO} className="bg-[#A467D2] text-white px-3 py-1 font-mono text-[9px] hover:opacity-90 disabled:opacity-50 transition-opacity">
+                            {isGeneratingSEO ? 'LÄDT...' : '✨ KI GENERIEREN'}
+                          </button>
+                        </div>
                         <div>
                           <input className="admin-input bg-white" placeholder="Fokus-Keywords (kommagetrennt)" value={editingInsight ? editingInsight.keywords : newInsight.keywords} onChange={e => editingInsight ? setEditingInsight({...editingInsight, keywords: e.target.value}) : setNewInsight({...newInsight, keywords: e.target.value})} />
                           <div className="mt-1.5 text-[10px] bg-white/60 p-2 border border-[#C5C5C5] text-[#141414]">
