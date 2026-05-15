@@ -37,5 +37,18 @@
     "keywords": "Autowerkstatt Kreuztal, Online-Terminbuchung, Kfz-Reparatur, Werkstatt-Website",
     "seoTitle": "Autowerkstatt Kreuztal: Moderne Website mit Online-Buchung",
     "seoDescription": "Erfolgreiche Autowerkstatt in Kreuztal: Moderne Website mit Online-Terminbuchung, automatischen Erinnerungen & Kundenverwaltung. Effizienter Service, mehr Kunden. Jetzt entdecken!"
+  },
+  {
+    "title": "CarStyleGarage",
+    "category": "Webseite",
+    "image": "https://raw.githubusercontent.com/okcompany/web-studio/main/apps/web/public/uploads/img_1777214317950_4714.png",
+    "description": "CarStyleGarage — Website für ein Auto-Folierungsstudio und Werbetechnik",
+    "completedAt": "APR 2026",
+    "order": 5,
+    "published": true,
+    "keywords": "Autofolierung, Lackschutzfolien, Scheibentönung, Fahrzeugfolierung",
+    "seoTitle": "Premium Autofolierung | Lackschutz & Scheibentönung",
+    "seoDescription": "Verwandeln Sie Ihr Fahrzeug mit CarStyleGarage! Premium Autofolierung, Lackschutz & Scheibentönung. Erleben Sie Qualität, buchen Sie Ihren Termin direkt online.",
+    "id": "carstylegarage"
   }
 ]
