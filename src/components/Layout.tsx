@@ -86,17 +86,21 @@ export default function Layout({ children }: LayoutProps) {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="md:hidden fixed top-16 left-0 w-full bg-[#141414] text-[#F1F3EA] z-[49] p-8 space-y-8 border-b border-[#616752] shadow-2xl"
+            className="md:hidden fixed top-20 left-0 w-full bg-[#141414] text-[#F1F3EA] z-[49] p-8 space-y-8 border-b border-[#616752] shadow-2xl"
           >
-            <div className="space-y-6">
-              {navItems.map((item) => (
-                <Link 
-                  key={item.label} 
-                  to={item.link} 
-                  className="block font-mono text-lg tracking-[0.2em] hover:text-[#616752] transition-colors"
-                >
-                  {item.label}
-                </Link>
+            <div className="space-y-0">
+              {navItems.map((item, index) => (
+                <div key={item.label}>
+                  <Link 
+                    to={item.link} 
+                    className="block font-mono text-lg tracking-[0.2em] hover:text-[#616752] transition-colors py-4"
+                  >
+                    {item.label}
+                  </Link>
+                  {index < navItems.length - 1 && (
+                    <div className="border-b border-white/10" />
+                  )}
+                </div>
               ))}
             </div>
             <div className="pt-8 border-t border-white/10 flex flex-col gap-4">
