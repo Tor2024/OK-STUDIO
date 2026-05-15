@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { ArrowUpRight, ShieldCheck, Lock, Fingerprint, Activity } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SmartLink from '../components/SmartLink';
 import { useCollection, useSettings, useData } from '../hooks/useData';
 import { useMeta } from '../hooks/useMeta';
 import { SchemaOrg, localBusinessSchema } from '../components/SchemaOrg';
@@ -18,8 +19,12 @@ export default function Home() {
   const { data: projects } = useCollection<any>('projects');
   const { get } = useSettings();
 
-  const sortedProjects = [...projects].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-  const sortedInsights = [...insights].sort((a, b) => b.date.localeCompare(a.date));
+  const sortedProjects = [...projects]
+    .filter(p => p.published !== false)
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  const sortedInsights = [...insights]
+    .filter(i => i.published !== false)
+    .sort((a, b) => b.date.localeCompare(a.date));
   const sortedClients = clients ? [...clients].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)) : [];
 
   const latestInsight = sortedInsights[0] ?? {
@@ -94,9 +99,14 @@ export default function Home() {
           </div>
           <div className="p-6 border-t border-[#C5C5C5] min-h-[160px]">
             <span className="telemetry-label block mb-3">NEUESTE EINBLICKE</span>
-            <Link to={latestInsight.id ? `/insights/${latestInsight.id}` : '/insights'} className="text-[14px] leading-tight font-medium underline cursor-pointer hover:no-underline block">
+            <SmartLink 
+              prefetch="insight" 
+              itemId={latestInsight.id} 
+              to={latestInsight.id ? `/insights/${latestInsight.id}` : '/insights'} 
+              className="text-[14px] leading-tight font-medium underline cursor-pointer hover:no-underline block"
+            >
               {latestInsight.title}
-            </Link>
+            </SmartLink>
             <p className="text-[12px] text-[#737373] mt-2 italic">Veröffentlicht in Kreuztal {"//"} {latestInsight.date}</p>
             <Link 
               to="/insights" 

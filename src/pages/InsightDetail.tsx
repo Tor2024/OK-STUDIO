@@ -13,16 +13,34 @@ export default function InsightDetail() {
   const { data: insight, loading } = useItem<any>('insights', id!);
   const { data: allInsights } = useCollection<any>('insights');
 
-  // Получаем похожие статьи (с тем же тегом, исключая текущую)
+  // Получаем похожие статьи (приоритет: общие ключевые слова -> тот же тег)
   const relatedInsights = allInsights
-    .filter((i: any) => i.id !== id && i.tag === insight?.tag)
+    .filter((i: any) => i.id !== id && i.published !== false)
+    .sort((a: any, b: any) => {
+      // Подсчет общих ключевых слов
+      const getOverlap = (item: any) => {
+        if (!insight?.keywords || !item.keywords) return 0;
+        const k1 = insight.keywords.split(',').map((k: string) => k.trim().toLowerCase());
+        const k2 = item.keywords.split(',').map((k: string) => k.trim().toLowerCase());
+        return k1.filter((k: string) => k2.includes(k)).length;
+      };
+      
+      const overlapA = getOverlap(a);
+      const overlapB = getOverlap(b);
+      
+      if (overlapA !== overlapB) return overlapB - overlapA;
+      if (a.tag === insight?.tag) return -1;
+      if (b.tag === insight?.tag) return 1;
+      return 0;
+    })
     .slice(0, 3);
 
   usePageTitle(insight?.title ?? 'Journal');
   useMeta({
     title: insight?.title ?? 'Journal',
     description: insight?.content?.slice(0, 160).replace(/[#*>\n]/g, ' ').trim(),
-    image: `/og/insights/${id}.svg`,
+    keywords: insight?.keywords,
+    image: `/og/insights/${id}.png`,
     url: `/insights/${id}`,
     type: 'article',
   });

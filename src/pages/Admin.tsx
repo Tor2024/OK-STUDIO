@@ -15,17 +15,18 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-interface Project { id: string; title: string; category: string; image: string; description: string; fullDescription?: string; completedAt?: string; order: number; }
-interface Insight  { id: string; title: string; date: string; tag: string; author: string; content?: string; }
+interface Project { id: string; title: string; category: string; image: string; description: string; fullDescription?: string; completedAt?: string; order: number; published?: boolean; keywords?: string; seoTitle?: string; seoDescription?: string; }
+interface Insight  { id: string; title: string; date: string; tag: string; author: string; content?: string; published?: boolean; keywords?: string; seoTitle?: string; seoDescription?: string; }
 interface Client   { id: string; name: string; link: string; order: number; }
 interface Faq      { id: string; question: string; answer: string; order: number; }
+interface LocationLanding { id: string; city: string; title: string; description: string; content: string; published: boolean; keywords: string; }
 interface LegalSection { id: string; title: string; content: string; order: number; }
 interface PrivacyData { title: string; subtitle: string; sections: LegalSection[]; }
 interface ImpressumData { title: string; subtitle: string; sections: LegalSection[]; disclaimer: string; }
 interface Settings { [key: string]: string; }
 interface SpecialOffer { enabled: boolean; title: string; message: string; buttonText: string; buttonLink: string; validUntil?: string; }
 
-type Tab = 'dashboard' | 'projects' | 'insights' | 'clients' | 'faqs' | 'settings' | 'privacy' | 'impressum' | 'special-offer';
+type Tab = 'dashboard' | 'projects' | 'insights' | 'landings' | 'clients' | 'faqs' | 'settings' | 'privacy' | 'impressum' | 'special-offer';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
@@ -39,7 +40,7 @@ function slugify(s: string) {
 // Пароль можно задать через Environment Variable: VITE_ADMIN_PASSWORD_HASH
 // Или использовать дефолтный: "password"
 const DEFAULT_PASSWORD_HASH = '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'; // "password"
-const ADMIN_PASSWORD_HASH = import.meta.env.VITE_ADMIN_PASSWORD_HASH || DEFAULT_PASSWORD_HASH;
+const ADMIN_PASSWORD_HASH = (import.meta as any).env.VITE_ADMIN_PASSWORD_HASH || DEFAULT_PASSWORD_HASH;
 
 function hashPassword(password: string): Promise<string> {
   const encoder = new TextEncoder();
@@ -285,10 +286,10 @@ export default function Admin() {
   
   // Auto-load GitHub config from environment variables
   const getAutoConfig = (): GithubConfig | null => {
-    const token = import.meta.env.VITE_GITHUB_TOKEN;
-    const owner = import.meta.env.VITE_GITHUB_OWNER;
-    const repo = import.meta.env.VITE_GITHUB_REPO;
-    const branch = import.meta.env.VITE_GITHUB_BRANCH || 'main';
+    const token = (import.meta as any).env.VITE_GITHUB_TOKEN;
+    const owner = (import.meta as any).env.VITE_GITHUB_OWNER;
+    const repo = (import.meta as any).env.VITE_GITHUB_REPO;
+    const branch = (import.meta as any).env.VITE_GITHUB_BRANCH || 'main';
     
     if (token && owner && repo) {
       return { token, owner, repo, branch };
@@ -307,6 +308,7 @@ export default function Admin() {
   // Data state
   const [projects, setProjects]   = useState<Project[]>([]);
   const [insights, setInsights]   = useState<Insight[]>([]);
+  const [landings, setLandings]   = useState<LocationLanding[]>([]);
   const [clients, setClients]     = useState<Client[]>([]);
   const [faqs, setFaqs]           = useState<Faq[]>([]);
   const [settings, setSettings]   = useState<Settings>({});
@@ -321,8 +323,9 @@ export default function Admin() {
   const [dataLoaded, setDataLoaded] = useState(false);
 
   // New item forms
-  const [newProject, setNewProject] = useState<Omit<Project,'id'>>({ title:'', category:'', image:'', description:'', fullDescription:'', completedAt:'', order:0 });
-  const [newInsight, setNewInsight] = useState<Omit<Insight,'id'>>({ title:'', date: '', tag:'NEWS', author:'Oleh Kalchenko', content:'' });
+  const [newProject, setNewProject] = useState<Omit<Project,'id'>>({ title:'', category:'', image:'', description:'', fullDescription:'', completedAt:'', order:0, published: true, keywords: '', seoTitle: '', seoDescription: '' });
+  const [newInsight, setNewInsight] = useState<Omit<Insight,'id'>>({ title:'', date: '', tag:'NEWS', author:'Oleh Kalchenko', content:'', published: true, keywords: '', seoTitle: '', seoDescription: '' });
+  const [newLanding, setNewLanding] = useState<Omit<LocationLanding,'id'>>({ city:'', title:'', description:'', content:'', published: true, keywords: '' });
   const [newClient,  setNewClient]  = useState<Omit<Client,'id'>>({ name:'', link:'', order:0 });
   const [newFaq,     setNewFaq]     = useState<Omit<Faq,'id'>>({ question:'', answer:'', order:0 });
   const [showPreview, setShowPreview] = useState(false);
@@ -331,6 +334,7 @@ export default function Admin() {
   // Edit mode state
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [editingInsight, setEditingInsight] = useState<Insight | null>(null);
+  const [editingLanding, setEditingLanding] = useState<LocationLanding | null>(null);
   const [editingClient, setEditingClient] = useState<Client | null>(null);
   const [editingFaq, setEditingFaq] = useState<Faq | null>(null);
 
@@ -346,19 +350,21 @@ export default function Admin() {
       try {
         if (isDemoMode) {
           // Load from local public folder
-          const [p, i, c, f, s, pr, im, so] = await Promise.all([
-            fetch('/data/projects/index.json').then(r => r.json()),
-            fetch('/data/insights/index.json').then(r => r.json()),
-            fetch('/data/clients.json').then(r => r.json()),
-            fetch('/data/faqs.json').then(r => r.json()),
-            fetch('/data/settings.json').then(r => r.json()),
-            fetch('/data/privacy.json').then(r => r.json()),
-            fetch('/data/impressum.json').then(r => r.json()),
-            fetch('/data/special-offer.json').then(r => r.json()),
+          const [p, i, l, c, f, s, pr, im, so] = await Promise.all([
+            fetch('/data/projects/index.json').then(r => r.json()).catch(() => []),
+            fetch('/data/insights/index.json').then(r => r.json()).catch(() => []),
+            fetch('/data/landings.json').then(r => r.json()).catch(() => []),
+            fetch('/data/clients.json').then(r => r.json()).catch(() => []),
+            fetch('/data/faqs.json').then(r => r.json()).catch(() => []),
+            fetch('/data/settings.json').then(r => r.json()).catch(() => ({})),
+            fetch('/data/privacy.json').then(r => r.json()).catch(() => ({ title:'', subtitle:'', sections:[] })),
+            fetch('/data/impressum.json').then(r => r.json()).catch(() => ({ title:'', subtitle:'', sections:[], disclaimer:'' })),
+            fetch('/data/special-offer.json').then(r => r.json()).catch(() => ({ enabled: false, title:'', message:'', buttonText:'', buttonLink:'' })),
           ]);
           if (!isMounted) return;
           setProjects(p);
           setInsights(i);
+          setLandings(l);
           setClients(c);
           setFaqs(f);
           setSettings(s);
@@ -368,19 +374,21 @@ export default function Admin() {
           setDataLoaded(true);
         } else if (cfg) {
           // Load from GitHub
-          const [p, i, c, f, s, pr, im, so] = await Promise.all([
-            readDataFile<Project[]>(cfg, 'projects'),
-            readDataFile<Insight[]>(cfg, 'insights'),
-            readDataFile<Client[]>(cfg, 'clients'),
-            readDataFile<Faq[]>(cfg, 'faqs'),
-            readDataFile<Settings>(cfg, 'settings'),
-            readDataFile<PrivacyData>(cfg, 'privacy'),
-            readDataFile<ImpressumData>(cfg, 'impressum'),
-            readDataFile<SpecialOffer>(cfg, 'special-offer'),
+          const [p, i, l, c, f, s, pr, im, so] = await Promise.all([
+            readDataFile<Project[]>(cfg, 'projects').catch(() => ({data:[], sha:''})),
+            readDataFile<Insight[]>(cfg, 'insights').catch(() => ({data:[], sha:''})),
+            readDataFile<LocationLanding[]>(cfg, 'landings').catch(() => ({data:[], sha:''})),
+            readDataFile<Client[]>(cfg, 'clients').catch(() => ({data:[], sha:''})),
+            readDataFile<Faq[]>(cfg, 'faqs').catch(() => ({data:[], sha:''})),
+            readDataFile<Settings>(cfg, 'settings').catch(() => ({data:{}, sha:''})),
+            readDataFile<PrivacyData>(cfg, 'privacy').catch(() => ({data:{ title:'', subtitle:'', sections:[] }, sha:''})),
+            readDataFile<ImpressumData>(cfg, 'impressum').catch(() => ({data:{ title:'', subtitle:'', sections:[], disclaimer:'' }, sha:''})),
+            readDataFile<SpecialOffer>(cfg, 'special-offer').catch(() => ({data:{ enabled: false, title:'', message:'', buttonText:'', buttonLink:'' }, sha:''})),
           ]);
           if (!isMounted) return;
           setProjects(p.data); setShas(prev => ({...prev, projects: p.sha}));
           setInsights(i.data); setShas(prev => ({...prev, insights: i.sha}));
+          setLandings(l.data); setShas(prev => ({...prev, landings: l.sha}));
           setClients(c.data);  setShas(prev => ({...prev, clients: c.sha}));
           setFaqs(f.data);     setShas(prev => ({...prev, faqs: f.sha}));
           setSettings(s.data); setShas(prev => ({...prev, settings: s.sha}));
@@ -425,6 +433,73 @@ export default function Admin() {
     setSaving(false);
   };
 
+  // ─── Semantic Audit Helper ──────────────────────────────────────────────────
+  const AuditFeedback = ({ title, content, keywords }: { title: string, content: string, keywords: string }) => {
+    const issues: { msg: string, severity: 'warn' | 'error' }[] = [];
+    
+    if (title && title.length < 30) issues.push({ msg: 'Titel zu kurz für SEO (ideal: 50-60 Zeichen)', severity: 'warn' });
+    if (content && content.length < 300) issues.push({ msg: 'Inhalt sehr kurz. Google bevorzugt ausführliche Texte (>600 Wörter)', severity: 'warn' });
+    if (!keywords) issues.push({ msg: 'Keine Fokus-Keywords definiert', severity: 'error' });
+    
+    // Check if title contains at least one keyword
+    if (keywords && title && !keywords.split(',').some(k => title.toLowerCase().includes(k.trim().toLowerCase()))) {
+      issues.push({ msg: 'Titel enthält keines der Fokus-Keywords', severity: 'warn' });
+    }
+    
+    // Check for H2 tags in markdown content
+    if (content && !content.includes('## ')) {
+      issues.push({ msg: 'Keine H2-Überschriften (##) im Text gefunden', severity: 'warn' });
+    }
+
+    if (issues.length === 0 && title && content) return (
+      <div className="p-3 bg-green-50 border border-green-200 flex items-center gap-2 mb-4">
+        <Check size={14} className="text-green-600" />
+        <span className="font-mono text-[10px] text-green-700 uppercase tracking-widest">SEMANTIC_CHECK: OPTIMAL</span>
+      </div>
+    );
+
+    if (issues.length === 0) return null;
+
+    return (
+      <div className="space-y-1 mb-4">
+        <div className="telemetry-label mb-2 block font-bold text-red-500">SEMANTIC_AUDIT_REPORT</div>
+        {issues.map((iss, i) => (
+          <div key={i} className={`p-2 border font-mono text-[10px] flex items-center gap-2 ${iss.severity === 'error' ? 'bg-red-50 border-red-200 text-red-700' : 'bg-orange-50 border-orange-200 text-orange-700'}`}>
+            <span className="shrink-0">{iss.severity === 'error' ? '✖' : '⚠'}</span>
+            {iss.msg}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  // Landings CRUD
+  const addLanding = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isDemoMode) return;
+    const item: LocationLanding = { ...newLanding, id: slugify(newLanding.city) || uid() };
+    const updated = [...landings, item];
+    setLandings(updated);
+    await save('landings', updated, `Landing Page hinzugefügt: ${item.city}`);
+    setNewLanding({ city:'', title:'', description:'', content:'', published: true, keywords: '' });
+  };
+
+  const updateLanding = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingLanding) return;
+    const updated = landings.map(l => l.id === editingLanding.id ? editingLanding : l);
+    setLandings(updated);
+    await save('landings', updated, `Landing Page aktualisiert: ${editingLanding.city}`);
+    setEditingLanding(null);
+  };
+
+  const deleteLanding = async (id: string) => {
+    if (!confirm('Landing Page löschen?')) return;
+    const updated = landings.filter(l => l.id !== id);
+    setLandings(updated);
+    await save('landings', updated, `Landing Page gelöscht: ${id}`);
+  };
+
   // Projects CRUD
   const addProject = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -445,7 +520,7 @@ export default function Admin() {
     setProjects(updated);
     await save('projects', updated, `Projekt-Index aktualisiert: ${item.title}`);
     
-    setNewProject({ title:'', category:'', image:'', description:'', fullDescription:'', completedAt:'', order: projects.length + 1 });
+    setNewProject({ title:'', category:'', image:'', description:'', fullDescription:'', completedAt:'', order: projects.length + 1, published: true, keywords: '', seoTitle: '', seoDescription: '' });
   };
 
   const updateProject = async (e: React.FormEvent) => {
@@ -529,7 +604,7 @@ export default function Admin() {
     setInsights(updated);
     await save('insights', updated, `Artikel-Index aktualisiert: ${item.title}`);
     
-    setNewInsight({ title:'', date: '', tag:'NEWS', author:'Oleh Kalchenko', content:'' });
+    setNewInsight({ title:'', date: '', tag:'NEWS', author:'Oleh Kalchenko', content:'', published: true, keywords: '', seoTitle: '', seoDescription: '' });
   };
 
   const updateInsight = async (e: React.FormEvent) => {
@@ -693,6 +768,7 @@ export default function Admin() {
     { id: 'dashboard', label: 'ÜBERSICHT' },
     { id: 'projects',  label: 'PORTFOLIO' },
     { id: 'insights',  label: 'JOURNAL' },
+    { id: 'landings',  label: 'LANDINGS' },
     { id: 'clients',   label: 'KUNDEN' },
     { id: 'faqs',      label: 'FAQ' },
     { id: 'special-offer', label: 'ANGEBOT' },
@@ -845,6 +921,25 @@ export default function Admin() {
                       <input className="admin-input" placeholder="Kategorie" value={editingProject ? editingProject.category : newProject.category} onChange={e => editingProject ? setEditingProject({...editingProject, category: e.target.value}) : setNewProject({...newProject, category: e.target.value})} required />
                       <input className="admin-input" placeholder="Bild-URL" value={editingProject ? editingProject.image : newProject.image} onChange={e => editingProject ? setEditingProject({...editingProject, image: e.target.value}) : setNewProject({...newProject, image: e.target.value})} />
                       <input className="admin-input" placeholder="Abgeschlossen (z.B. MRZ 2025)" value={editingProject ? editingProject.completedAt : newProject.completedAt} onChange={e => editingProject ? setEditingProject({...editingProject, completedAt: e.target.value}) : setNewProject({...newProject, completedAt: e.target.value})} />
+                      
+                      <div className="border border-[#C5C5C5] p-4 bg-[#F1F3EA] space-y-3">
+                        <span className="telemetry-label mb-2 block font-bold">SEO_OPTIMIERUNG</span>
+                        <input className="admin-input bg-white" placeholder="Fokus-Keywords (kommagetrennt)" value={editingProject ? editingProject.keywords : newProject.keywords} onChange={e => editingProject ? setEditingProject({...editingProject, keywords: e.target.value}) : setNewProject({...newProject, keywords: e.target.value})} />
+                        <input className="admin-input bg-white" placeholder="SEO Titel (optional)" value={editingProject ? editingProject.seoTitle : newProject.seoTitle} onChange={e => editingProject ? setEditingProject({...editingProject, seoTitle: e.target.value}) : setNewProject({...newProject, seoTitle: e.target.value})} />
+                        <textarea className="admin-input bg-white h-16" placeholder="SEO Beschreibung (optional)" value={editingProject ? editingProject.seoDescription : newProject.seoDescription} onChange={e => editingProject ? setEditingProject({...editingProject, seoDescription: e.target.value}) : setNewProject({...newProject, seoDescription: e.target.value})} />
+                        
+                        <div className="flex items-center gap-2 pt-2">
+                          <input type="checkbox" id="proj-pub" checked={editingProject ? editingProject.published : newProject.published} onChange={e => editingProject ? setEditingProject({...editingProject, published: e.target.checked}) : setNewProject({...newProject, published: e.target.checked})} />
+                          <label htmlFor="proj-pub" className="telemetry-label cursor-pointer">ÖFFENTLICH SICHTBAR</label>
+                        </div>
+                      </div>
+
+                      <AuditFeedback 
+                        title={editingProject ? editingProject.title : newProject.title} 
+                        content={editingProject ? editingProject.fullDescription || '' : newProject.fullDescription || ''} 
+                        keywords={editingProject ? editingProject.keywords || '' : newProject.keywords || ''} 
+                      />
+
                       <textarea className="admin-input h-16" placeholder="Kurzbeschreibung" value={editingProject ? editingProject.description : newProject.description} onChange={e => editingProject ? setEditingProject({...editingProject, description: e.target.value}) : setNewProject({...newProject, description: e.target.value})} />
                       
                       {/* Markdown field with AI helper */}
@@ -907,13 +1002,85 @@ export default function Admin() {
                     <div key={p.id} className="border border-[#C5C5C5] p-5 bg-white flex gap-4 items-center group hover:border-[#616752] transition-colors">
                       {p.image && <img src={p.image} loading="lazy" width="64" height="64" alt={p.title} className="w-16 h-16 object-cover grayscale shrink-0" />}
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-display font-bold uppercase truncate">{p.title}</h3>
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-display font-bold uppercase truncate">{p.title}</h3>
+                          {!p.published && <span className="bg-red-500 text-white text-[8px] px-1.5 py-0.5 font-mono">DRAFT</span>}
+                        </div>
                         <p className="font-mono text-[9px] opacity-40">{p.category} · {p.completedAt}</p>
                       </div>
                       <button onClick={() => startEditProject(p.id)} className="shrink-0 p-2 text-blue-300 hover:text-blue-600 transition-colors"><Edit2 size={16} /></button>
                       <button onClick={() => deleteProject(p.id)} className="shrink-0 p-2 text-red-300 hover:text-red-600 transition-colors"><Trash2 size={16} /></button>
                     </div>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {/* ── LANDINGS ── */}
+            {tab === 'landings' && (
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div className="lg:col-span-4">
+                  <div className="border border-[#C5C5C5] p-6 bg-white sticky top-24">
+                    <h2 className="font-display font-black text-xl uppercase mb-6">
+                      {editingLanding ? 'Landing Page bearbeiten' : 'Neue Landing Page'}
+                    </h2>
+                    <form onSubmit={editingLanding ? updateLanding : addLanding} className="space-y-3">
+                      <input className="admin-input" placeholder="Stadt (z.B. Kreuztal)" value={editingLanding ? editingLanding.city : newLanding.city} onChange={e => editingLanding ? setEditingLanding({...editingLanding, city: e.target.value}) : setNewLanding({...newLanding, city: e.target.value})} required />
+                      <input className="admin-input" placeholder="H1 Titel" value={editingLanding ? editingLanding.title : newLanding.title} onChange={e => editingLanding ? setEditingLanding({...editingLanding, title: e.target.value}) : setNewLanding({...newLanding, title: e.target.value})} required />
+                      
+                      <div className="border border-[#C5C5C5] p-4 bg-[#F1F3EA] space-y-3">
+                        <span className="telemetry-label mb-2 block font-bold">SEO_OPTIMIERUNG</span>
+                        <input className="admin-input bg-white" placeholder="Fokus-Keywords (kommagetrennt)" value={editingLanding ? editingLanding.keywords : newLanding.keywords} onChange={e => editingLanding ? setEditingLanding({...editingLanding, keywords: e.target.value}) : setNewLanding({...newLanding, keywords: e.target.value})} />
+                        <textarea className="admin-input bg-white h-16" placeholder="SEO Beschreibung" value={editingLanding ? editingLanding.description : newLanding.description} onChange={e => editingLanding ? setEditingLanding({...editingLanding, description: e.target.value}) : setNewLanding({...newLanding, description: e.target.value})} />
+                        <div className="flex items-center gap-2 pt-2">
+                          <input type="checkbox" id="land-pub" checked={editingLanding ? editingLanding.published : newLanding.published} onChange={e => editingLanding ? setEditingLanding({...editingLanding, published: e.target.checked}) : setNewLanding({...newLanding, published: e.target.checked})} />
+                          <label htmlFor="land-pub" className="telemetry-label cursor-pointer">ÖFFENTLICH SICHTBAR</label>
+                        </div>
+                      </div>
+
+                      <AuditFeedback 
+                        title={editingLanding ? editingLanding.title : newLanding.title} 
+                        content={editingLanding ? editingLanding.content : newLanding.content} 
+                        keywords={editingLanding ? editingLanding.keywords : newLanding.keywords} 
+                      />
+
+                      <textarea className="admin-input h-64 font-mono text-xs" placeholder="Inhalt (Markdown)" value={editingLanding ? editingLanding.content : newLanding.content} onChange={e => editingLanding ? setEditingLanding({...editingLanding, content: e.target.value}) : setNewLanding({...newLanding, content: e.target.value})} required />
+                      
+                      <div className="flex gap-2">
+                        <button type="submit" className="flex-1 bg-[#616752] text-white py-3 font-mono text-[10px] tracking-widest hover:opacity-90">
+                          {editingLanding ? 'AKTUALISIEREN' : 'ERSTELLEN'}
+                        </button>
+                        {editingLanding && (
+                          <button type="button" onClick={() => setEditingLanding(null)} className="px-4 bg-gray-300 text-gray-700 py-3 font-mono text-[10px] tracking-widest hover:opacity-90">
+                            ABBRECHEN
+                          </button>
+                        )}
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div className="lg:col-span-8 space-y-3">
+                  <div className="bg-[#616752] p-4 text-[#F1F3EA] font-mono text-[10px] mb-4">
+                    💡 LOCAL SEO TIP: Erstelle spezifische Seiten für Städte (Kreuztal, Siegen, Olpe), um für regionale Suchanfragen besser zu ranken.
+                  </div>
+                  {landings.map(l => (
+                    <div key={l.id} className="border border-[#C5C5C5] p-5 bg-white flex gap-4 items-center group hover:border-[#616752] transition-colors">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-display font-bold uppercase truncate">{l.city} — {l.title}</h3>
+                          {!l.published && <span className="bg-red-500 text-white text-[8px] px-1.5 py-0.5 font-mono">DRAFT</span>}
+                        </div>
+                        <p className="font-mono text-[9px] opacity-40">URL: /local/{l.id}</p>
+                      </div>
+                      <button onClick={() => setEditingLanding(l)} className="shrink-0 p-2 text-blue-300 hover:text-blue-600 transition-colors"><Edit2 size={16} /></button>
+                      <button onClick={() => deleteLanding(l.id)} className="shrink-0 p-2 text-red-300 hover:text-red-600 transition-colors"><Trash2 size={16} /></button>
+                    </div>
+                  ))}
+                  {landings.length === 0 && (
+                    <div className="border-2 border-dashed border-[#C5C5C5] p-12 text-center opacity-30 font-mono text-sm">
+                      KEINE LOCAL LANDINGS DEFINIERT
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -933,6 +1100,24 @@ export default function Admin() {
                         <input className="admin-input" placeholder="Tag (z.B. KI)" value={editingInsight ? editingInsight.tag : newInsight.tag} onChange={e => editingInsight ? setEditingInsight({...editingInsight, tag: e.target.value}) : setNewInsight({...newInsight, tag: e.target.value})} />
                       </div>
                       <input className="admin-input" placeholder="Autor" value={editingInsight ? editingInsight.author : newInsight.author} onChange={e => editingInsight ? setEditingInsight({...editingInsight, author: e.target.value}) : setNewInsight({...newInsight, author: e.target.value})} />
+                      
+                      <div className="border border-[#C5C5C5] p-4 bg-[#F1F3EA] space-y-3">
+                        <span className="telemetry-label mb-2 block font-bold">SEO_OPTIMIERUNG</span>
+                        <input className="admin-input bg-white" placeholder="Fokus-Keywords (kommagetrennt)" value={editingInsight ? editingInsight.keywords : newInsight.keywords} onChange={e => editingInsight ? setEditingInsight({...editingInsight, keywords: e.target.value}) : setNewInsight({...newInsight, keywords: e.target.value})} />
+                        <input className="admin-input bg-white" placeholder="SEO Titel (optional)" value={editingInsight ? editingInsight.seoTitle : newInsight.seoTitle} onChange={e => editingInsight ? setEditingInsight({...editingInsight, seoTitle: e.target.value}) : setNewInsight({...newInsight, seoTitle: e.target.value})} />
+                        <textarea className="admin-input bg-white h-16" placeholder="SEO Beschreibung (optional)" value={editingInsight ? editingInsight.seoDescription : newInsight.seoDescription} onChange={e => editingInsight ? setEditingInsight({...editingInsight, seoDescription: e.target.value}) : setNewInsight({...newInsight, seoDescription: e.target.value})} />
+                        
+                        <div className="flex items-center gap-2 pt-2">
+                          <input type="checkbox" id="ins-pub" checked={editingInsight ? editingInsight.published : newInsight.published} onChange={e => editingInsight ? setEditingInsight({...editingInsight, published: e.target.checked}) : setNewInsight({...newInsight, published: e.target.checked})} />
+                          <label htmlFor="ins-pub" className="telemetry-label cursor-pointer">ÖFFENTLICH SICHTBAR</label>
+                        </div>
+                      </div>
+
+                      <AuditFeedback 
+                        title={editingInsight ? editingInsight.title : newInsight.title} 
+                        content={editingInsight ? editingInsight.content || '' : newInsight.content || ''} 
+                        keywords={editingInsight ? editingInsight.keywords || '' : newInsight.keywords || ''} 
+                      />
                       
                       {/* Markdown Editor with Preview */}
                       <div className="space-y-2">

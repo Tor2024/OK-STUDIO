@@ -5,6 +5,7 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import { useMeta } from '../hooks/useMeta';
 import { SchemaOrg, breadcrumbSchema } from '../components/SchemaOrg';
 import { Link } from 'react-router-dom';
+import SmartLink from '../components/SmartLink';
 
 interface Project {
   id: string;
@@ -24,8 +25,10 @@ export default function Work() {
     description: 'Ausgewählte Web-Projekte von OK Studio: Web-Relaunch, System-Entwicklung und KI-Automation für den deutschen Mittelstand.',
     url: '/work',
   });
-  const { data: raw, loading } = useCollection<Project>('projects');
-  const projects = [...raw].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  const { data: raw, loading } = useCollection<any>('projects');
+  const projects = [...raw]
+    .filter(p => p.published !== false)
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
   if (loading) {
     return (
@@ -58,7 +61,9 @@ export default function Work() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-12">
           {projects.map((project, idx) => (
-            <Link
+            <SmartLink
+              prefetch="project"
+              itemId={project.id}
               to={`/work/${project.id}`}
               key={project.id}
               className="col-span-12 grid grid-cols-1 md:grid-cols-12 border-b border-[#C5C5C5] group cursor-pointer hover:bg-[#F1F3EA] transition-all duration-500"

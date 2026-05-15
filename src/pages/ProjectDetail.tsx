@@ -16,7 +16,8 @@ export default function ProjectDetail() {
   useMeta({
     title: project?.title ?? 'Projekt',
     description: project?.description,
-    image: `/og/projects/${id}.svg`,
+    keywords: project?.keywords,
+    image: `/og/projects/${id}.png`,
     url: `/work/${id}`,
     type: 'article',
   });

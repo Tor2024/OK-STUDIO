@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Menu, Loader2 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import Logo from './Logo';
+import Cursor from './Cursor';
 
 interface LayoutProps {
   children: ReactNode;
@@ -49,6 +50,7 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <div className="min-h-screen bg-[#F1F3EA] flex flex-col items-center text-[#616752]">
+      <Cursor />
       <div className="w-full bg-[#616752] text-[#F1F3EA] text-[10px] py-1 text-center font-mono tracking-widest uppercase px-4">
         HINWEIS: DIESE WEBSITE IST TEIL EINES PORTFOLIOS UND NIMMT DERZEIT KEINE REALEN AUFTRÄGE ENTGEGEN.
       </div>

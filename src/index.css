@@ -11,6 +11,12 @@
 @layer base {
   html {
     overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+  @media (min-width: 768px) {
+    body, a, button, [role="button"], .cursor-pointer {
+      cursor: none !important;
+    }
   }
   body {
     @apply bg-[#F1F3EA] text-[#616752] font-sans overflow-x-hidden;

@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 interface MetaOptions {
   title: string;
   description?: string;
+  keywords?: string;
   image?: string;
   url?: string;
   type?: 'website' | 'article';
@@ -10,8 +11,8 @@ interface MetaOptions {
 }
 
 const SITE_NAME = 'OK Studio';
-const SITE_URL = 'https://www.webstudio-ok.de';
-const DEFAULT_IMAGE = `${SITE_URL}/og-default.jpg`;
+const SITE_URL = typeof window !== 'undefined' ? window.location.origin : 'https://ok-studio-umber.vercel.app';
+const DEFAULT_IMAGE = `${SITE_URL}/og-default.png`;
 const DEFAULT_DESC = 'Digitale Transformation für KMU in Kreuztal. Hochperformante Web-Systeme, Relaunch & KI-Integrationen für den deutschen Mittelstand.';
 
 function setMeta(name: string, content: string, attr: 'name' | 'property' = 'name') {
@@ -44,6 +45,7 @@ export function useMeta({ title, description, image, url, type = 'website', noin
     // Basic
     document.title = fullTitle;
     setMeta('description', desc);
+    if (keywords) setMeta('keywords', keywords);
     if (noindex) setMeta('robots', 'noindex,nofollow');
 
     // Open Graph

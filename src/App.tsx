@@ -12,7 +12,7 @@ import Admin from './pages/Admin';
 import Impressum from './pages/Impressum';
 import Privacy from './pages/Privacy';
 import NotFound from './pages/NotFound';
-import AnimationsDemo from './pages/AnimationsDemo';
+import LocalLanding from './pages/LocalLanding';
 import CookieBanner from './components/CookieBanner';
 
 export default function App() {
@@ -23,6 +23,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/work" element={<Work />} />
           <Route path="/work/:id" element={<ProjectDetail />} />
+          <Route path="/local/:id" element={<LocalLanding />} />
           <Route path="/capabilities" element={<Capabilities />} />
           <Route path="/approach" element={<Approach />} />
           <Route path="/insights" element={<Insights />} />

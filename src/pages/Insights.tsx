@@ -4,6 +4,7 @@ import { useMeta } from '../hooks/useMeta';
 import { SchemaOrg, breadcrumbSchema } from '../components/SchemaOrg';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SmartLink from '../components/SmartLink';
 
 interface Insight {
   id: string;
@@ -21,8 +22,10 @@ export default function Insights() {
     description: 'Artikel und Einblicke zu Webdesign, KI-Integration und digitaler Strategie für den deutschen Mittelstand.',
     url: '/insights',
   });
-  const { data: raw, loading } = useCollection<Insight>('insights');
-  const articles = [...raw].sort((a, b) => b.date.localeCompare(a.date));
+  const { data: raw, loading } = useCollection<any>('insights');
+  const articles = [...raw]
+    .filter(i => i.published !== false)
+    .sort((a, b) => b.date.localeCompare(a.date));
 
   if (loading) {
     return (
@@ -54,8 +57,10 @@ export default function Insights() {
             </div>
           ) : (
             articles.map(article => (
-              <Link
+              <SmartLink
                 key={article.id}
+                prefetch="insight"
+                itemId={article.id}
                 to={`/insights/${article.id}`}
                 className="block p-8 md:p-12 border-b border-[#C5C5C5] group hover:bg-[#F1F3EA] transition-colors"
               >

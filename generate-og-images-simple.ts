@@ -48,8 +48,25 @@ if (!fs.existsSync(insightsOgDir)) {
   fs.mkdirSync(insightsOgDir, { recursive: true });
 }
 
+// Экранирование спецсимволов для XML
+function escapeXml(unsafe: string): string {
+  return unsafe.replace(/[<>&"']/g, (c) => {
+    switch (c) {
+      case '<': return '&lt;';
+      case '>': return '&gt;';
+      case '&': return '&amp;';
+      case '"': return '&quot;';
+      case "'": return '&apos;';
+      default: return c;
+    }
+  });
+}
+
 // Генерируем SVG изображения
 function generateOgSvg(title: string, subtitle: string, color: string): string {
+  const safeTitle = escapeXml(title);
+  const safeSubtitle = escapeXml(subtitle);
+  
   return `<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
   <!-- Фон -->
   <rect width="1200" height="630" fill="#F1F3EA"/>
@@ -64,13 +81,13 @@ function generateOgSvg(title: string, subtitle: string, color: string): string {
   <text x="100" y="120" font-family="Arial, sans-serif" font-size="32" font-weight="900" fill="#141414">OK STUDIO</text>
   
   <!-- Категория/Тег -->
-  <text x="100" y="180" font-family="monospace" font-size="14" fill="#616752" letter-spacing="2">${subtitle.toUpperCase()}</text>
+  <text x="100" y="180" font-family="monospace" font-size="14" fill="#616752" letter-spacing="2">${safeSubtitle.toUpperCase()}</text>
   
   <!-- Заголовок -->
   <text x="100" y="250" font-family="Arial, sans-serif" font-size="48" font-weight="700" fill="#141414">
-    <tspan x="100" dy="0">${title.substring(0, 40)}</tspan>
-    ${title.length > 40 ? `<tspan x="100" dy="60">${title.substring(40, 80)}</tspan>` : ''}
-    ${title.length > 80 ? `<tspan x="100" dy="60">${title.substring(80, 120)}...</tspan>` : ''}
+    <tspan x="100" dy="0">${safeTitle.substring(0, 40)}</tspan>
+    ${safeTitle.length > 40 ? `<tspan x="100" dy="60">${safeTitle.substring(40, 80)}</tspan>` : ''}
+    ${safeTitle.length > 80 ? `<tspan x="100" dy="60">${safeTitle.substring(80, 120)}...</tspan>` : ''}
   </text>
   
   <!-- Футер -->

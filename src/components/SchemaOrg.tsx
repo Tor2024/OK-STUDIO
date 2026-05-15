@@ -10,6 +10,8 @@ interface SchemaOrgProps {
   id?: string;
 }
 
+const BASE_URL = typeof window !== 'undefined' ? window.location.origin : 'https://ok-studio-umber.vercel.app';
+
 export function SchemaOrg({ schema, id = 'schema-org' }: SchemaOrgProps) {
   useEffect(() => {
     const existing = document.getElementById(id);
@@ -37,7 +39,7 @@ export const localBusinessSchema = {
   name: 'Web Studio OK',
   alternateName: 'OK Studio',
   description: 'Digitale Transformation für KMU in Kreuztal und Siegerland. Hochperformante Web-Systeme, Relaunch & KI-Integrationen für den deutschen Mittelstand in NRW.',
-  url: 'https://www.webstudio-ok.de',
+  url: BASE_URL,
   telephone: '+49-2732-123456',
   email: 'hello@webstudio-ok.de',
   address: {
@@ -121,10 +123,10 @@ export function articleSchema(title: string, date: string, author: string, url: 
     publisher: {
       '@type': 'Organization',
       name: 'OK Studio',
-      url: 'https://www.webstudio-ok.de',
+      url: BASE_URL,
     },
     datePublished: date,
-    url: `https://www.webstudio-ok.de${url}`,
+    url: `${BASE_URL}${url}`,
     inLanguage: 'de',
   };
 }
@@ -152,7 +154,7 @@ export function breadcrumbSchema(items: { name: string; url: string }[]) {
       '@type': 'ListItem',
       position: i + 1,
       name: item.name,
-      item: `https://www.webstudio-ok.de${item.url}`,
+      item: `${BASE_URL}${item.url}`,
     })),
   };
 }

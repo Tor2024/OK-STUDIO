@@ -10,17 +10,11 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const DOMAIN = 'https://webstudio-ok.de';
+const DOMAIN = process.env.SITE_URL || 'https://ok-studio-umber.vercel.app';
 
-interface Project {
-  id: string;
-  completedAt?: string;
-}
-
-interface Insight {
-  id: string;
-  date: string;
-}
+interface Project { id: string; completedAt?: string; published?: boolean; }
+interface Insight { id: string; date: string; published?: boolean; }
+interface Landing { id: string; published?: boolean; }
 
 // Читаем данные
 const projectsIndex = JSON.parse(
@@ -31,6 +25,10 @@ const insightsIndex = JSON.parse(
   fs.readFileSync(path.join(__dirname, 'public/data/insights/index.json'), 'utf-8')
 ) as Insight[];
 
+const landingsIndex = fs.existsSync(path.join(__dirname, 'public/data/landings.json')) 
+  ? JSON.parse(fs.readFileSync(path.join(__dirname, 'public/data/landings.json'), 'utf-8')) as Landing[]
+  : [];
+
 // Конвертируем дату в ISO формат
 function parseDate(dateStr: string): string {
   const months: Record<string, string> = {
@@ -40,7 +38,6 @@ function parseDate(dateStr: string): string {
     'JUL': '07', 'AUG': '08', 'SEP': '09', 'OKT': '10', 'NOV': '11', 'DEZ': '12'
   };
   
-  // Формат: "MRZ 2025" или "Mai 2025"
   const match = dateStr.match(/(\w+)\s+(\d{4})/);
   if (match) {
     const month = months[match[1]] || '01';
@@ -48,63 +45,34 @@ function parseDate(dateStr: string): string {
     return `${year}-${month}-01`;
   }
   
-  // Если уже в формате YYYY-MM-DD
-  if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
-    return dateStr;
-  }
-  
+  if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) return dateStr;
   return new Date().toISOString().split('T')[0];
 }
 
 // Генерируем XML
 const urls: string[] = [];
+const now = new Date().toISOString().split('T')[0];
 
 // Статические страницы
-urls.push(`  <url>
-    <loc>${DOMAIN}/</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+[
+  { path: '', prio: '1.0', freq: 'weekly' },
+  { path: '/work', prio: '0.9', freq: 'weekly' },
+  { path: '/insights', prio: '0.8', freq: 'weekly' },
+  { path: '/capabilities', prio: '0.8', freq: 'monthly' },
+  { path: '/approach', prio: '0.7', freq: 'monthly' },
+  { path: '/contact', prio: '0.9', freq: 'monthly' },
+].forEach(p => {
+  urls.push(`  <url>
+    <loc>${DOMAIN}${p.path}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>${p.freq}</changefreq>
+    <priority>${p.prio}</priority>
   </url>`);
+});
 
-urls.push(`  <url>
-    <loc>${DOMAIN}/work</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>`);
-
-urls.push(`  <url>
-    <loc>${DOMAIN}/insights</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>`);
-
-urls.push(`  <url>
-    <loc>${DOMAIN}/capabilities</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>`);
-
-urls.push(`  <url>
-    <loc>${DOMAIN}/approach</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>`);
-
-urls.push(`  <url>
-    <loc>${DOMAIN}/contact</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>`);
-
-// Проекты (детальные страницы)
-projectsIndex.forEach(project => {
-  const lastmod = project.completedAt ? parseDate(project.completedAt) : new Date().toISOString().split('T')[0];
+// Проекты
+projectsIndex.filter(p => p.published !== false).forEach(project => {
+  const lastmod = project.completedAt ? parseDate(project.completedAt) : now;
   urls.push(`  <url>
     <loc>${DOMAIN}/work/${project.id}</loc>
     <lastmod>${lastmod}</lastmod>
@@ -113,8 +81,8 @@ projectsIndex.forEach(project => {
   </url>`);
 });
 
-// Статьи (детальные страницы)
-insightsIndex.forEach(insight => {
+// Статьи
+insightsIndex.filter(i => i.published !== false).forEach(insight => {
   const lastmod = parseDate(insight.date);
   urls.push(`  <url>
     <loc>${DOMAIN}/insights/${insight.id}</loc>
@@ -124,33 +92,32 @@ insightsIndex.forEach(insight => {
   </url>`);
 });
 
-// Юридические страницы
-urls.push(`  <url>
-    <loc>${DOMAIN}/impressum</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+// Landings
+landingsIndex.filter(l => l.published !== false).forEach(l => {
+  urls.push(`  <url>
+    <loc>${DOMAIN}/local/${l.id}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>`);
+});
+
+// Юридические
+['/impressum', '/privacy'].forEach(p => {
+  urls.push(`  <url>
+    <loc>${DOMAIN}${p}</loc>
+    <lastmod>${now}</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>`);
+});
 
-urls.push(`  <url>
-    <loc>${DOMAIN}/privacy</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>`);
-
-// Формируем финальный XML
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.join('\n')}
 </urlset>
 `;
 
-// Сохраняем
 fs.writeFileSync(path.join(__dirname, 'public/sitemap.xml'), sitemap, 'utf-8');
-
 console.log('✅ Sitemap сгенерирован!');
-console.log(`📊 Всего URL: ${urls.length}`);
-console.log(`   - Проекты: ${projectsIndex.length}`);
-console.log(`   - Статьи: ${insightsIndex.length}`);
-console.log(`   - Статические: ${urls.length - projectsIndex.length - insightsIndex.length}`);
+console.log(`📊 Всего URL: ${urls.length} (Landings: ${landingsIndex.length})`);

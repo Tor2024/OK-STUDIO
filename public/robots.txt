@@ -7,3 +7,4 @@ Sitemap: https://ok-studio-umber.vercel.app/sitemap.xml
 
 # Disallow admin and API routes
 Disallow: /api/
+Disallow: /admin/

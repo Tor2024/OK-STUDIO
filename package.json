@@ -5,13 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "npm run sitemap && npm run og:simple && vite build",
+    "build": "npm run sitemap && npm run og:simple && npm run og:convert && npm run images:optimize public/images/ && vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
-    "sitemap": "tsx generate-sitemap.ts",
+    "sitemap": "tsx generate-sitemap.ts && tsx generate-robots.ts",
     "og:generate": "tsx generate-og-images-puppeteer.ts",
     "og:simple": "tsx generate-og-images-simple.ts",
+    "og:convert": "tsx convert-og-to-png.ts",
     "images:optimize": "tsx optimize-images.ts",
     "social:post:insight": "tsx social-auto-post.ts insight",
     "social:post:project": "tsx social-auto-post.ts project",
@@ -46,6 +47,7 @@
     "react-router-dom": "^7.1.5",
     "remark-gfm": "^4.0.1",
     "resend": "^6.12.3",
+    "sharp": "^0.34.5",
     "vite": "^6.2.3"
   },
   "devDependencies": {

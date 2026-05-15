@@ -41,7 +41,7 @@ export function useAnalytics() {
       });
 
       // Debug-Log (nur in Development)
-      if (import.meta.env.DEV) {
+      if ((import.meta as any).env.DEV) {
         console.log('📊 Analytics: Page View', {
           path: location.pathname,
           title: document.title,
@@ -60,7 +60,7 @@ export function useAnalytics() {
     if (window.gtag) {
       window.gtag('event', name, params);
 
-      if (import.meta.env.DEV) {
+      if ((import.meta as any).env.DEV) {
         console.log('📊 Analytics: Event', name, params);
       }
     }
@@ -80,7 +80,7 @@ export function useAnalytics() {
         currency: 'EUR',
       });
 
-      if (import.meta.env.DEV) {
+      if ((import.meta as any).env.DEV) {
         console.log('📊 Analytics: Conversion', type, value);
       }
     }
