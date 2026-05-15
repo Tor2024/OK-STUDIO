@@ -32,7 +32,7 @@ export default function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/impressum" element={<Impressum />} />
           <Route path="/privacy" element={<Privacy />} />
-          <Route path="/animations-demo" element={<AnimationsDemo />} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
         <CookieBanner />
