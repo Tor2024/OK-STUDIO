@@ -32,7 +32,7 @@ export default function SpecialOffer() {
         if (data.enabled) {
           setOffer(data);
           // Показываем с небольшой задержкой для эффекта
-          setTimeout(() => setIsVisible(true), 1500);
+          setTimeout(() => setIsVisible(true), 2000);
         }
       })
       .catch(err => console.error('Failed to load special offer:', err));
@@ -40,8 +40,10 @@ export default function SpecialOffer() {
 
   const handleClose = () => {
     setIsVisible(false);
-    sessionStorage.setItem('special-offer-dismissed', 'true');
-    setIsDismissed(true);
+    setTimeout(() => {
+      sessionStorage.setItem('special-offer-dismissed', 'true');
+      setIsDismissed(true);
+    }, 300);
   };
 
   if (!offer || isDismissed) return null;
@@ -49,86 +51,65 @@ export default function SpecialOffer() {
   return (
     <AnimatePresence>
       {isVisible && (
-        <>
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50"
-            onClick={handleClose}
-          />
-
-          {/* Offer Card */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[90%] max-w-lg"
-          >
-            <div className="relative bg-[#F1F3EA] border-4 border-[#616752] shadow-2xl">
-              {/* Close Button */}
-              <button
-                onClick={handleClose}
-                className="absolute -top-3 -right-3 bg-[#616752] text-white p-2 hover:bg-[#141414] transition-colors z-10 border-2 border-white shadow-lg"
-                aria-label="Schließen"
-              >
-                <X size={20} />
-              </button>
-
-              {/* Decorative Corner */}
-              <div className="absolute top-0 left-0 w-16 h-16 border-l-4 border-t-4 border-[#616752]" />
-              <div className="absolute bottom-0 right-0 w-16 h-16 border-r-4 border-b-4 border-[#616752]" />
-
-              {/* Content */}
-              <div className="p-8 md:p-12">
-                {/* Icon */}
-                <div className="flex justify-center mb-6">
+        <motion.div
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -100, opacity: 0 }}
+          transition={{ type: 'spring', damping: 20, stiffness: 100 }}
+          className="fixed top-0 left-0 right-0 z-50 shadow-2xl"
+        >
+          <div className="bg-[#616752] border-b-4 border-[#141414]">
+            <div className="max-w-7xl mx-auto px-4 py-4 md:py-5">
+              <div className="flex items-center justify-between gap-4">
+                {/* Icon + Content */}
+                <div className="flex items-center gap-4 flex-1 min-w-0">
+                  {/* Icon */}
                   <motion.div
                     animate={{ rotate: [0, 10, -10, 10, 0] }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                    className="bg-[#616752] p-4 inline-block"
+                    transition={{ duration: 0.6, delay: 0.3, repeat: Infinity, repeatDelay: 3 }}
+                    className="shrink-0 bg-[#F1F3EA] p-2 md:p-3"
                   >
-                    <Sparkles size={32} className="text-[#F1F3EA]" />
+                    <Sparkles size={20} className="text-[#616752] md:w-6 md:h-6" />
                   </motion.div>
+
+                  {/* Text Content */}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-display font-black text-sm md:text-lg uppercase text-[#F1F3EA] mb-1 tracking-tight">
+                      {offer.title}
+                    </h3>
+                    <p className="font-serif text-xs md:text-sm text-[#F1F3EA]/90 leading-snug line-clamp-2">
+                      {offer.message}
+                    </p>
+                    {offer.validUntil && (
+                      <p className="font-mono text-[9px] md:text-[10px] text-[#F1F3EA]/70 mt-1 uppercase tracking-wider">
+                        Gültig bis {offer.validUntil}
+                      </p>
+                    )}
+                  </div>
                 </div>
 
-                {/* Title */}
-                <h2 className="font-display font-black text-2xl md:text-3xl uppercase text-center mb-4 tracking-tight text-[#141414]">
-                  {offer.title}
-                </h2>
-
-                {/* Message */}
-                <p className="font-serif text-base md:text-lg text-center mb-6 leading-relaxed text-[#141414] opacity-90">
-                  {offer.message}
-                </p>
-
-                {/* Valid Until */}
-                {offer.validUntil && (
-                  <p className="font-mono text-xs text-center mb-6 text-[#616752] uppercase tracking-widest">
-                    Gültig bis {offer.validUntil}
-                  </p>
-                )}
-
-                {/* CTA Button */}
-                <div className="flex justify-center">
+                {/* CTA + Close */}
+                <div className="flex items-center gap-2 md:gap-3 shrink-0">
                   <Link
                     to={offer.buttonLink}
                     onClick={handleClose}
-                    className="bg-[#616752] text-white px-8 py-4 font-mono text-xs tracking-[0.3em] uppercase hover:bg-[#141414] transition-all inline-block shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                    className="bg-[#F1F3EA] text-[#616752] px-4 md:px-6 py-2 md:py-3 font-mono text-[9px] md:text-[10px] tracking-[0.2em] uppercase hover:bg-white transition-all shadow-lg whitespace-nowrap"
                   >
                     {offer.buttonText}
                   </Link>
+                  
+                  <button
+                    onClick={handleClose}
+                    className="bg-[#141414] text-[#F1F3EA] p-2 hover:bg-black transition-colors"
+                    aria-label="Schließen"
+                  >
+                    <X size={16} className="md:w-5 md:h-5" />
+                  </button>
                 </div>
               </div>
-
-              {/* Decorative Lines */}
-              <div className="absolute top-1/2 left-4 w-2 h-2 bg-[#616752] transform -translate-y-1/2" />
-              <div className="absolute top-1/2 right-4 w-2 h-2 bg-[#616752] transform -translate-y-1/2" />
             </div>
-          </motion.div>
-        </>
+          </div>
+        </motion.div>
       )}
     </AnimatePresence>
   );
