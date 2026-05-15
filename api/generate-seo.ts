@@ -31,7 +31,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const apiKeys = apiKeysString.split(',').map((k: string) => k.trim()).filter(Boolean);
-    const randomApiKey = apiKeys[Math.floor(Math.random() * apiKeys.length)];
+    // Shuffle the array to distribute the load randomly
+    apiKeys.sort(() => Math.random() - 0.5);
 
     const prompt = `Du bist ein erstklassiger SEO-Experte. 
 Analysiere den folgenden Text und generiere perfekte SEO-Metadaten auf Deutsch.
@@ -45,25 +46,42 @@ Antworte AUSSCHLIESSLICH mit einem gültigen JSON-Objekt. Keine Markdown-Blöcke
 Text zur Analyse:
 ${content.substring(0, 4000)}`;
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${randomApiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.2 }
-      })
+    const payload = JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.2 }
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      return res.status(response.status).json({ error: 'Google API Error', details: errorText });
+    let lastError: any = null;
+
+    // Iterate through all available keys until one succeeds
+    for (const key of apiKeys) {
+      try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: payload
+        });
+
+        if (!response.ok) {
+          lastError = await response.text();
+          console.warn(`[Gemini API] Key failed with status ${response.status}`);
+          continue; // Try the next key
+        }
+
+        const data = await response.json();
+        let text = data.candidates[0].content.parts[0].text;
+        text = text.replace(/```json/g, '').replace(/```/g, '').trim();
+        
+        return res.status(200).json(JSON.parse(text));
+      } catch (err: any) {
+        lastError = err.message;
+        console.warn(`[Gemini API] Network error for key: ${err.message}`);
+        continue; // Try the next key
+      }
     }
 
-    const data = await response.json();
-    let text = data.candidates[0].content.parts[0].text;
-    text = text.replace(/```json/g, '').replace(/```/g, '').trim();
-    
-    return res.status(200).json(JSON.parse(text));
+    // If we reach this point, all keys have failed
+    return res.status(500).json({ error: 'All Google API keys failed or exceeded quotas', details: lastError });
 
   } catch (error: any) {
     console.error('SEO Generation Error:', error);
