@@ -1,13 +1,20 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
+const MODELS_TO_TRY = [
+  'gemini-2.5-flash',
+  'gemini-2.0-flash-lite',
+  'gemini-flash-latest',
+  'gemini-2.0-flash',
+];
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // CORS Headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
   res.setHeader(
     'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    'Content-Type'
   );
 
   if (req.method === 'OPTIONS') {
@@ -31,7 +38,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const apiKeys = apiKeysString.split(',').map((k: string) => k.trim()).filter(Boolean);
-    // Shuffle the array to distribute the load randomly
+    // Shuffle keys to distribute load
     apiKeys.sort(() => Math.random() - 0.5);
 
     const prompt = `Du bist ein erstklassiger SEO-Experte. 
@@ -51,37 +58,55 @@ ${content.substring(0, 4000)}`;
       generationConfig: { temperature: 0.2 }
     });
 
-    let lastError: any = null;
+    let lastError: string = '';
 
-    // Iterate through all available keys until one succeeds
-    for (const key of apiKeys) {
-      try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${key}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: payload
-        });
+    // Try each model with each key until we get a successful response
+    for (const model of MODELS_TO_TRY) {
+      for (const key of apiKeys) {
+        try {
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: payload
+          });
 
-        if (!response.ok) {
-          lastError = await response.text();
-          console.warn(`[Gemini API] Key failed with status ${response.status}`);
-          continue; // Try the next key
+          if (!response.ok) {
+            const errText = await response.text();
+            lastError = `Model=${model}, Status=${response.status}: ${errText.substring(0, 200)}`;
+            console.warn(`[SEO] ${lastError}`);
+            continue;
+          }
+
+          const data = await response.json();
+          
+          if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
+            lastError = `Model=${model}: Empty response from API`;
+            console.warn(`[SEO] ${lastError}`);
+            continue;
+          }
+
+          let text = data.candidates[0].content.parts[0].text;
+          text = text.replace(/```json/g, '').replace(/```/g, '').trim();
+
+          const parsed = JSON.parse(text);
+          
+          console.log(`[SEO] Success with model=${model}`);
+          return res.status(200).json(parsed);
+
+        } catch (err: any) {
+          lastError = `Model=${model}: ${err.message}`;
+          console.warn(`[SEO] ${lastError}`);
+          continue;
         }
-
-        const data = await response.json();
-        let text = data.candidates[0].content.parts[0].text;
-        text = text.replace(/```json/g, '').replace(/```/g, '').trim();
-        
-        return res.status(200).json(JSON.parse(text));
-      } catch (err: any) {
-        lastError = err.message;
-        console.warn(`[Gemini API] Network error for key: ${err.message}`);
-        continue; // Try the next key
       }
     }
 
-    // If we reach this point, all keys have failed
-    return res.status(500).json({ error: 'All Google API keys failed or exceeded quotas', details: lastError });
+    // All models and keys failed
+    return res.status(500).json({ 
+      error: 'Alle Modelle und API-Keys haben fehlgeschlagen', 
+      details: lastError 
+    });
 
   } catch (error: any) {
     console.error('SEO Generation Error:', error);
