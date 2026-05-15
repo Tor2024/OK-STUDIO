@@ -127,6 +127,8 @@ export default function Layout({ children }: LayoutProps) {
             <span className="telemetry-label">SYSTEMSTATUS: OPTIMAL</span>
           </div>
           <span className="telemetry-label">UPTIME: 99.99%</span>
+          <Link to="/work" className="telemetry-label hover:text-black transition-colors opacity-60 hover:opacity-100">REFERENZEN</Link>
+          <Link to="/insights" className="telemetry-label hover:text-black transition-colors opacity-60 hover:opacity-100">JOURNAL</Link>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
           <Link to="/impressum" className="telemetry-label hover:text-black transition-colors opacity-60 hover:opacity-100">IMPRESSUM</Link>

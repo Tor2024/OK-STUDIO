@@ -55,7 +55,7 @@ export default function ProjectDetail() {
       <header className="relative h-[40vh] md:h-[60vh] overflow-hidden border-b border-[#C5C5C5]">
         <img 
           src={project.image} 
-          alt={project.title} 
+          alt={`${project.title} - ${project.category} Referenzprojekt von OK Studio`} 
           loading="eager"
           width="1920"
           height="1080"

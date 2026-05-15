@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft, Calendar, User } from 'lucide-react';
-import { useItem } from '../hooks/useData';
+import { ArrowLeft, Calendar, User, ArrowUpRight } from 'lucide-react';
+import { useItem, useCollection } from '../hooks/useData';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useMeta } from '../hooks/useMeta';
 import { SchemaOrg, articleSchema, breadcrumbSchema } from '../components/SchemaOrg';
@@ -11,6 +11,12 @@ import remarkGfm from 'remark-gfm';
 export default function InsightDetail() {
   const { id } = useParams<{ id: string }>();
   const { data: insight, loading } = useItem<any>('insights', id!);
+  const { data: allInsights } = useCollection<any>('insights');
+
+  // Получаем похожие статьи (с тем же тегом, исключая текущую)
+  const relatedInsights = allInsights
+    .filter((i: any) => i.id !== id && i.tag === insight?.tag)
+    .slice(0, 3);
 
   usePageTitle(insight?.title ?? 'Journal');
   useMeta({
@@ -94,6 +100,33 @@ export default function InsightDetail() {
         ) : (
           <div className="border border-[#C5C5C5] p-12 text-center bg-[#F1F3EA]">
             <span className="telemetry-label opacity-30 block">INHALT_NICHT_VERFÜGBAR</span>
+          </div>
+        )}
+
+        {/* Похожие статьи */}
+        {relatedInsights.length > 0 && (
+          <div className="mt-16 pt-12 border-t border-[#C5C5C5]">
+            <h3 className="font-display font-black text-xl md:text-2xl uppercase mb-8 tracking-tight">Ähnliche Artikel</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {relatedInsights.map((related: any) => (
+                <Link 
+                  key={related.id}
+                  to={`/insights/${related.id}`}
+                  className="group border border-[#C5C5C5] p-6 hover:bg-[#F1F3EA] transition-all"
+                >
+                  <span className="bg-[#616752] text-[#F1F3EA] px-2 py-1 font-mono text-[8px] tracking-widest uppercase inline-block mb-3">
+                    {related.tag}
+                  </span>
+                  <h4 className="font-display font-bold text-base uppercase mb-2 leading-tight group-hover:text-[#616752] transition-colors">
+                    {related.title}
+                  </h4>
+                  <div className="flex items-center justify-between mt-4">
+                    <span className="font-mono text-[9px] opacity-40">{related.date}</span>
+                    <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         )}
 

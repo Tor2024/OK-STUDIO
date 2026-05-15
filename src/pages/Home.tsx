@@ -82,7 +82,7 @@ export default function Home() {
             <div className="aspect-square w-full max-w-[320px] lg:max-w-none border border-[#C5C5C5] relative bg-white shadow-sm flex items-center justify-center overflow-hidden">
               <img 
                 src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200" 
-                alt="Brutalist Architecture" 
+                alt="Moderne Büroarchitektur in Kreuztal - Webdesign und digitale Transformation für KMU" 
                 loading="eager"
                 width="1200"
                 height="1200"
@@ -98,6 +98,12 @@ export default function Home() {
               {latestInsight.title}
             </Link>
             <p className="text-[12px] text-[#737373] mt-2 italic">Veröffentlicht in Kreuztal {"//"} {latestInsight.date}</p>
+            <Link 
+              to="/insights" 
+              className="inline-flex items-center gap-2 mt-6 font-mono text-[10px] tracking-widest text-[#616752] hover:text-[#141414] transition-colors border-b border-[#616752] pb-1"
+            >
+              ALLE ARTIKEL ANSEHEN <ArrowUpRight size={12} />
+            </Link>
           </div>
         </div>
       </section>
@@ -115,16 +121,19 @@ export default function Home() {
         <div className="col-span-1 md:col-span-6 border-b md:border-b-0 md:border-r border-[#C5C5C5]">
           <StaggerContainer staggerDelay={0.15}>
             {[
-              { id: '01', title: 'Web-Design & Relaunch', desc: 'Hochwertiges Design trifft auf Verkaufspsychologie. Wir verwandeln Ihre Webseite in ein profitables System.' },
-              { id: '02', title: 'Entwicklung', desc: 'Von der Idee bis zum Go-Live. Wir übernehmen die komplette technische Realisierung inkl. Hosting.' },
-              { id: '03', title: 'KI & Automation', desc: 'Effizienzsteigerung für KMU durch intelligente Workflows und moderne Integrationen.' }
+              { id: '01', title: 'Web-Design & Relaunch', desc: 'Hochwertiges Design trifft auf Verkaufspsychologie. Wir verwandeln Ihre Webseite in ein profitables System.', link: '/capabilities' },
+              { id: '02', title: 'Entwicklung', desc: 'Von der Idee bis zum Go-Live. Wir übernehmen die komplette technische Realisierung inkl. Hosting.', link: '/capabilities' },
+              { id: '03', title: 'KI & Automation', desc: 'Effizienzsteigerung für KMU durch intelligente Workflows und moderne Integrationen.', link: '/capabilities' }
             ].map((item, idx) => (
               <StaggerItem key={item.id}>
-                <div className={`p-8 md:p-10 ${idx !== 2 ? 'border-b border-[#C5C5C5]' : ''} group hover:bg-[#616752] transition-colors`}>
+                <Link 
+                  to={item.link}
+                  className={`block p-8 md:p-10 ${idx !== 2 ? 'border-b border-[#C5C5C5]' : ''} group hover:bg-[#616752] transition-colors`}
+                >
                   <span className="telemetry-label block mb-4 group-hover:text-[#F1F3EA] opacity-50">{item.id}</span>
                   <h3 className="font-display text-xl uppercase mb-4 group-hover:text-[#F1F3EA]">{item.title}</h3>
                   <p className="body-md text-sm group-hover:text-[#F1F3EA]/80">{item.desc}</p>
-                </div>
+                </Link>
               </StaggerItem>
             ))}
           </StaggerContainer>
@@ -181,7 +190,7 @@ export default function Home() {
                 >
                   <img 
                     src={project.image} 
-                    alt={project.title} 
+                    alt={`${project.title} - ${project.category} Projekt von OK Studio Kreuztal`} 
                     loading="lazy"
                     width="800"
                     height="600"

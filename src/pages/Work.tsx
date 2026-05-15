@@ -80,7 +80,7 @@ export default function Work() {
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 1.2, ease: [0.33, 1, 0.68, 1] }}
                     src={project.image}
-                    alt={project.title}
+                    alt={`${project.title} - ${project.category} Referenzprojekt`}
                     loading="lazy"
                     width="800"
                     height="600"
