@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://webstudio-ok.de/sitemap.xml
+Sitemap: https://ok-studio-umber.vercel.app/sitemap.xml
 
 # Disallow admin and API routes
 Disallow: /api/
