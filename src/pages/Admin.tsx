@@ -468,7 +468,7 @@ Antworte AUSSCHLIESSLICH mit einem gültigen JSON-Objekt. Keine Markdown-Blöcke
 Text zur Analyse:
 ${contentText.substring(0, 4000)}`;
 
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${randomApiKey}`, {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${randomApiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
