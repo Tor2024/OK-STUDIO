@@ -32,7 +32,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Content is required' });
     }
 
-    const apiKeysString = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+    const apiKeysString = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
     if (!apiKeysString) {
       return res.status(500).json({ error: 'API Key not configured on Vercel' });
     }

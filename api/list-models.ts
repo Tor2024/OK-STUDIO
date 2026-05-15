@@ -4,7 +4,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   try {
-    const apiKeysString = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+    const apiKeysString = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
     if (!apiKeysString) {
       return res.status(500).json({ error: 'No API keys configured' });
     }
