@@ -20,6 +20,8 @@ export default function SpecialOffer() {
   useEffect(() => {
     // Проверяем, не закрыл ли пользователь предложение ранее
     const dismissed = sessionStorage.getItem('special-offer-dismissed');
+    console.log('SpecialOffer: dismissed =', dismissed);
+    
     if (dismissed === 'true') {
       setIsDismissed(true);
       return;
@@ -29,10 +31,16 @@ export default function SpecialOffer() {
     fetch('/data/special-offer.json?t=' + Date.now())
       .then(res => res.json())
       .then((data: SpecialOfferData) => {
+        console.log('SpecialOffer: loaded data =', data);
         if (data.enabled) {
           setOffer(data);
           // Показываем с небольшой задержкой для эффекта
-          setTimeout(() => setIsVisible(true), 2000);
+          setTimeout(() => {
+            console.log('SpecialOffer: showing banner');
+            setIsVisible(true);
+          }, 2000);
+        } else {
+          console.log('SpecialOffer: disabled in config');
         }
       })
       .catch(err => console.error('Failed to load special offer:', err));
