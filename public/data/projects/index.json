@@ -1,5 +1,18 @@
 [
   {
+    "title": "CarStyleGarage — Website für ein Auto-Folierungsstudio und Werbetechnik",
+    "category": "Webseite",
+    "image": "https://raw.githubusercontent.com/okcompany/web-studio/main/apps/web/public/uploads/img_1777214317950_4714.png",
+    "description": "CarStyleGarage — Website für ein Auto-Folierungsstudio und Werbetechnik",
+    "completedAt": "APR 2026",
+    "order": 5,
+    "published": true,
+    "keywords": "Autofolierung, Lackschutzfolien, Scheibentönung, Premium Autofolierung",
+    "seoTitle": "Autofolierung Kreuztal: Premium Lackschutz & Scheibentönung",
+    "seoDescription": "Verwandeln Sie Ihr Fahrzeug! CarStyleGarage bietet Premium Autofolierung, Lackschutz & Scheibentönung in Kreuztal. Jetzt online Termin buchen und Qualität erleben!",
+    "id": "carstylegarage"
+  },
+  {
     "id": "kraftwerk-digital",
     "title": "KRAFTWERK DIGITAL",
     "category": "Web Relaunch",
@@ -39,16 +52,16 @@
     "seoDescription": "Erfolgreiche Autowerkstatt in Kreuztal: Moderne Website mit Online-Terminbuchung, automatischen Erinnerungen & Kundenverwaltung. Effizienter Service, mehr Kunden. Jetzt entdecken!"
   },
   {
-    "title": "CarStyleGarage — Website für ein Auto-Folierungsstudio und Werbetechnik",
-    "category": "Webseite",
-    "image": "https://raw.githubusercontent.com/okcompany/web-studio/main/apps/web/public/uploads/img_1777214317950_4714.png",
-    "description": "CarStyleGarage — Website für ein Auto-Folierungsstudio und Werbetechnik",
-    "completedAt": "APR 2026",
-    "order": 5,
+    "title": "Moderne Website - Pizza Roma Siegen",
+    "category": "Webseite & Automation",
+    "image": "https://raw.githubusercontent.com/okcompany/web-studio/main/apps/web/public/uploads/img_1777641858847_2922.png",
+    "description": "Für eine moderne Website – Pizza Roma Siegen: Für Online-Bestellungen und eine reibungslose Lieferung erhält der Kurier alle Lieferdaten direkt auf sein Smartphone, woraufhin automatisch die optimale Route für jede Bestellung angezeigt wird.",
+    "completedAt": "SEP 2025",
+    "order": 4,
     "published": true,
-    "keywords": "Autofolierung, Lackschutzfolien, Scheibentönung, Premium Autofolierung",
-    "seoTitle": "Autofolierung Kreuztal: Premium Lackschutz & Scheibentönung",
-    "seoDescription": "Verwandeln Sie Ihr Fahrzeug! CarStyleGarage bietet Premium Autofolierung, Lackschutz & Scheibentönung in Kreuztal. Jetzt online Termin buchen und Qualität erleben!",
-    "id": "carstylegarage"
+    "keywords": "Lieferservice Website, Restaurant Bestellsystem, Online Speisekarte, Admin Panel",
+    "seoTitle": "Moderne Lieferservice Website mit Admin-Panel & Bestellsystem",
+    "seoDescription": "Revolutionieren Sie Ihren Lieferservice! Kunden bestellen bequem mit Warenkorb & Toppings. Verwalten Sie Menü, Preise & Bestellungen effizient über das Admin-Panel in Echtzeit.",
+    "id": "moderne-website-pizza-roma-siegen"
   }
 ]
