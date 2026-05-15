@@ -23,8 +23,9 @@ interface LegalSection { id: string; title: string; content: string; order: numb
 interface PrivacyData { title: string; subtitle: string; sections: LegalSection[]; }
 interface ImpressumData { title: string; subtitle: string; sections: LegalSection[]; disclaimer: string; }
 interface Settings { [key: string]: string; }
+interface SpecialOffer { enabled: boolean; title: string; message: string; buttonText: string; buttonLink: string; validUntil?: string; }
 
-type Tab = 'dashboard' | 'projects' | 'insights' | 'clients' | 'faqs' | 'settings' | 'privacy' | 'impressum';
+type Tab = 'dashboard' | 'projects' | 'insights' | 'clients' | 'faqs' | 'settings' | 'privacy' | 'impressum' | 'special-offer';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
@@ -311,6 +312,7 @@ export default function Admin() {
   const [settings, setSettings]   = useState<Settings>({});
   const [privacy, setPrivacy]     = useState<PrivacyData>({ title: '', subtitle: '', sections: [] });
   const [impressum, setImpressum] = useState<ImpressumData>({ title: '', subtitle: '', sections: [], disclaimer: '' });
+  const [specialOffer, setSpecialOffer] = useState<SpecialOffer>({ enabled: false, title: 'Sonderangebot', message: '', buttonText: 'Jetzt anfragen', buttonLink: '/contact', validUntil: '' });
 
   // SHA cache (needed for GitHub API updates)
   const [shas, setShas] = useState<Record<string, string>>({});
@@ -344,7 +346,7 @@ export default function Admin() {
       try {
         if (isDemoMode) {
           // Load from local public folder
-          const [p, i, c, f, s, pr, im] = await Promise.all([
+          const [p, i, c, f, s, pr, im, so] = await Promise.all([
             fetch('/data/projects/index.json').then(r => r.json()),
             fetch('/data/insights/index.json').then(r => r.json()),
             fetch('/data/clients.json').then(r => r.json()),
@@ -352,6 +354,7 @@ export default function Admin() {
             fetch('/data/settings.json').then(r => r.json()),
             fetch('/data/privacy.json').then(r => r.json()),
             fetch('/data/impressum.json').then(r => r.json()),
+            fetch('/data/special-offer.json').then(r => r.json()),
           ]);
           if (!isMounted) return;
           setProjects(p);
@@ -361,10 +364,11 @@ export default function Admin() {
           setSettings(s);
           setPrivacy(pr);
           setImpressum(im);
+          setSpecialOffer(so);
           setDataLoaded(true);
         } else if (cfg) {
           // Load from GitHub
-          const [p, i, c, f, s, pr, im] = await Promise.all([
+          const [p, i, c, f, s, pr, im, so] = await Promise.all([
             readDataFile<Project[]>(cfg, 'projects'),
             readDataFile<Insight[]>(cfg, 'insights'),
             readDataFile<Client[]>(cfg, 'clients'),
@@ -372,6 +376,7 @@ export default function Admin() {
             readDataFile<Settings>(cfg, 'settings'),
             readDataFile<PrivacyData>(cfg, 'privacy'),
             readDataFile<ImpressumData>(cfg, 'impressum'),
+            readDataFile<SpecialOffer>(cfg, 'special-offer'),
           ]);
           if (!isMounted) return;
           setProjects(p.data); setShas(prev => ({...prev, projects: p.sha}));
@@ -381,6 +386,7 @@ export default function Admin() {
           setSettings(s.data); setShas(prev => ({...prev, settings: s.sha}));
           setPrivacy(pr.data); setShas(prev => ({...prev, privacy: pr.sha}));
           setImpressum(im.data); setShas(prev => ({...prev, impressum: im.sha}));
+          setSpecialOffer(so.data); setShas(prev => ({...prev, 'special-offer': so.sha}));
           setDataLoaded(true);
         }
       } catch (err) {
@@ -689,6 +695,7 @@ export default function Admin() {
     { id: 'insights',  label: 'JOURNAL' },
     { id: 'clients',   label: 'KUNDEN' },
     { id: 'faqs',      label: 'FAQ' },
+    { id: 'special-offer', label: 'ANGEBOT' },
     { id: 'privacy',   label: 'DATENSCHUTZ' },
     { id: 'impressum', label: 'IMPRESSUM' },
     { id: 'settings',  label: 'EINSTELLUNGEN' },
@@ -1394,6 +1401,112 @@ export default function Admin() {
                         return;
                       }
                       await save('impressum', impressum, 'Impressum aktualisiert');
+                    }}
+                    disabled={saving}
+                    className="mt-6 bg-[#616752] text-white px-8 py-3 font-mono text-[10px] tracking-widest hover:opacity-90 disabled:opacity-50 block w-full"
+                  >
+                    {saving ? 'SPEICHERT...' : 'SPEICHERN & DEPLOYEN'}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* ── SPECIAL OFFER ── */}
+            {tab === 'special-offer' && (
+              <div className="max-w-2xl space-y-6">
+                <div className="border border-[#C5C5C5] p-8 bg-white">
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="font-display font-black text-xl uppercase">Sonderangebot</h2>
+                    <div className="flex items-center gap-2">
+                      <label className="telemetry-label text-[9px]">AKTIV</label>
+                      <input
+                        type="checkbox"
+                        checked={specialOffer.enabled}
+                        onChange={e => setSpecialOffer({...specialOffer, enabled: e.target.checked})}
+                        className="w-5 h-5 cursor-pointer"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="telemetry-label text-[9px] block mb-1">TITEL</label>
+                      <input
+                        className="admin-input"
+                        placeholder="z.B. Sonderangebot, Frühlingsrabatt, Limitiertes Angebot"
+                        value={specialOffer.title}
+                        onChange={e => setSpecialOffer({...specialOffer, title: e.target.value})}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="telemetry-label text-[9px] block mb-1">NACHRICHT</label>
+                      <textarea
+                        className="admin-input h-32"
+                        placeholder="Beschreiben Sie das Angebot. Z.B.: Starten Sie Ihr Projekt im Mai und erhalten Sie 15% Rabatt auf alle Web-Relaunch-Pakete."
+                        value={specialOffer.message}
+                        onChange={e => setSpecialOffer({...specialOffer, message: e.target.value})}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="telemetry-label text-[9px] block mb-1">BUTTON TEXT</label>
+                        <input
+                          className="admin-input"
+                          placeholder="z.B. Jetzt anfragen"
+                          value={specialOffer.buttonText}
+                          onChange={e => setSpecialOffer({...specialOffer, buttonText: e.target.value})}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="telemetry-label text-[9px] block mb-1">BUTTON LINK</label>
+                        <input
+                          className="admin-input"
+                          placeholder="/contact"
+                          value={specialOffer.buttonLink}
+                          onChange={e => setSpecialOffer({...specialOffer, buttonLink: e.target.value})}
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="telemetry-label text-[9px] block mb-1">GÜLTIG BIS (OPTIONAL)</label>
+                      <input
+                        className="admin-input"
+                        placeholder="z.B. 31.05.2025"
+                        value={specialOffer.validUntil || ''}
+                        onChange={e => setSpecialOffer({...specialOffer, validUntil: e.target.value})}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Preview */}
+                  {specialOffer.enabled && (
+                    <div className="mt-8 p-6 border-2 border-[#616752] bg-[#F1F3EA]">
+                      <p className="telemetry-label text-[9px] mb-4">VORSCHAU</p>
+                      <div className="text-center">
+                        <h3 className="font-display font-black text-lg uppercase mb-2">{specialOffer.title}</h3>
+                        <p className="font-serif text-sm mb-2">{specialOffer.message}</p>
+                        {specialOffer.validUntil && (
+                          <p className="font-mono text-[10px] text-[#616752] mb-3">Gültig bis {specialOffer.validUntil}</p>
+                        )}
+                        <div className="inline-block bg-[#616752] text-white px-6 py-2 font-mono text-[10px]">
+                          {specialOffer.buttonText}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <button
+                    onClick={async () => {
+                      if (isDemoMode) {
+                        setSaveMsg('⚠ Demo Modus - Änderungen werden nicht gespeichert');
+                        setTimeout(() => setSaveMsg(''), 3000);
+                        return;
+                      }
+                      await save('special-offer', specialOffer, 'Sonderangebot aktualisiert');
                     }}
                     disabled={saving}
                     className="mt-6 bg-[#616752] text-white px-8 py-3 font-mono text-[10px] tracking-widest hover:opacity-90 disabled:opacity-50 block w-full"

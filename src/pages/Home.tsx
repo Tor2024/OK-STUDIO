@@ -5,6 +5,7 @@ import { useCollection, useSettings, useData } from '../hooks/useData';
 import { useMeta } from '../hooks/useMeta';
 import { SchemaOrg, localBusinessSchema } from '../components/SchemaOrg';
 import { FadeIn, SlideIn, ScaleIn, StaggerContainer, StaggerItem } from '../components/animations';
+import SpecialOffer from '../components/SpecialOffer';
 
 export default function Home() {
   useMeta({
@@ -31,6 +32,7 @@ export default function Home() {
   return (
     <>
       <SchemaOrg schema={localBusinessSchema} id="schema-home" />
+      <SpecialOffer />
       <section className="grid grid-cols-1 lg:grid-cols-12 min-h-[480px] border-b border-[#C5C5C5]">
         <div className="col-span-1 lg:col-span-8 p-6 md:p-12 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-[#C5C5C5] relative overflow-hidden">
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="relative z-10">
