@@ -445,46 +445,19 @@ export default function Admin() {
     
     setIsGeneratingSEO(true);
     try {
-      // @ts-ignore
-      const apiKeysString = import.meta.env.VITE_GEMINI_API_KEY;
-      if (!apiKeysString) {
-        alert("Fehler: VITE_GEMINI_API_KEY fehlt in den Umgebungsvariablen. KI kann nicht genutzt werden.");
-        setIsGeneratingSEO(false);
-        return;
-      }
-      
-      const apiKeys = apiKeysString.split(',').map((k: string) => k.trim()).filter(Boolean);
-      const randomApiKey = apiKeys[Math.floor(Math.random() * apiKeys.length)];
-
-      const prompt = `Du bist ein erstklassiger SEO-Experte. 
-Analysiere den folgenden Text und generiere perfekte SEO-Metadaten auf Deutsch.
-Regeln:
-1. "keywords": 2-4 hochrelevante Suchbegriffe, komma-getrennt.
-2. "seoTitle": max. 60 Zeichen. MUSS das wichtigste Keyword enthalten.
-3. "seoDescription": max. 160 Zeichen. Spannend formuliert, weckt Klick-Interesse (CTR-optimiert).
-
-Antworte AUSSCHLIESSLICH mit einem gültigen JSON-Objekt. Keine Markdown-Blöcke, nur reines JSON.
-
-Text zur Analyse:
-${contentText.substring(0, 4000)}`;
-
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${randomApiKey}`, {
+      const res = await fetch(`/api/generate-seo`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.2 }
-        })
+        body: JSON.stringify({ content: contentText })
       });
 
-      if (!res.ok) throw new Error("API-Fehler bei Google Gemini");
-      const data = await res.json();
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || "API-Fehler bei Google Gemini");
+      }
       
-      let text = data.candidates[0].content.parts[0].text;
-      text = text.replace(/```json/g, '').replace(/```/g, '').trim();
-      
-      const parsed = JSON.parse(text);
-      
+      const parsed = await res.json();
+
       if (type === 'project') {
         if (editingProject) {
           setEditingProject(prev => ({ ...prev!, keywords: parsed.keywords, seoTitle: parsed.seoTitle, seoDescription: parsed.seoDescription }));
