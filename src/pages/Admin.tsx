@@ -926,22 +926,46 @@ export default function Admin() {
                         <span className="telemetry-label mb-2 block font-bold">SEO_OPTIMIERUNG</span>
                         <div>
                           <input className="admin-input bg-white" placeholder="Fokus-Keywords (kommagetrennt)" value={editingProject ? editingProject.keywords : newProject.keywords} onChange={e => editingProject ? setEditingProject({...editingProject, keywords: e.target.value}) : setNewProject({...newProject, keywords: e.target.value})} />
-                          <p className="text-[9px] text-[#616752] mt-1 opacity-80 leading-tight">Format: "wort1, wort2". Wichtig für den Semantic Audit und intelligente Verlinkung.</p>
+                          <div className="mt-1.5 text-[10px] bg-white/60 p-2 border border-[#C5C5C5] text-[#141414]">
+                            <div className="font-bold mb-1">Was muss ich hier eintragen?</div>
+                            <ul className="list-disc pl-3 space-y-1 opacity-90">
+                              <li>Die wichtigsten 1-3 Suchbegriffe, unter denen diese Seite bei Google gefunden werden soll.</li>
+                              <li><strong>Beispiel:</strong> "webdesign siegen, kmu website" (durch Komma getrennt).</li>
+                              <li><strong>Wozu?</strong> Das System prüft Ihren Text anhand dieser Wörter und verlinkt automatisch passende Artikel.</li>
+                            </ul>
+                          </div>
                         </div>
                         <div>
                           <input className="admin-input bg-white" placeholder="SEO Titel (optional)" value={editingProject ? editingProject.seoTitle : newProject.seoTitle} onChange={e => editingProject ? setEditingProject({...editingProject, seoTitle: e.target.value}) : setNewProject({...newProject, seoTitle: e.target.value})} />
-                          <p className="text-[9px] text-[#616752] mt-1 opacity-80 leading-tight">Browser-Tab & Google Titel. Optimal: 50-60 Zeichen. Falls leer, wird der Standard-Titel genutzt.</p>
+                          <div className="mt-1.5 text-[10px] bg-white/60 p-2 border border-[#C5C5C5] text-[#141414]">
+                            <div className="font-bold mb-1">Der blaue Link bei Google</div>
+                            <ul className="list-disc pl-3 space-y-1 opacity-90">
+                              <li>Hier schreiben Sie den perfekten Titel für die Suchmaschine.</li>
+                              <li><strong>Regel:</strong> Haupt-Keyword vorne, Firmenname hinten (z.B. "Webdesign Kreuztal | OK Studio").</li>
+                              <li>Maximal 60 Zeichen. <em>Lassen Sie es leer, um automatisch den normalen Titel zu nutzen.</em></li>
+                            </ul>
+                          </div>
                         </div>
                         <div>
                           <textarea className="admin-input bg-white h-16" placeholder="SEO Beschreibung (optional)" value={editingProject ? editingProject.seoDescription : newProject.seoDescription} onChange={e => editingProject ? setEditingProject({...editingProject, seoDescription: e.target.value}) : setNewProject({...newProject, seoDescription: e.target.value})} />
-                          <p className="text-[9px] text-[#616752] mt-1 opacity-80 leading-tight">Google Snippet Text. Optimal: 150-160 Zeichen. Wirkt sich direkt auf die Klickrate aus.</p>
+                          <div className="mt-1.5 text-[10px] bg-white/60 p-2 border border-[#C5C5C5] text-[#141414]">
+                            <div className="font-bold mb-1">Der graue Text bei Google (Snippet)</div>
+                            <ul className="list-disc pl-3 space-y-1 opacity-90">
+                              <li>Fassen Sie den Inhalt in 1-2 Sätzen spannend zusammen, damit Nutzer klicken wollen.</li>
+                              <li>Bauen Sie Ihr Fokus-Keyword hier unbedingt mit ein!</li>
+                              <li>Optimal: 150-160 Zeichen.</li>
+                            </ul>
+                          </div>
                         </div>
                         
                         <div className="flex items-start gap-2 pt-2">
                           <input type="checkbox" id="proj-pub" checked={editingProject ? editingProject.published : newProject.published} onChange={e => editingProject ? setEditingProject({...editingProject, published: e.target.checked}) : setNewProject({...newProject, published: e.target.checked})} className="mt-1" />
                           <div>
                             <label htmlFor="proj-pub" className="telemetry-label cursor-pointer block">ÖFFENTLICH SICHTBAR</label>
-                            <p className="text-[9px] text-[#616752] opacity-80 mt-0.5 leading-tight">Wenn deaktiviert (DRAFT), wird die Seite versteckt und von Google ausgeschlossen (noindex).</p>
+                            <div className="mt-1 text-[10px] bg-white/60 p-2 border border-[#C5C5C5] text-[#141414]">
+                              <div className="font-bold mb-0.5">Achtung: Entwurfs-Modus (DRAFT)</div>
+                              <div className="opacity-90">Häkchen entfernen, wenn die Seite noch nicht fertig ist. Sie ist dann für Besucher und Google komplett unsichtbar.</div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1044,17 +1068,34 @@ export default function Admin() {
                         <span className="telemetry-label mb-2 block font-bold">SEO_OPTIMIERUNG</span>
                         <div>
                           <input className="admin-input bg-white" placeholder="Fokus-Keywords (kommagetrennt)" value={editingLanding ? editingLanding.keywords : newLanding.keywords} onChange={e => editingLanding ? setEditingLanding({...editingLanding, keywords: e.target.value}) : setNewLanding({...newLanding, keywords: e.target.value})} />
-                          <p className="text-[9px] text-[#616752] mt-1 opacity-80 leading-tight">Format: "wort1, wort2". Essenziell für das lokale Ranking und den Semantic Audit der Landing Page.</p>
+                          <div className="mt-1.5 text-[10px] bg-white/60 p-2 border border-[#C5C5C5] text-[#141414]">
+                            <div className="font-bold mb-1">Was muss ich hier eintragen?</div>
+                            <ul className="list-disc pl-3 space-y-1 opacity-90">
+                              <li>Die wichtigsten 1-3 Suchbegriffe, unter denen diese Seite bei Google gefunden werden soll.</li>
+                              <li><strong>Beispiel:</strong> "webdesign siegen, kmu website" (durch Komma getrennt).</li>
+                              <li><strong>Wozu?</strong> Das System prüft Ihren Text anhand dieser Wörter und verlinkt automatisch passende Artikel.</li>
+                            </ul>
+                          </div>
                         </div>
                         <div>
                           <textarea className="admin-input bg-white h-16" placeholder="SEO Beschreibung" value={editingLanding ? editingLanding.description : newLanding.description} onChange={e => editingLanding ? setEditingLanding({...editingLanding, description: e.target.value}) : setNewLanding({...newLanding, description: e.target.value})} />
-                          <p className="text-[9px] text-[#616752] mt-1 opacity-80 leading-tight">Die "Meta Description" für Google. Optimal: 150-160 Zeichen. Wichtig für die Klickrate (CTR).</p>
+                          <div className="mt-1.5 text-[10px] bg-white/60 p-2 border border-[#C5C5C5] text-[#141414]">
+                            <div className="font-bold mb-1">Der graue Text bei Google (Snippet)</div>
+                            <ul className="list-disc pl-3 space-y-1 opacity-90">
+                              <li>Fassen Sie den Inhalt in 1-2 Sätzen spannend zusammen, damit Nutzer klicken wollen.</li>
+                              <li>Bauen Sie Ihr Fokus-Keyword hier unbedingt mit ein!</li>
+                              <li>Optimal: 150-160 Zeichen.</li>
+                            </ul>
+                          </div>
                         </div>
                         <div className="flex items-start gap-2 pt-2">
                           <input type="checkbox" id="land-pub" checked={editingLanding ? editingLanding.published : newLanding.published} onChange={e => editingLanding ? setEditingLanding({...editingLanding, published: e.target.checked}) : setNewLanding({...newLanding, published: e.target.checked})} className="mt-1" />
                           <div>
                             <label htmlFor="land-pub" className="telemetry-label cursor-pointer block">ÖFFENTLICH SICHTBAR</label>
-                            <p className="text-[9px] text-[#616752] opacity-80 mt-0.5 leading-tight">Wenn deaktiviert (DRAFT), wird die Landing Page vor Nutzern und Suchmaschinen (noindex) versteckt.</p>
+                            <div className="mt-1 text-[10px] bg-white/60 p-2 border border-[#C5C5C5] text-[#141414]">
+                              <div className="font-bold mb-0.5">Achtung: Entwurfs-Modus (DRAFT)</div>
+                              <div className="opacity-90">Häkchen entfernen, wenn die Seite noch nicht fertig ist. Sie ist dann für Besucher und Google komplett unsichtbar.</div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1126,22 +1167,46 @@ export default function Admin() {
                         <span className="telemetry-label mb-2 block font-bold">SEO_OPTIMIERUNG</span>
                         <div>
                           <input className="admin-input bg-white" placeholder="Fokus-Keywords (kommagetrennt)" value={editingInsight ? editingInsight.keywords : newInsight.keywords} onChange={e => editingInsight ? setEditingInsight({...editingInsight, keywords: e.target.value}) : setNewInsight({...newInsight, keywords: e.target.value})} />
-                          <p className="text-[9px] text-[#616752] mt-1 opacity-80 leading-tight">Format: "wort1, wort2". Steuert den Semantic Audit und die Funktion "Ähnliche Artikel".</p>
+                          <div className="mt-1.5 text-[10px] bg-white/60 p-2 border border-[#C5C5C5] text-[#141414]">
+                            <div className="font-bold mb-1">Was muss ich hier eintragen?</div>
+                            <ul className="list-disc pl-3 space-y-1 opacity-90">
+                              <li>Die wichtigsten 1-3 Suchbegriffe, unter denen diese Seite bei Google gefunden werden soll.</li>
+                              <li><strong>Beispiel:</strong> "webdesign siegen, kmu website" (durch Komma getrennt).</li>
+                              <li><strong>Wozu?</strong> Das System prüft Ihren Text anhand dieser Wörter und verlinkt automatisch passende Artikel.</li>
+                            </ul>
+                          </div>
                         </div>
                         <div>
                           <input className="admin-input bg-white" placeholder="SEO Titel (optional)" value={editingInsight ? editingInsight.seoTitle : newInsight.seoTitle} onChange={e => editingInsight ? setEditingInsight({...editingInsight, seoTitle: e.target.value}) : setNewInsight({...newInsight, seoTitle: e.target.value})} />
-                          <p className="text-[9px] text-[#616752] mt-1 opacity-80 leading-tight">Browser-Tab & Google Titel. Optimal: 50-60 Zeichen. Falls leer, wird der Standard-Titel genutzt.</p>
+                          <div className="mt-1.5 text-[10px] bg-white/60 p-2 border border-[#C5C5C5] text-[#141414]">
+                            <div className="font-bold mb-1">Der blaue Link bei Google</div>
+                            <ul className="list-disc pl-3 space-y-1 opacity-90">
+                              <li>Hier schreiben Sie den perfekten Titel für die Suchmaschine.</li>
+                              <li><strong>Regel:</strong> Haupt-Keyword vorne, Firmenname hinten (z.B. "Webdesign Kreuztal | OK Studio").</li>
+                              <li>Maximal 60 Zeichen. <em>Lassen Sie es leer, um automatisch den normalen Titel zu nutzen.</em></li>
+                            </ul>
+                          </div>
                         </div>
                         <div>
                           <textarea className="admin-input bg-white h-16" placeholder="SEO Beschreibung (optional)" value={editingInsight ? editingInsight.seoDescription : newInsight.seoDescription} onChange={e => editingInsight ? setEditingInsight({...editingInsight, seoDescription: e.target.value}) : setNewInsight({...newInsight, seoDescription: e.target.value})} />
-                          <p className="text-[9px] text-[#616752] mt-1 opacity-80 leading-tight">Google Snippet Text. Optimal: 150-160 Zeichen. Wirkt sich direkt auf die Klickrate aus.</p>
+                          <div className="mt-1.5 text-[10px] bg-white/60 p-2 border border-[#C5C5C5] text-[#141414]">
+                            <div className="font-bold mb-1">Der graue Text bei Google (Snippet)</div>
+                            <ul className="list-disc pl-3 space-y-1 opacity-90">
+                              <li>Fassen Sie den Inhalt in 1-2 Sätzen spannend zusammen, damit Nutzer klicken wollen.</li>
+                              <li>Bauen Sie Ihr Fokus-Keyword hier unbedingt mit ein!</li>
+                              <li>Optimal: 150-160 Zeichen.</li>
+                            </ul>
+                          </div>
                         </div>
                         
                         <div className="flex items-start gap-2 pt-2">
                           <input type="checkbox" id="ins-pub" checked={editingInsight ? editingInsight.published : newInsight.published} onChange={e => editingInsight ? setEditingInsight({...editingInsight, published: e.target.checked}) : setNewInsight({...newInsight, published: e.target.checked})} className="mt-1" />
                           <div>
                             <label htmlFor="ins-pub" className="telemetry-label cursor-pointer block">ÖFFENTLICH SICHTBAR</label>
-                            <p className="text-[9px] text-[#616752] opacity-80 mt-0.5 leading-tight">Wenn deaktiviert (DRAFT), wird der Artikel versteckt und von Google ausgeschlossen (noindex).</p>
+                            <div className="mt-1 text-[10px] bg-white/60 p-2 border border-[#C5C5C5] text-[#141414]">
+                              <div className="font-bold mb-0.5">Achtung: Entwurfs-Modus (DRAFT)</div>
+                              <div className="opacity-90">Häkchen entfernen, wenn die Seite noch nicht fertig ist. Sie ist dann für Besucher und Google komplett unsichtbar.</div>
+                            </div>
                           </div>
                         </div>
                       </div>
