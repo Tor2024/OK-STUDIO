@@ -1082,7 +1082,7 @@ export default function Admin() {
                       </div>
 
                       <AuditFeedback 
-                        title={editingProject ? editingProject.title : newProject.title} 
+                        title={editingProject ? (editingProject.seoTitle || editingProject.title) : (newProject.seoTitle || newProject.title)} 
                         content={editingProject ? editingProject.fullDescription || '' : newProject.fullDescription || ''} 
                         keywords={editingProject ? editingProject.keywords || '' : newProject.keywords || ''} 
                       />
@@ -1333,7 +1333,7 @@ export default function Admin() {
                       </div>
 
                       <AuditFeedback 
-                        title={editingInsight ? editingInsight.title : newInsight.title} 
+                        title={editingInsight ? (editingInsight.seoTitle || editingInsight.title) : (newInsight.seoTitle || newInsight.title)} 
                         content={editingInsight ? editingInsight.content || '' : newInsight.content || ''} 
                         keywords={editingInsight ? editingInsight.keywords || '' : newInsight.keywords || ''} 
                       />
