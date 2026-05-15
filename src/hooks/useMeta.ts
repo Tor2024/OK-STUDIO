@@ -35,7 +35,7 @@ function setLink(rel: string, href: string) {
   el.setAttribute('href', href);
 }
 
-export function useMeta({ title, description, image, url, type = 'website', noindex = false }: MetaOptions) {
+export function useMeta({ title, description, keywords, image, url, type = 'website', noindex = false }: MetaOptions) {
   useEffect(() => {
     const fullTitle = `${title} — ${SITE_NAME}`;
     const desc = description ?? DEFAULT_DESC;
@@ -69,5 +69,5 @@ export function useMeta({ title, description, image, url, type = 'website', noin
     return () => {
       document.title = `${SITE_NAME} — Web-Design & Relaunch für den Mittelstand`;
     };
-  }, [title, description, image, url, type, noindex]);
+  }, [title, description, keywords, image, url, type, noindex]);
 }
