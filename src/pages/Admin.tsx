@@ -340,6 +340,7 @@ export default function Admin() {
 
   // AI State
   const [isGeneratingSEO, setIsGeneratingSEO] = useState(false);
+  const [isFormattingText, setIsFormattingText] = useState(false);
 
   // Load all data from GitHub or local files - MUST BE BEFORE CONDITIONAL RETURN
   useEffect(() => {
@@ -492,6 +493,48 @@ export default function Admin() {
       alert("Fehler bei der KI-Generierung: " + e.message);
     } finally {
       setIsGeneratingSEO(false);
+    }
+  };
+
+  const formatContent = async (type: 'project' | 'insight' | 'landing', rawText: string) => {
+    if (!rawText || rawText.trim().length < 20) {
+      alert("Der Text ist zu kurz zum Formatieren. Bitte geben Sie zuerst etwas Text ein.");
+      return;
+    }
+
+    setIsFormattingText(true);
+    try {
+      const res = await fetch(`/api/format-content`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: rawText })
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || "Fehler bei der KI-Formatierung");
+      }
+      
+      const { formatted } = await res.json();
+
+      if (type === 'project') {
+        if (editingProject) setEditingProject(prev => ({ ...prev!, fullDescription: formatted }));
+        else setNewProject(prev => ({ ...prev, fullDescription: formatted }));
+      } else if (type === 'insight') {
+        if (editingInsight) setEditingInsight(prev => ({ ...prev!, content: formatted }));
+        else setNewInsight(prev => ({ ...prev, content: formatted }));
+      } else if (type === 'landing') {
+        if (editingLanding) setEditingLanding(prev => ({ ...prev!, content: formatted }));
+        else setNewLanding(prev => ({ ...prev, content: formatted }));
+      }
+      
+      setSaveMsg('✓ Text wurde von der KI formatiert');
+      setTimeout(() => setSaveMsg(''), 3000);
+    } catch (e: any) {
+      console.error(e);
+      alert("Fehler bei der KI-Formatierung: " + e.message);
+    } finally {
+      setIsFormattingText(false);
     }
   };
 
@@ -1051,31 +1094,12 @@ export default function Admin() {
                           <label className="telemetry-label text-[9px] block">VOLLTEXT (MARKDOWN)</label>
                           <button
                             type="button"
-                            onClick={() => {
-                              const prompt = `Отформатируй этот текст используя Markdown коды:
-
-## Überschrift (главный заголовок)
-### Unterüberschrift (подзаголовок)
-**жирный текст**
-*курсив*
-- пункт списка
-> цитата
-[текст ссылки](URL)
-
-Текст:
----
-[ВСТАВЬ СЮДА СВОЙ ТЕКСТ]
----
-
-Верни мне текст с этими кодами Markdown.`;
-                              navigator.clipboard.writeText(prompt);
-                              setSaveMsg('✓ AI-Prompt kopiert! Füge ihn in ChatGPT/Claude/Gemini ein.');
-                              setTimeout(() => setSaveMsg(''), 3000);
-                            }}
-                            className="px-3 py-1 bg-purple-500 text-white font-mono text-[9px] tracking-wider hover:bg-purple-600 transition-colors flex items-center gap-1"
+                            onClick={() => formatContent('project', editingProject ? editingProject.fullDescription : newProject.fullDescription)}
+                            disabled={isFormattingText}
+                            className="px-3 py-1 bg-purple-500 text-white font-mono text-[9px] tracking-wider hover:bg-purple-600 transition-colors flex items-center gap-1 disabled:opacity-50"
                           >
-                            <Zap size={12} />
-                            AI FORMATIERUNG
+                            <Zap size={12} className={isFormattingText ? 'animate-pulse' : ''} />
+                            {isFormattingText ? 'LÄDT...' : 'AI FORMATIERUNG'}
                           </button>
                         </div>
                         <textarea className="admin-input h-40 font-mono text-xs" placeholder="Volltext mit Markdown-Formatierung&#10;&#10;## Überschrift&#10;Text hier...&#10;&#10;**Fett** *Kursiv*&#10;- Listenpunkt" value={editingProject ? editingProject.fullDescription : newProject.fullDescription} onChange={e => editingProject ? setEditingProject({...editingProject, fullDescription: e.target.value}) : setNewProject({...newProject, fullDescription: e.target.value})} />
@@ -1178,7 +1202,21 @@ export default function Admin() {
                         keywords={editingLanding ? editingLanding.keywords : newLanding.keywords} 
                       />
 
-                      <textarea className="admin-input h-64 font-mono text-xs" placeholder="Inhalt (Markdown)" value={editingLanding ? editingLanding.content : newLanding.content} onChange={e => editingLanding ? setEditingLanding({...editingLanding, content: e.target.value}) : setNewLanding({...newLanding, content: e.target.value})} required />
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <label className="telemetry-label text-[9px] block uppercase opacity-60">Landing Page Content (Markdown)</label>
+                          <button
+                            type="button"
+                            onClick={() => formatContent('landing', editingLanding ? editingLanding.content : newLanding.content)}
+                            disabled={isFormattingText}
+                            className="px-3 py-1 bg-purple-500 text-white font-mono text-[9px] tracking-wider hover:bg-purple-600 transition-colors flex items-center gap-1 disabled:opacity-50"
+                          >
+                            <Zap size={12} className={isFormattingText ? 'animate-pulse' : ''} />
+                            {isFormattingText ? 'LÄDT...' : 'AI FORMATIERUNG'}
+                          </button>
+                        </div>
+                        <textarea className="admin-input h-64 font-mono text-xs" placeholder="Inhalt (Markdown)" value={editingLanding ? editingLanding.content : newLanding.content} onChange={e => editingLanding ? setEditingLanding({...editingLanding, content: e.target.value}) : setNewLanding({...newLanding, content: e.target.value})} required />
+                      </div>
                       
                       <div className="flex gap-2">
                         <button type="submit" className="flex-1 bg-[#616752] text-white py-3 font-mono text-[10px] tracking-widest hover:opacity-90">
@@ -1308,31 +1346,12 @@ export default function Admin() {
                           <div className="flex gap-2">
                             <button
                               type="button"
-                              onClick={() => {
-                                const prompt = `Отформатируй этот текст используя Markdown коды:
-
-## Überschrift (главный заголовок)
-### Unterüberschrift (подзаголовок)
-**жирный текст**
-*курсив*
-- пункт списка
-> цитата
-[текст ссылки](URL)
-
-Текст:
----
-[ВСТАВЬ СЮДА СВОЙ ТЕКСТ]
----
-
-Верни мне текст с этими кодами Markdown.`;
-                                navigator.clipboard.writeText(prompt);
-                                setSaveMsg('✓ AI-Prompt kopiert! Füge ihn in ChatGPT/Claude/Gemini ein.');
-                                setTimeout(() => setSaveMsg(''), 3000);
-                              }}
-                              className="px-3 py-1 bg-purple-500 text-white font-mono text-[9px] tracking-wider hover:bg-purple-600 transition-colors flex items-center gap-1"
+                              onClick={() => formatContent('insight', editingInsight ? editingInsight.content : newInsight.content)}
+                              disabled={isFormattingText}
+                              className="px-3 py-1 bg-purple-500 text-white font-mono text-[9px] tracking-wider hover:bg-purple-600 transition-colors flex items-center gap-1 disabled:opacity-50"
                             >
-                              <Zap size={12} />
-                              AI FORMATIERUNG
+                              <Zap size={12} className={isFormattingText ? 'animate-pulse' : ''} />
+                              {isFormattingText ? 'LÄDT...' : 'AI FORMATIERUNG'}
                             </button>
                             <button type="button" onClick={() => setShowMarkdownHelp(!showMarkdownHelp)} className="font-mono text-[9px] text-[#616752] hover:underline">
                               {showMarkdownHelp ? 'HILFE AUSBLENDEN' : 'MARKDOWN HILFE'}
