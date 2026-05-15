@@ -792,6 +792,43 @@ export default function Admin() {
                     )}
                   </p>
                 </div>
+                
+                {/* IndexNow Integration */}
+                <div className="border border-[#C5C5C5] p-6 bg-white">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <span className="telemetry-label block mb-1 font-bold">INDEXNOW</span>
+                      <p className="font-mono text-[9px] opacity-60">
+                        Мгновенное уведомление поисковиков о новых страницах
+                      </p>
+                    </div>
+                    <button
+                      onClick={async () => {
+                        setSaveMsg('⏳ Отправка в IndexNow...');
+                        try {
+                          const { reindexEntireSite } = await import('../lib/indexnow');
+                          const result = await reindexEntireSite();
+                          setSaveMsg(result.message);
+                          setTimeout(() => setSaveMsg(''), 5000);
+                        } catch (error) {
+                          setSaveMsg(`❌ Ошибка: ${error}`);
+                          setTimeout(() => setSaveMsg(''), 5000);
+                        }
+                      }}
+                      className="px-4 py-2 bg-[#616752] text-white font-mono text-[10px] tracking-wider hover:bg-[#737A5E] transition-colors flex items-center gap-2"
+                    >
+                      <Zap size={14} />
+                      ПЕРЕИНДЕКСИРОВАТЬ САЙТ
+                    </button>
+                  </div>
+                  <div className="bg-[#F1F3EA] border border-[#C5C5C5] p-3 font-mono text-[9px] space-y-1">
+                    <div className="font-bold mb-1">ЧТО ЭТО ДЕЛАЕТ:</div>
+                    <div>✓ Отправляет все URL сайта в Google, Bing, Yandex</div>
+                    <div>✓ Ускоряет индексацию с недель до часов</div>
+                    <div>✓ Бесплатно и безопасно</div>
+                    <div className="text-purple-600 mt-2">💡 Нажимай после добавления нового контента</div>
+                  </div>
+                </div>
               </div>
             )}
 
