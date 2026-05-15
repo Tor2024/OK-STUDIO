@@ -453,7 +453,16 @@ export default function Admin() {
 
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.error || "API-Fehler bei Google Gemini");
+        let errMsg = errorData.error || "API-Fehler bei Google Gemini";
+        if (errorData.details) {
+          try {
+             const parsedDetails = JSON.parse(errorData.details);
+             errMsg += ": " + (parsedDetails.error?.message || errorData.details);
+          } catch(e) {
+             errMsg += ": " + errorData.details;
+          }
+        }
+        throw new Error(errMsg);
       }
       
       const parsed = await res.json();
