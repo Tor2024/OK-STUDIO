@@ -72,6 +72,17 @@ export async function getAllSiteUrls(): Promise<string[]> {
         urls.push(`/insights/${insight.id}`);
       });
     }
+
+    // Добавляем локальные лендинги
+    const landingsResponse = await fetch(`${SITE_URL}/data/landings.json`);
+    if (landingsResponse.ok) {
+      const landings = await landingsResponse.json();
+      landings.forEach((landing: any) => {
+        if (landing.published !== false) {
+          urls.push(`/local/${landing.id}`);
+        }
+      });
+    }
   } catch (error) {
     console.error('Ошибка загрузки URL:', error);
   }
