@@ -6,6 +6,7 @@ import { useMeta } from '../hooks/useMeta';
 import { SchemaOrg, breadcrumbSchema } from '../components/SchemaOrg';
 import { Link } from 'react-router-dom';
 import SmartLink from '../components/SmartLink';
+import { parseMonthYear } from '../lib/dateUtils';
 
 interface Project {
   id: string;
@@ -28,7 +29,12 @@ export default function Work() {
   const { data: raw, loading } = useCollection<any>('projects');
   const projects = [...raw]
     .filter(p => p.published !== false)
-    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    .sort((a, b) => {
+      const dateA = parseMonthYear(a.completedAt || '');
+      const dateB = parseMonthYear(b.completedAt || '');
+      if (dateA !== dateB) return dateB - dateA;
+      return (a.order ?? 0) - (b.order ?? 0);
+    });
 
   if (loading) {
     return (

@@ -11,6 +11,7 @@ import {
   Image as ImageIcon, Globe, Loader2, Lock,
   ShieldCheck, Zap, Check, Plus, Settings, Edit2
 } from 'lucide-react';
+import { parseMonthYear } from '../lib/dateUtils';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -1125,7 +1126,12 @@ export default function Admin() {
                   </div>
                 </div>
                 <div className="lg:col-span-8 space-y-3">
-                  {projects.sort((a,b) => a.order - b.order).map(p => (
+                  {projects.sort((a,b) => {
+                    const dateA = parseMonthYear(a.completedAt || '');
+                    const dateB = parseMonthYear(b.completedAt || '');
+                    if (dateA !== dateB) return dateB - dateA;
+                    return (a.order ?? 0) - (b.order ?? 0);
+                  }).map(p => (
                     <div key={p.id} className="border border-[#C5C5C5] p-5 bg-white flex gap-4 items-center group hover:border-[#616752] transition-colors">
                       {p.image && <img src={p.image} loading="lazy" width="64" height="64" alt={p.title} className="w-16 h-16 object-cover grayscale shrink-0" />}
                       <div className="flex-1 min-w-0">
@@ -1418,7 +1424,7 @@ export default function Admin() {
                   </div>
                 </div>
                 <div className="lg:col-span-8 space-y-3">
-                  {insights.map(i => (
+                  {insights.sort((a,b) => parseMonthYear(b.date) - parseMonthYear(a.date)).map(i => (
                     <div key={i.id} className="border border-[#C5C5C5] p-5 bg-white flex gap-4 items-center group hover:border-[#616752] transition-colors">
                       <div className="w-10 h-10 bg-[#F1F3EA] border border-[#C5C5C5] flex items-center justify-center shrink-0">
                         <FileText size={16} className="opacity-30" />

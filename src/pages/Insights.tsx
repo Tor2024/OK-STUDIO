@@ -5,6 +5,7 @@ import { SchemaOrg, breadcrumbSchema } from '../components/SchemaOrg';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SmartLink from '../components/SmartLink';
+import { parseMonthYear } from '../lib/dateUtils';
 
 interface Insight {
   id: string;
@@ -25,7 +26,7 @@ export default function Insights() {
   const { data: raw, loading } = useCollection<any>('insights');
   const articles = [...raw]
     .filter(i => i.published !== false)
-    .sort((a, b) => b.date.localeCompare(a.date));
+    .sort((a, b) => parseMonthYear(b.date) - parseMonthYear(a.date));
 
   if (loading) {
     return (
