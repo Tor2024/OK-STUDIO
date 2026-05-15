@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft, MapPin, CheckCircle2, ArrowRight } from 'lucide-react';
-import { useItem } from '../hooks/useData';
+import { useData } from '../hooks/useData';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useMeta } from '../hooks/useMeta';
 import ReactMarkdown from 'react-markdown';
