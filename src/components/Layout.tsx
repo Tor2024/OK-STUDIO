@@ -122,20 +122,67 @@ export default function Layout({ children }: LayoutProps) {
         {children}
       </main>
 
-      <footer className="w-full max-w-[1280px] min-h-[56px] border-x border-b border-[#C5C5C5] bg-[#F1F3EA] flex flex-col md:flex-row items-center justify-between px-6 py-4 md:py-0 z-10 gap-4 md:gap-0">
-        <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-            <span className="telemetry-label">SYSTEMSTATUS: OPTIMAL</span>
+      <footer className="w-full max-w-[1280px] border-x border-b border-[#C5C5C5] bg-[#F1F3EA] z-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 p-8 md:p-12 border-b border-[#C5C5C5]">
+          <div className="md:col-span-1 space-y-4">
+            <Logo />
+            <p className="font-serif italic text-sm opacity-60 leading-relaxed">
+              Exklusives Webdesign & digitale Exzellenz für das Siegerland und darüber hinaus.
+            </p>
           </div>
-          <span className="telemetry-label">UPTIME: 99.99%</span>
-          <Link to="/work" className="telemetry-label hover:text-black transition-colors opacity-60 hover:opacity-100">REFERENZEN</Link>
-          <Link to="/insights" className="telemetry-label hover:text-black transition-colors opacity-60 hover:opacity-100">JOURNAL</Link>
+          
+          <div className="space-y-4">
+            <h4 className="telemetry-label !text-[10px] opacity-40">NAVIGATION</h4>
+            <nav className="flex flex-col gap-2">
+              {navItems.map(item => (
+                <Link key={item.link} to={item.link} className="font-mono text-[11px] tracking-widest hover:text-black transition-colors underline-offset-4 hover:underline">{item.label}</Link>
+              ))}
+            </nav>
+          </div>
+
+          <div className="md:col-span-2 space-y-4">
+            <h4 className="telemetry-label !text-[10px] opacity-40 uppercase tracking-widest">Regionale Präsenz</h4>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2">
+              {[
+                { name: 'Siegen', id: 'siegen' },
+                { name: 'Olpe', id: 'olpe' },
+                { name: 'Kreuztal', id: 'kreuztal' },
+                { name: 'Attendorn', id: 'attendorn' },
+                { name: 'Lennestadt', id: 'lennestadt' },
+                { name: 'Hilchenbach', id: 'hilchenbach' },
+                { name: 'Netphen', id: 'netphen' },
+                { name: 'Freudenberg', id: 'freudenberg' },
+                { name: 'Gummersbach', id: 'gummersbach' },
+                { name: 'Lüdenscheid', id: 'luedenscheid' },
+                { name: 'Hagen', id: 'hagen' },
+                { name: 'Iserlohn', id: 'iserlohn' }
+              ].map(city => (
+                <Link 
+                  key={city.id} 
+                  to={`/local/${city.id}`} 
+                  className="font-mono text-[10px] tracking-tight opacity-60 hover:opacity-100 hover:text-black transition-all flex items-center gap-1 group"
+                >
+                  <span className="w-1 h-1 bg-[#616752] rounded-full scale-0 group-hover:scale-100 transition-transform" />
+                  Webdesign {city.name}
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
-          <Link to="/impressum" className="telemetry-label hover:text-black transition-colors opacity-60 hover:opacity-100">IMPRESSUM</Link>
-          <Link to="/privacy" className="telemetry-label hover:text-black transition-colors opacity-60 hover:opacity-100">DATENSCHUTZ</Link>
-          <span className="telemetry-label text-opacity-30 border-l border-[#C5C5C5] pl-6 ml-2 hidden md:block">© 2026 OK_STUDIO</span>
+
+        <div className="flex flex-col md:flex-row items-center justify-between px-6 py-6 md:py-4 gap-4 md:gap-0 bg-white/30">
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <span className="telemetry-label">SYSTEMSTATUS: OPTIMAL</span>
+            </div>
+            <span className="telemetry-label hidden sm:block">UPTIME: 99.99%</span>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
+            <Link to="/impressum" className="telemetry-label hover:text-black transition-colors opacity-60 hover:opacity-100">IMPRESSUM</Link>
+            <Link to="/privacy" className="telemetry-label hover:text-black transition-colors opacity-60 hover:opacity-100">DATENSCHUTZ</Link>
+            <span className="telemetry-label text-opacity-30 border-l border-[#C5C5C5] pl-6 ml-2">© 2026 OK_STUDIO</span>
+          </div>
         </div>
       </footer>
     </div>
