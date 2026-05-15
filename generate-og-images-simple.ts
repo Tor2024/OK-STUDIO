@@ -65,7 +65,7 @@ function escapeXml(unsafe: string): string {
 // Генерируем SVG изображения
 function generateOgSvg(title: string, subtitle: string, color: string): string {
   const safeTitle = escapeXml(title);
-  const safeSubtitle = escapeXml(subtitle);
+  const safeSubtitle = escapeXml(subtitle.toUpperCase());
   
   return `<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
   <!-- Фон -->
@@ -81,7 +81,7 @@ function generateOgSvg(title: string, subtitle: string, color: string): string {
   <text x="100" y="120" font-family="Arial, sans-serif" font-size="32" font-weight="900" fill="#141414">OK STUDIO</text>
   
   <!-- Категория/Тег -->
-  <text x="100" y="180" font-family="monospace" font-size="14" fill="#616752" letter-spacing="2">${safeSubtitle.toUpperCase()}</text>
+  <text x="100" y="180" font-family="monospace" font-size="14" fill="#616752" letter-spacing="2">${safeSubtitle}</text>
   
   <!-- Заголовок -->
   <text x="100" y="250" font-family="Arial, sans-serif" font-size="48" font-weight="700" fill="#141414">

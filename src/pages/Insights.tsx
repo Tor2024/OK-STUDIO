@@ -75,7 +75,7 @@ export default function Insights() {
                     LESEN <ArrowUpRight size={12} />
                   </div>
                 </div>
-              </Link>
+              </SmartLink>
             ))
           )}
         </div>

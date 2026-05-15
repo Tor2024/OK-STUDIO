@@ -4,7 +4,6 @@ import { useCollection } from '../hooks/useData';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useMeta } from '../hooks/useMeta';
 import { SchemaOrg, breadcrumbSchema } from '../components/SchemaOrg';
-import { Link } from 'react-router-dom';
 import SmartLink from '../components/SmartLink';
 
 interface Project {
@@ -56,7 +55,7 @@ export default function Work() {
         <div className="p-12 md:p-24 flex flex-col items-center justify-center text-center min-h-[40vh]">
           <span className="font-mono text-[9px] tracking-widest opacity-20 uppercase mb-4">// ARCHIV_LEER</span>
           <p className="font-serif italic text-xl opacity-40 mb-8">Projekte werden in Kürze hinzugefügt.</p>
-          <Link to="/contact" className="bg-[#616752] text-white px-8 py-4 font-mono text-[11px] tracking-widest hover:opacity-90 transition-all">PROJEKT ANFRAGEN</Link>
+          <SmartLink to="/contact" className="bg-[#616752] text-white px-8 py-4 font-mono text-[11px] tracking-widest hover:opacity-90 transition-all">PROJEKT ANFRAGEN</SmartLink>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-12">
@@ -101,7 +100,7 @@ export default function Work() {
                   {project.completedAt || '2025'}
                 </div>
               </div>
-            </Link>
+            </SmartLink>
           ))}
         </div>
       )}
