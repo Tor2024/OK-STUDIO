@@ -4,6 +4,7 @@ import { useCollection } from '../hooks/useData';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useMeta } from '../hooks/useMeta';
 import { SchemaOrg, breadcrumbSchema } from '../components/SchemaOrg';
+import { Link } from 'react-router-dom';
 import SmartLink from '../components/SmartLink';
 
 interface Project {
