@@ -1,5 +1,18 @@
 [
   {
+    "title": "Website für das Unternehmen Garten Siegerland",
+    "category": "Design",
+    "image": "https://raw.githubusercontent.com/okcompany/web-studio/main/apps/web/public/uploads/img_1777385673217_3923.png",
+    "description": "Für das Unternehmen Garten Siegerland wurde eine moderne One-Page-Website entwickelt, die darauf ausgerichtet ist, neue Kunden zu gewinnen, das Vertrauen in die Marke zu stärken und den Anfrageprozess zu automatisieren.",
+    "completedAt": "MAI 2026",
+    "order": 7,
+    "published": true,
+    "keywords": "Website Landschaftsdesign, Webdesign Gartenbau, Neukundengewinnung Website",
+    "seoTitle": "Professionelle Website Landschaftsdesign: Kunden 24/7 gewinnen",
+    "seoDescription": "Entdecken Sie, wie eine professionelle Website für Landschaftsdesign Ihr Unternehmen 24/7 mit neuen Kunden versorgt. Automatisierte Anfragen, Vertrauensaufbau & mehr Sichtbarkeit.",
+    "id": "website-fuer-das-unternehmen-garten-siegerland"
+  },
+  {
     "title": "CarStyleGarage — Website für ein Auto-Folierungsstudio und Werbetechnik",
     "category": "Webseite",
     "image": "https://raw.githubusercontent.com/okcompany/web-studio/main/apps/web/public/uploads/img_1777214317950_4714.png",
@@ -74,16 +87,16 @@
     "seoDescription": "Erfolgreiche Autowerkstatt in Kreuztal: Moderne Website mit Online-Terminbuchung, automatischen Erinnerungen & Kundenverwaltung. Effizienter Service, mehr Kunden. Jetzt entdecken!"
   },
   {
-    "title": "Website für das Unternehmen Garten Siegerland",
-    "category": "Design",
-    "image": "https://raw.githubusercontent.com/okcompany/web-studio/main/apps/web/public/uploads/img_1777385673217_3923.png",
-    "description": "Für das Unternehmen Garten Siegerland wurde eine moderne One-Page-Website entwickelt, die darauf ausgerichtet ist, neue Kunden zu gewinnen, das Vertrauen in die Marke zu stärken und den Anfrageprozess zu automatisieren.",
-    "completedAt": "MAI 2026",
-    "order": 7,
+    "title": "DermaCare — Website für eine dermatologische Klinik",
+    "category": "Design & Automation",
+    "image": "https://raw.githubusercontent.com/okcompany/web-studio/main/apps/web/public/uploads/img_1777217902289_7345.png",
+    "description": "Eine moderne, saubere und vertrauenswürdige Website für eine dermatologische Klinik zu erstellen. Die Website soll gleichzeitig als medizinische Visitenkarte, als Plattform zur Terminbuchung und als Onlineshop für professionelle Kosmetik funktionieren — alles in einem einheitlichen, stilvollen Interface.",
+    "completedAt": "NOV 2025",
+    "order": 8,
     "published": true,
-    "keywords": "Website Landschaftsdesign, Webdesign Gartenbau, Neukundengewinnung Website",
-    "seoTitle": "Professionelle Website Landschaftsdesign: Kunden 24/7 gewinnen",
-    "seoDescription": "Entdecken Sie, wie eine professionelle Website für Landschaftsdesign Ihr Unternehmen 24/7 mit neuen Kunden versorgt. Automatisierte Anfragen, Vertrauensaufbau & mehr Sichtbarkeit.",
-    "id": "website-fuer-das-unternehmen-garten-siegerland"
+    "keywords": "Dermatologische Website, Online Terminbuchung, Kosmetik Onlineshop, Medizinische Website",
+    "seoTitle": "Dermatologische Website: Online-Termine & Kosmetik-Shop",
+    "seoDescription": "Entdecken Sie unsere moderne dermatologische Website mit intuitiver Online-Terminbuchung, professionellem Kosmetik-Onlineshop und responsivem Design. Steigern Sie Patientenbindung & Umsatz!",
+    "id": "dermacare-website-fuer-eine-dermatologische-klinik"
   }
 ]
