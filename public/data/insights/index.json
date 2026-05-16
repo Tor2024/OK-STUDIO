@@ -1,5 +1,29 @@
 [
   {
+    "title": "Die technische Evolution: React 19 und die Zukunft der Webentwicklung",
+    "date": "FEB 2026",
+    "tag": "Zukunft",
+    "author": "Oleh Kalchenko",
+    "id": "die-technische-evolution-react-19-und-die-zukunft-der-webentwicklung"
+  },
+  {
+    "title": "Digitales Design 2025: Warum Ästhetik allein nicht mehr verkauft",
+    "date": "JAN 2026",
+    "tag": "DESIGN",
+    "author": "Oleh Kalchenko",
+    "id": "digitales-design-2025-warum-aesthetik-allein-nicht-mehr-verkauft"
+  },
+  {
+    "title": "Künstliche Intelligenz im deutschen Mittelstand: Von der Vision zur wertschöpfenden Realität",
+    "date": "DEC 2025",
+    "tag": "KI",
+    "author": "Oleh Kalchenko",
+    "id": "kuenstliche-intelligenz-im-deutschen-mittelstand-von-der-vision-zur-wertschoepfenden-realitaet",
+    "keywords": "KI-Integration, Wettbewerbsvorteile, Unternehmen NRW, Künstliche Intelligenz",
+    "seoTitle": "KI-Integration in NRW: So sichern Sie Wettbewerbsvorteile",
+    "seoDescription": "Entdecken Sie, wie mittelständische Unternehmen in NRW durch KI-Integration echte Wettbewerbsvorteile erzielen. Von Automatisierung bis Datenanalyse – sichern Sie sich Ihren Vorsprung!"
+  },
+  {
     "id": "warum-die-meisten-websites-kein-geld-verdienen",
     "title": "Warum die meisten Websites kein Geld verdienen (und wie Sie das ändern)",
     "date": "Mai 2025",
@@ -21,27 +45,14 @@
     "author": "Oleh Kalchenko"
   },
   {
-    "title": "Künstliche Intelligenz im deutschen Mittelstand: Von der Vision zur wertschöpfenden Realität",
-    "date": "DEC 2025",
-    "tag": "KI",
+    "title": "UX/UI-Design-Trends im E-Commerce für das Jahr 2026",
+    "date": "APR 2026",
+    "tag": "TRENDS",
     "author": "Oleh Kalchenko",
-    "id": "kuenstliche-intelligenz-im-deutschen-mittelstand-von-der-vision-zur-wertschoepfenden-realitaet",
-    "keywords": "KI-Integration, Wettbewerbsvorteile, Unternehmen NRW, Künstliche Intelligenz",
-    "seoTitle": "KI-Integration in NRW: So sichern Sie Wettbewerbsvorteile",
-    "seoDescription": "Entdecken Sie, wie mittelständische Unternehmen in NRW durch KI-Integration echte Wettbewerbsvorteile erzielen. Von Automatisierung bis Datenanalyse – sichern Sie sich Ihren Vorsprung!"
-  },
-  {
-    "title": "Digitales Design 2025: Warum Ästhetik allein nicht mehr verkauft",
-    "date": "JAN 2026",
-    "tag": "DESIGN",
-    "author": "Oleh Kalchenko",
-    "id": "digitales-design-2025-warum-aesthetik-allein-nicht-mehr-verkauft"
-  },
-  {
-    "title": "Die technische Evolution: React 19 und die Zukunft der Webentwicklung",
-    "date": "FEB 2026",
-    "tag": "Zukunft",
-    "author": "Oleh Kalchenko",
-    "id": "die-technische-evolution-react-19-und-die-zukunft-der-webentwicklung"
+    "published": true,
+    "keywords": "UX/UI Design E-Commerce, User Experience, Conversion Optimierung, Online-Shop Design",
+    "seoTitle": "UX/UI Design für E-Commerce: Mehr Umsatz & Kundenbindung",
+    "seoDescription": "Steigern Sie Ihren E-Commerce Erfolg! Erfahren Sie, wie hochwertiges UX/UI Design die Kundenbindung erhöht, Conversions optimiert und Ihren Umsatz nachhaltig wachsen lässt. Jetzt klicken!",
+    "id": "ux-ui-design-trends-im-e-commerce-fuer-das-jahr-2026"
   }
 ]
