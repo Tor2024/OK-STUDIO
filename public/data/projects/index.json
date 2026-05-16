@@ -72,5 +72,18 @@
     "keywords": "Autowerkstatt Kreuztal, Online-Terminbuchung, Kfz-Reparatur, Werkstatt-Website",
     "seoTitle": "Autowerkstatt Kreuztal: Moderne Website mit Online-Buchung",
     "seoDescription": "Erfolgreiche Autowerkstatt in Kreuztal: Moderne Website mit Online-Terminbuchung, automatischen Erinnerungen & Kundenverwaltung. Effizienter Service, mehr Kunden. Jetzt entdecken!"
+  },
+  {
+    "title": "Website für das Unternehmen Garten Siegerland",
+    "category": "Design",
+    "image": "https://raw.githubusercontent.com/okcompany/web-studio/main/apps/web/public/uploads/img_1777385673217_3923.png",
+    "description": "Für das Unternehmen Garten Siegerland wurde eine moderne One-Page-Website entwickelt, die darauf ausgerichtet ist, neue Kunden zu gewinnen, das Vertrauen in die Marke zu stärken und den Anfrageprozess zu automatisieren.",
+    "completedAt": "MAI 2026",
+    "order": 7,
+    "published": true,
+    "keywords": "Website Landschaftsdesign, Webdesign Gartenbau, Neukundengewinnung Website",
+    "seoTitle": "Professionelle Website Landschaftsdesign: Kunden 24/7 gewinnen",
+    "seoDescription": "Entdecken Sie, wie eine professionelle Website für Landschaftsdesign Ihr Unternehmen 24/7 mit neuen Kunden versorgt. Automatisierte Anfragen, Vertrauensaufbau & mehr Sichtbarkeit.",
+    "id": "website-fuer-das-unternehmen-garten-siegerland"
   }
 ]
