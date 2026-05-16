@@ -13,13 +13,29 @@
     "id": "carstylegarage"
   },
   {
+    "title": "Moderne Website - Pizza Roma Siegen",
+    "category": "Webseite & Automation",
+    "image": "https://raw.githubusercontent.com/okcompany/web-studio/main/apps/web/public/uploads/img_1777641858847_2922.png",
+    "description": "Für eine moderne Website – Pizza Roma Siegen: Für Online-Bestellungen und eine reibungslose Lieferung erhält der Kurier alle Lieferdaten direkt auf sein Smartphone, woraufhin automatisch die optimale Route für jede Bestellung angezeigt wird.",
+    "completedAt": "SEP 2025",
+    "order": 4,
+    "published": true,
+    "keywords": "Lieferservice Website, Restaurant Bestellsystem, Online Speisekarte, Admin Panel",
+    "seoTitle": "Moderne Lieferservice Website mit Admin-Panel & Bestellsystem",
+    "seoDescription": "Revolutionieren Sie Ihren Lieferservice! Kunden bestellen bequem mit Warenkorb & Toppings. Verwalten Sie Menü, Preise & Bestellungen effizient über das Admin-Panel in Echtzeit.",
+    "id": "moderne-website-pizza-roma-siegen"
+  },
+  {
     "id": "kraftwerk-digital",
     "title": "KRAFTWERK DIGITAL",
     "category": "Web Relaunch",
     "description": "Kompletter digitaler Relaunch für einen mittelständischen Industriebetrieb. Neue Markenidentität, Lead-Generierung und Performance-Optimierung.",
     "image": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200",
     "completedAt": "MRZ 2025",
-    "order": 1
+    "order": 1,
+    "keywords": "Website Relaunch, Lead Generierung, Webdesign Agentur, Performance Optimierung",
+    "seoTitle": "Website Relaunch: +312% Leads & -67% Absprungrate",
+    "seoDescription": "Erleben Sie, wie unser Website Relaunch die Leads um 312% steigerte und die Absprungrate um 67% senkte. Modernes Webdesign, Top-Performance & integriertes CRM für Ihren Erfolg."
   },
   {
     "id": "medizin-nord",
@@ -50,18 +66,5 @@
     "keywords": "Autowerkstatt Kreuztal, Online-Terminbuchung, Kfz-Reparatur, Werkstatt-Website",
     "seoTitle": "Autowerkstatt Kreuztal: Moderne Website mit Online-Buchung",
     "seoDescription": "Erfolgreiche Autowerkstatt in Kreuztal: Moderne Website mit Online-Terminbuchung, automatischen Erinnerungen & Kundenverwaltung. Effizienter Service, mehr Kunden. Jetzt entdecken!"
-  },
-  {
-    "title": "Moderne Website - Pizza Roma Siegen",
-    "category": "Webseite & Automation",
-    "image": "https://raw.githubusercontent.com/okcompany/web-studio/main/apps/web/public/uploads/img_1777641858847_2922.png",
-    "description": "Für eine moderne Website – Pizza Roma Siegen: Für Online-Bestellungen und eine reibungslose Lieferung erhält der Kurier alle Lieferdaten direkt auf sein Smartphone, woraufhin automatisch die optimale Route für jede Bestellung angezeigt wird.",
-    "completedAt": "SEP 2025",
-    "order": 4,
-    "published": true,
-    "keywords": "Lieferservice Website, Restaurant Bestellsystem, Online Speisekarte, Admin Panel",
-    "seoTitle": "Moderne Lieferservice Website mit Admin-Panel & Bestellsystem",
-    "seoDescription": "Revolutionieren Sie Ihren Lieferservice! Kunden bestellen bequem mit Warenkorb & Toppings. Verwalten Sie Menü, Preise & Bestellungen effizient über das Admin-Panel in Echtzeit.",
-    "id": "moderne-website-pizza-roma-siegen"
   }
 ]
