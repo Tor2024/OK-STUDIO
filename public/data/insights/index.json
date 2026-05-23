@@ -1,5 +1,16 @@
 [
   {
+    "title": "Google bleibt der wichtigste Kanal für den Einstieg in das Shopping.",
+    "date": "MAI 2026",
+    "tag": "SHOPPING",
+    "author": "Oleh Kalchenko",
+    "published": true,
+    "keywords": "KI Produktsuche, Google, ChatGPT, E-Commerce",
+    "seoTitle": "KI Produktsuche: Wahrnehmung vs. Realität im E-Commerce",
+    "seoDescription": "Die Realität der KI-Produktsuche: Trotz Hype bleibt Google die Nummer 1. Erfahren Sie, warum ChatGPT & Co. im E-Commerce noch nicht mithalten können. Jetzt klicken!",
+    "id": "google-bleibt-der-wichtigste-kanal-fuer-den-einstieg-in-das-shopping"
+  },
+  {
     "title": "UX/UI-Design-Trends im E-Commerce für das Jahr 2026",
     "date": "APR 2026",
     "tag": "TRENDS",
@@ -54,16 +65,5 @@
     "date": "Mrz 2025",
     "tag": "DESIGN",
     "author": "Oleh Kalchenko"
-  },
-  {
-    "title": "Google bleibt der wichtigste Kanal für den Einstieg in das Shopping.",
-    "date": "MAI 2026",
-    "tag": "NEWS",
-    "author": "Oleh Kalchenko",
-    "published": true,
-    "keywords": "KI Produktsuche, Google, ChatGPT, E-Commerce",
-    "seoTitle": "KI Produktsuche: Wahrnehmung vs. Realität im E-Commerce",
-    "seoDescription": "Die Realität der KI-Produktsuche: Trotz Hype bleibt Google die Nummer 1. Erfahren Sie, warum ChatGPT & Co. im E-Commerce noch nicht mithalten können. Jetzt klicken!",
-    "id": "google-bleibt-der-wichtigste-kanal-fuer-den-einstieg-in-das-shopping"
   }
 ]
