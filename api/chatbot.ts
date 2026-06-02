@@ -364,14 +364,43 @@ ${conversationHistory}
 NEUE NACHRICHT VOM KUNDEN:
 ${message}
 
-KRITISCH WICHTIG:
-1. Antworte NUR auf ${language === 'de' ? 'Deutsch' : language === 'ru' ? 'Russisch' : 'Englisch'} - KEINE anderen Sprachen mischen!
-2. Prüfe was du BEREITS WEISST aus der Konversation - stelle KEINE Fragen die bereits beantwortet wurden!
-3. Frage nur nach FEHLENDEN Informationen
-4. Baue auf bisherigen Antworten auf
-5. Vollständige Sätze mit . ! oder ?
+🚨🚨🚨 ABSOLUT KRITISCH - SPRACHE 🚨🚨🚨
 
-DEINE VOLLSTÄNDIGE ANTWORT (NUR auf ${language === 'de' ? 'Deutsch' : language === 'ru' ? 'Russisch' : 'Englisch'}, keine Sprachmischung):`;
+Du MUSST auf ${language === 'de' ? 'DEUTSCH' : language === 'ru' ? 'RUSSISCH' : 'ENGLISCH'} antworten!
+
+${language === 'ru' ? `
+ПРАВИЛО: Весь ответ ТОЛЬКО на РУССКОМ языке!
+❌ ЗАПРЕЩЕНО: "Perfekt! Какой сайт вам нужен?"
+❌ ЗАПРЕЩЕНО: "Понятно. Welche Funktionen brauchen Sie?"
+✅ ПРАВИЛЬНО: "Отлично! Какой сайт вам нужен?"
+✅ ПРАВИЛЬНО: "Понятно. Какие функции вам нужны?"
+
+НИ ОДНОГО немецкого или английского слова!
+` : language === 'de' ? `
+REGEL: Die GESAMTE Antwort NUR auf DEUTSCH!
+❌ VERBOTEN: "Gut! Какой website do you need?"
+❌ VERBOTEN: "Ok. What kind of сайт?"
+✅ RICHTIG: "Gut! Welche Website brauchen Sie?"
+✅ RICHTIG: "Ok. Was für eine Website möchten Sie?"
+
+Kein einziges russisches oder englisches Wort!
+` : `
+RULE: The ENTIRE response ONLY in ENGLISH!
+❌ FORBIDDEN: "Good! Welche website вам нужен?"
+❌ FORBIDDEN: "Ok. Какой kind of website?"
+✅ CORRECT: "Good! What kind of website do you need?"
+✅ CORRECT: "Ok. What type of website?"
+
+Not a single German or Russian word!
+`}
+
+WEITERE WICHTIGE REGELN:
+1. Prüfe was du BEREITS WEISST - stelle KEINE Fragen die bereits beantwortet wurden!
+2. Frage nur nach FEHLENDEN Informationen
+3. Baue auf bisherigen Antworten auf
+4. Vollständige Sätze mit . ! oder ?
+
+DEINE VOLLSTÄNDIGE ANTWORT (100% auf ${language === 'de' ? 'DEUTSCH' : language === 'ru' ? 'RUSSISCH' : 'ENGLISCH'}):`;
 
     let lastError = null;
 
@@ -412,26 +441,52 @@ DEINE VOLLSTÄNDIGE ANTWORT (NUR auf ${language === 'de' ? 'Deutsch' : language 
               if (lastSentenceMatch) {
                 reply = lastSentenceMatch[1];
               } else {
-                reply += '. Möchten Sie mehr erfahren?';
+                const ctaByLang = {
+                  de: '. Möchten Sie mehr erfahren?',
+                  ru: '. Хотите узнать подробнее?',
+                  en: '. Would you like to know more?'
+                };
+                reply += ctaByLang[language] || ctaByLang.de;
+              }
+            }
+
+            // ПРОВЕРКА НА СМЕШИВАНИЕ ЯЗЫКОВ
+            if (language === 'ru') {
+              // Если в русском ответе есть латиница (кроме OK, CRM, CMS, SEO и т.д.)
+              const latinWords = reply.match(/\b[A-Za-z]{4,}\b/g) || [];
+              const allowedWords = ['ok', 'cms', 'crm', 'seo', 'ssl', 'http', 'https', 'email', 'shop', 'blog'];
+              const hasGermanWords = latinWords.some(word => 
+                !allowedWords.includes(word.toLowerCase()) && 
+                /^[A-Z][a-z]+/.test(word) // Слова с заглавной буквы (немецкие существительные)
+              );
+              
+              if (hasGermanWords) {
+                console.warn('Language mixing detected in Russian response, retrying...');
+                continue; // Пробуем следующую модель
               }
             }
 
             // Добавляем CTA если нет
             const hasCTA = /\?$/.test(reply) || 
                           reply.toLowerCase().includes('möchten') ||
+                          reply.toLowerCase().includes('хотите') ||
+                          reply.toLowerCase().includes('would you') ||
                           reply.toLowerCase().includes('kontaktformular');
             
             if (!hasCTA && reply.length < 250) {
-              const ctas = [
-                ' Möchten Sie mehr Details erfahren?',
-                ' Soll ich Ihnen mehr dazu sagen?',
-                ' Interessiert Sie das?'
-              ];
-              reply += ctas[Math.floor(Math.random() * ctas.length)];
+              const ctas = {
+                de: [' Möchten Sie mehr Details erfahren?', ' Soll ich Ihnen mehr dazu sagen?'],
+                ru: [' Хотите узнать подробнее?', ' Могу рассказать больше?'],
+                en: [' Would you like more details?', ' Should I tell you more?']
+              };
+              const langCtas = ctas[language] || ctas.de;
+              reply += langCtas[Math.floor(Math.random() * langCtas.length)];
             }
 
             // Проверяем готовность к отправке формы
             const shouldContact = reply.toLowerCase().includes('kontaktformular') || 
+                                  reply.toLowerCase().includes('форм') ||
+                                  reply.toLowerCase().includes('contact form') ||
                                   reply.toLowerCase().includes('/contact') ||
                                   (conversationHistory.length > 500 && reply.toLowerCase().includes('zusammenfassung'));
 
