@@ -240,7 +240,7 @@ export default function AIChatbot() {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 260, damping: 20 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-2xl hover:scale-110 transition-transform relative"
+            className="fixed bottom-6 right-6 z-[60] w-16 h-16 rounded-full shadow-2xl hover:scale-110 transition-transform relative"
             style={{ backgroundColor: settings.appearance?.primaryColor || '#616752' }}
             aria-label="Open chat"
           >
@@ -395,7 +395,7 @@ export default function AIChatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 100, scale: 0.9 }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed bottom-6 right-6 z-50 flex flex-col shadow-2xl border-2"
+            className="fixed bottom-6 right-6 z-[60] flex flex-col shadow-2xl border-2"
             style={{
               width: isMinimized ? '320px' : '380px',
               height: isMinimized ? '60px' : '600px',
