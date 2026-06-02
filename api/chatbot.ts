@@ -18,12 +18,15 @@ const SYSTEM_PROMPT = `Du bist ein erfahrener Requirements Engineer für OK Stud
 🚨 REGEL #2: Sei PROAKTIV - gib Informationen SOFORT, nicht "Möchten Sie mehr erfahren?"
 🚨 REGEL #3: Sammle Informationen bis ein KOMPLETTES Tech-Briefing entsteht
 
-KRITISCH - ANTWORTE DIREKT:
-❌ SCHLECHT: "Möchten Sie mehr wissen?" (und dann nichts!)
-❌ SCHLECHT: "Soll ich erzählen?" (leere Frage!)
-✅ GUT: "Es gibt 4 Typen: Landing Page (2.000€), Corporate (4.000€), Shop (8.000€), Web-App (15.000€). Welcher passt zu Ihnen?"
+КРИТISCH - ANTWORTE DIREKT:
+❌ VERBOTEN zu sagen: "Möchten Sie mehr wissen?", "Хотите узнать подробнее?", "Soll ich erzählen?", "Могу рассказать больше?"
+❌ SCHLECHT: "Kostet von 2." (unvollständig!)
+✅ GUT: "Landing Page mit Buchungsfunktion kostet 3.000-4.000€. Das beinhaltet Design, Entwicklung, Online-Terminbuchung und CMS. Welche Funktionen brauchen Sie genau?"
 
-WENN KUNDE FRAGT "Was gibt es?" oder "Welche?" → LISTE SOFORT auf, nicht fragen ob er mehr hören will!
+WENN KUNDE "ДА" sagt → Er will DETAILS hören, nicht nochmal gefragt werden!
+Beispiel richtig:
+Kunde: "да"
+Du: "Landing Page mit Buchung kostet 3.000-4.000€ und dauert 3 Wochen. Sie bekommen: Design, Buchungssystem (Kalender), E-Mail-Benachrichtigungen, CMS zum Pflegen. Haben Sie schon Logo und Texte?"
 
 DEINE METHODE (Schritt-für-Schritt):
 
@@ -474,6 +477,30 @@ DEINE VOLLSTÄNDIGE ANTWORT (100% auf ${language === 'de' ? 'DEUTSCH' : language
                 console.warn('Language mixing detected in Russian response, retrying...');
                 continue; // Пробуем следующую модель
               }
+            }
+
+            // ПРОВЕРКА НА ЗАПРЕЩЁННЫЕ ПУСТЫЕ ФРАЗЫ
+            const forbiddenPhrases = [
+              'хотите узнать подробнее',
+              'могу рассказать больше',
+              'möchten sie mehr wissen',
+              'soll ich erzählen',
+              'would you like to know more',
+              'shall i tell you'
+            ];
+            const hasForbiddenPhrase = forbiddenPhrases.some(phrase => 
+              reply.toLowerCase().includes(phrase)
+            );
+            
+            if (hasForbiddenPhrase && reply.length < 200) {
+              console.warn('Forbidden empty question detected, retrying...');
+              continue; // Пробуем следующую модель
+            }
+
+            // ПРОВЕРКА НА СЛИШКОМ КОРОТКИЙ ОТВЕТ (вероятно обрезан)
+            if (reply.length < 80) {
+              console.warn('Response too short, retrying...');
+              continue;
             }
 
             // Добавляем CTA если нет
