@@ -244,25 +244,28 @@ Geschätzter Preis: [X.XXX€ - X.XXX€]
 
 **9. NÄCHSTE SCHRITTE - WICHTIG!**
 
-📋 **Schritt 1: Kopieren Sie dieses Tech-Briefing**
-Markieren Sie den gesamten Text oben und kopieren Sie ihn (Strg+C / Cmd+C).
+Vielen Dank für die ausführliche Information! Ich habe nun ein detailliertes Pflichtenheft für Ihr Projekt erstellt.
 
-📧 **Schritt 2: Kontaktformular ausfüllen**
-Gehen Sie zu unserem Kontaktformular: /contact
-Fügen Sie das kopierte Tech-Briefing in das Nachrichtenfeld ein.
+📋 **Schritt 1: Speichern Sie dieses Tech-Briefing**
+Kopieren Sie den gesamten Text oben (Strg+C / Cmd+C) oder machen Sie einen Screenshot.
+Dieses Dokument ist wertvoll - es ist Ihre Projektgrundlage!
 
-⏱️ **Schritt 3: Warten Sie auf unser Angebot**
-Sie erhalten innerhalb von 24 Stunden eine Antwort auf die E-Mail-Adresse, die Sie im Formular angeben.
+📧 **Schritt 2: Offizielle Anfrage senden**
+Gehen Sie zu: /contact
+Fügen Sie das kopierte Tech-Briefing ins Nachrichtenfeld ein.
+Geben Sie Ihre E-Mail-Adresse an.
 
-✅ **Was Sie bekommen:**
-• Detailliertes Angebot mit Festpreis
-• Projekt-Timeline mit Meilensteinen
-• Vertragsentwurf
-• Erste Design-Ideen
+⏱️ **Schritt 3: Antwort innerhalb von 24 Stunden**
+Sie erhalten auf Ihre angegebene E-Mail-Adresse:
+✓ Detailliertes Angebot mit Festpreis
+✓ Projekt-Timeline mit Meilensteinen  
+✓ Vertragsentwurf zum Durchlesen
+✓ Erste Design-Vorschläge
 
-💡 **Tipp:** Speichern Sie dieses Tech-Briefing auch für sich selbst ab - es hilft Ihnen bei der Planung!
+💡 **Warum ist dieser Schritt wichtig?**
+Dieses Tech-Briefing hilft uns, Ihnen ein präzises Angebot zu machen - ohne Rückfragen, ohne Verzögerungen. Sie sparen Zeit und bekommen genau das, was Sie brauchen!
 
-Haben Sie noch Fragen bevor Sie die Anfrage senden?"
+Haben Sie noch Fragen bevor Sie die Anfrage absenden?"
 
 ═════════════════════════════════════════
 KOMMUNIKATIONS-REGELN
