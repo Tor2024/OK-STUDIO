@@ -137,6 +137,95 @@ export default function AIChatbot() {
     setTimeout(() => handleSendMessage(), 100);
   };
 
+  // Динамические подсказки в зависимости от этапа диалога
+  const getSuggestedQuestions = () => {
+    const messageCount = messages.filter(m => m.sender === 'user').length;
+    const lastBotMessage = [...messages].reverse().find(m => m.sender === 'bot')?.text.toLowerCase() || '';
+    
+    const suggestions = {
+      de: {
+        start: [
+          'Ich brauche eine Corporate Website',
+          'Ich möchte einen Online-Shop',
+          'Was kostet eine Website?'
+        ],
+        features: [
+          'Ich brauche Online-Buchung',
+          'Mit Zahlungsfunktion',
+          'Blog und Kontaktformular'
+        ],
+        design: [
+          'Modern und minimalistisch',
+          'Ich habe Referenz-Websites',
+          'Wie läuft der Design-Prozess?'
+        ],
+        final: [
+          'Was sind die nächsten Schritte?',
+          'Wie lange dauert das?',
+          'Wann kann ich ein Angebot bekommen?'
+        ]
+      },
+      ru: {
+        start: [
+          'Мне нужен корпоративный сайт',
+          'Хочу интернет-магазин',
+          'Сколько стоит сайт?'
+        ],
+        features: [
+          'Нужна онлайн-запись',
+          'С оплатой онлайн',
+          'Блог и форма контакта'
+        ],
+        design: [
+          'Современный минималистичный',
+          'У меня есть примеры сайтов',
+          'Как проходит процесс дизайна?'
+        ],
+        final: [
+          'Какие следующие шаги?',
+          'Сколько времени займет?',
+          'Когда получу предложение?'
+        ]
+      },
+      en: {
+        start: [
+          'I need a corporate website',
+          'I want an online shop',
+          'How much does a website cost?'
+        ],
+        features: [
+          'I need online booking',
+          'With payment integration',
+          'Blog and contact form'
+        ],
+        design: [
+          'Modern and minimalist',
+          'I have reference websites',
+          'How does the design process work?'
+        ],
+        final: [
+          'What are the next steps?',
+          'How long will it take?',
+          'When can I get a quote?'
+        ]
+      }
+    };
+
+    // Определяем этап диалога
+    if (messageCount === 0) return suggestions[language].start;
+    if (messageCount <= 2 || lastBotMessage.includes('funktion') || lastBotMessage.includes('функци') || lastBotMessage.includes('feature')) {
+      return suggestions[language].features;
+    }
+    if (messageCount <= 4 || lastBotMessage.includes('design') || lastBotMessage.includes('дизайн')) {
+      return suggestions[language].design;
+    }
+    if (messageCount > 4 || lastBotMessage.includes('zusammenfassung') || lastBotMessage.includes('резюме') || lastBotMessage.includes('summary')) {
+      return suggestions[language].final;
+    }
+    
+    return suggestions[language].features; // По умолчанию
+  };
+
   // Не показывать если отключен в настройках
   if (!settings || !settings.enabled) return null;
 
@@ -448,19 +537,19 @@ export default function AIChatbot() {
                   <div ref={messagesEndRef} />
                 </div>
 
-                {/* Quick Replies */}
-                {messages.length === 1 && settings.quickReplies && (
+                {/* Quick Replies - динамические подсказки */}
+                {!isTyping && messages.length > 0 && messages.length < 15 && (
                   <div className="p-4 pt-0 space-y-2">
                     <p className="font-mono text-[9px] text-[#616752]/70 uppercase tracking-wider mb-2">
-                      Häufige Fragen:
+                      {language === 'de' ? 'Vorschläge:' : language === 'ru' ? 'Подсказки:' : 'Suggestions:'}
                     </p>
-                    {settings.quickReplies[language]?.map((reply: string, idx: number) => (
+                    {getSuggestedQuestions().map((question: string, idx: number) => (
                       <button
                         key={idx}
-                        onClick={() => handleQuickReply(reply)}
+                        onClick={() => handleQuickReply(question)}
                         className="w-full text-left p-2 border border-[#C5C5C5] hover:bg-[#616752] hover:text-white transition-colors font-mono text-[10px] rounded"
                       >
-                        {reply}
+                        {question}
                       </button>
                     ))}
                   </div>
