@@ -22,9 +22,28 @@ export default function Home() {
   const sortedProjects = [...projects]
     .filter(p => p.published !== false)
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  
+  // Функция для преобразования даты в сортируемый формат
+  const parseInsightDate = (dateStr: string): number => {
+    const monthMap: Record<string, number> = {
+      'jan': 1, 'feb': 2, 'mrz': 3, 'apr': 4, 'mai': 5, 'jun': 6,
+      'jul': 7, 'aug': 8, 'sep': 9, 'okt': 10, 'nov': 11, 'dez': 12,
+      'dec': 12 // английский декабрь
+    };
+    
+    const parts = dateStr.toLowerCase().split(' ');
+    if (parts.length !== 2) return 0;
+    
+    const month = monthMap[parts[0]] || 0;
+    const year = parseInt(parts[1]) || 0;
+    
+    return year * 100 + month; // Например: 2026 * 100 + 2 = 202602 (FEB 2026)
+  };
+  
   const sortedInsights = [...insights]
     .filter(i => i.published !== false)
-    .sort((a, b) => b.date.localeCompare(a.date));
+    .sort((a, b) => parseInsightDate(b.date) - parseInsightDate(a.date)); // Сортировка от новых к старым
+  
   const sortedClients = clients ? [...clients].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)) : [];
 
   const latestInsight = sortedInsights[0] ?? {
