@@ -17,8 +17,9 @@ const SYSTEM_PROMPT = `Du bist ein erfahrener Requirements Engineer für OK Stud
 🚨 REGEL #1: Schreibe IMMER vollständige Sätze mit . ! oder ?
 🚨 REGEL #2: Sei PROAKTIV - gib Informationen SOFORT, nicht "Möchten Sie mehr erfahren?"
 🚨 REGEL #3: Sammle Informationen bis ein KOMPLETTES Tech-Briefing entsteht
+🚨 REGEL #4: NIEMALS Antwort mittendrin abbrechen! Beende JEDEN Satz vollständig mit Punkt!
 
-КРИТISCH - ANTWORTE DIREKT:
+КРИТISCH - ANTWORTE DIREKT UND VOLLSTÄNDIG:
 ❌ VERBOTEN zu sagen: "Möchten Sie mehr wissen?", "Хотите узнать подробнее?", "Soll ich erzählen?", "Могу рассказать больше?"
 ❌ SCHLECHT: "Kostet von 2." (unvollständig!)
 ✅ GUT: "Landing Page mit Buchungsfunktion kostet 3.000-4.000€. Das beinhaltet Design, Entwicklung, Online-Terminbuchung und CMS. Welche Funktionen brauchen Sie genau?"
@@ -431,29 +432,68 @@ DEINE VOLLSTÄNDIGE ANTWORT (100% auf ${language === 'de' ? 'DEUTSCH' : language
                 parts: [{ text: fullPrompt }]
               }],
               generationConfig: {
-                temperature: 0.7,
-                maxOutputTokens: 800,
-                topP: 0.9,
-                topK: 40
-              }
+                temperature: 0.8,
+                maxOutputTokens: 2048,
+                topP: 0.95,
+                topK: 40,
+                candidateCount: 1,
+                stopSequences: []
+              },
+              safetySettings: [
+                {
+                  category: "HARM_CATEGORY_HARASSMENT",
+                  threshold: "BLOCK_NONE"
+                },
+                {
+                  category: "HARM_CATEGORY_HATE_SPEECH",
+                  threshold: "BLOCK_NONE"
+                },
+                {
+                  category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                  threshold: "BLOCK_NONE"
+                },
+                {
+                  category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+                  threshold: "BLOCK_NONE"
+                }
+              ]
             })
           });
 
           if (response.ok) {
             const data = await response.json();
-            let reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 
-                         'Entschuldigung, ich hatte ein Problem. Bitte versuchen Sie es erneut.';
+            let reply = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+
+            // Проверяем причину остановки
+            const finishReason = data.candidates?.[0]?.finishReason;
+            
+            // Если ответ обрезан из-за лимита токенов - пробуем следующую модель
+            if (finishReason === 'MAX_TOKENS' || finishReason === 'LENGTH') {
+              console.warn(`Response truncated due to ${finishReason}, retrying with next model...`);
+              continue;
+            }
 
             reply = reply.trim();
 
-            // Минимальная проверка - просто убеждаемся что есть хоть какой-то текст
-            if (reply.length < 10) {
+            // Проверяем что ответ достаточно полный
+            if (reply.length < 20) {
               console.warn('Reply too short, retrying with next model...');
               continue;
             }
 
-            // УБРАЛИ все строгие проверки - они блокировали валидные ответы!
-            // Gemini сам знает как правильно отвечать, доверяем ему
+            // Проверяем что последнее предложение завершено
+            const lastChar = reply[reply.length - 1];
+            const endsWithPunctuation = /[.!?»"')]/.test(lastChar);
+            
+            // Если ответ явно обрезан на полуслове - пробуем следующую модель
+            const seemsTruncated = !endsWithPunctuation && 
+                                   finishReason !== 'STOP' && 
+                                   reply.length > 50;
+            
+            if (seemsTruncated) {
+              console.warn('Reply seems truncated (no punctuation at end), retrying...');
+              continue;
+            }
 
             // Проверяем готовность к отправке формы
             const shouldContact = reply.toLowerCase().includes('kontaktformular') || 
@@ -466,6 +506,7 @@ DEINE VOLLSTÄNDIGE ANTWORT (100% auf ${language === 'de' ? 'DEUTSCH' : language
               reply: reply.trim(),
               shouldContact,
               model,
+              finishReason,
               timestamp: new Date().toISOString()
             });
           }
