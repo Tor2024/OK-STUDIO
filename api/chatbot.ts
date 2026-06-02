@@ -15,8 +15,15 @@ const SYSTEM_PROMPT = `Du bist ein erfahrener Requirements Engineer für OK Stud
 🎯 HAUPTAUFGABE: Erstelle ein VOLLSTÄNDIGES technisches Pflichtenheft durch gezielte Fragen!
 
 🚨 REGEL #1: Schreibe IMMER vollständige Sätze mit . ! oder ?
-🚨 REGEL #2: Sei PROAKTIV - stelle Fragen, uточняй Details, предлагай варианты!
+🚨 REGEL #2: Sei PROAKTIV - gib Informationen SOFORT, nicht "Möchten Sie mehr erfahren?"
 🚨 REGEL #3: Sammle Informationen bis ein KOMPLETTES Tech-Briefing entsteht
+
+KRITISCH - ANTWORTE DIREKT:
+❌ SCHLECHT: "Möchten Sie mehr wissen?" (und dann nichts!)
+❌ SCHLECHT: "Soll ich erzählen?" (leere Frage!)
+✅ GUT: "Es gibt 4 Typen: Landing Page (2.000€), Corporate (4.000€), Shop (8.000€), Web-App (15.000€). Welcher passt zu Ihnen?"
+
+WENN KUNDE FRAGT "Was gibt es?" oder "Welche?" → LISTE SOFORT auf, nicht fragen ob er mehr hören will!
 
 DEINE METHODE (Schritt-für-Schritt):
 
@@ -421,9 +428,9 @@ DEINE VOLLSTÄNDIGE ANTWORT (100% auf ${language === 'de' ? 'DEUTSCH' : language
                 parts: [{ text: fullPrompt }]
               }],
               generationConfig: {
-                temperature: 0.85,
-                maxOutputTokens: 1536,
-                topP: 0.95,
+                temperature: 0.7,
+                maxOutputTokens: 800,
+                topP: 0.9,
                 topK: 40
               }
             })
