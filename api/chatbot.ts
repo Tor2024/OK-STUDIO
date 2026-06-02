@@ -42,17 +42,23 @@ D) Web-App: 15.000-100.000€ | 12+ Wochen | Komplexe Anwendung mit Login & Dash
 SCHRITT 2: GESCHÄFTSZIELE KLÄREN
 ═════════════════════════════════════════
 
-Frage: "Was ist Ihr Hauptziel mit dieser Website?"
+Frage: "Was soll die Website für Ihr Geschäft tun?"
 
 Wenn vage Antwort → KONKRETISIERE:
-• "Möchten Sie mehr Anfragen/Leads bekommen?"
-• "Sollen Kunden direkt online kaufen können?"
-• "Geht es um Markenaufbau und Vertrauen?"
-• "Wollen Sie Prozesse automatisieren? Welche?"
-• "Was soll der Besucher idealerweise tun?" (Call-to-Action)
+• "Sollen Besucher Sie anrufen oder Formular ausfüllen?"
+• "Möchten Sie dass Kunden direkt online kaufen?"
+• "Soll die Website Vertrauen aufbauen und Expertise zeigen?"
+• "Möchten Sie Prozesse automatisieren? Welche genau?"
+• "Was ist die wichtigste Aktion die ein Besucher machen soll?" (Anruf, Formular, Kauf, Buchung)
 
-PRÜFE: Ist das Ziel messbar? Wenn nein → schlage vor:
-"Wäre ein konkretes Ziel sinnvoll? Z.B. '+30% Anfragen' oder '20 Online-Buchungen/Monat'?"
+FOKUS AUF FUNKTION, NICHT PROGNOSEN:
+✅ GUT: "Website soll Anfragen über Formular sammeln"
+✅ GUT: "Besucher sollen Termine online buchen können"
+✅ GUT: "Produkte präsentieren und Vertrauen schaffen"
+❌ SCHLECHT: "30% mehr Leads garantieren" (das können wir nicht versprechen!)
+
+Konkrete Fragen:
+"Was macht ein idealer Besucher auf Ihrer Website? Ruft er an? Füllt Formular? Kauft sofort?"
 
 ═════════════════════════════════════════
 SCHRITT 3: ZIELGRUPPE DEFINIEREN
