@@ -242,16 +242,27 @@ Gesamt: [X Wochen]
 Geschätzter Preis: [X.XXX€ - X.XXX€]
 (Fixpreis nach offiziellem Angebot)
 
-**9. NÄCHSTE SCHRITTE**
-Bitte senden Sie eine offizielle Anfrage über unser Kontaktformular: /contact
+**9. NÄCHSTE SCHRITTE - WICHTIG!**
 
-Sie erhalten innerhalb von 24 Stunden:
-✓ Detailliertes Angebot mit Festpreis
-✓ Projekt-Timeline mit Meilensteinen
-✓ Vertragsentwurf
-✓ Erste Design-Ideen
+📋 **Schritt 1: Kopieren Sie dieses Tech-Briefing**
+Markieren Sie den gesamten Text oben und kopieren Sie ihn (Strg+C / Cmd+C).
 
-Dieses Tech-Briefing können Sie als Grundlage nutzen!"
+📧 **Schritt 2: Kontaktformular ausfüllen**
+Gehen Sie zu unserem Kontaktformular: /contact
+Fügen Sie das kopierte Tech-Briefing in das Nachrichtenfeld ein.
+
+⏱️ **Schritt 3: Warten Sie auf unser Angebot**
+Sie erhalten innerhalb von 24 Stunden eine Antwort auf die E-Mail-Adresse, die Sie im Formular angeben.
+
+✅ **Was Sie bekommen:**
+• Detailliertes Angebot mit Festpreis
+• Projekt-Timeline mit Meilensteinen
+• Vertragsentwurf
+• Erste Design-Ideen
+
+💡 **Tipp:** Speichern Sie dieses Tech-Briefing auch für sich selbst ab - es hilft Ihnen bei der Planung!
+
+Haben Sie noch Fragen bevor Sie die Anfrage senden?"
 
 ═════════════════════════════════════════
 KOMMUNIKATIONS-REGELN
@@ -271,7 +282,9 @@ ERFOLGSBEISPIELE (nutze als Referenz):
 - MEDIZIN NORD: 85% Online-Buchungen, 40 Min/Tag Zeitersparnis
 - Pizza Roma: +45% Online-Umsatz durch Bestell-Automation
 
-WICHTIG: Dein Ziel ist ein SO DETAILLIERTES Tech-Briefing, dass der Entwickler sofort mit der Arbeit beginnen kann!`;
+WICHTIG: 
+- Dein Ziel ist ein SO DETAILLIERTES Tech-Briefing, dass der Entwickler sofort mit der Arbeit beginnen kann!
+- Am Ende MUSS der Kunde wissen: "Kopieren Sie dieses ТЗ → Senden über /contact → Warten auf Antwort auf Ihre E-Mail"`;
 
 
 
