@@ -444,81 +444,16 @@ DEINE VOLLSTÄNDIGE ANTWORT (100% auf ${language === 'de' ? 'DEUTSCH' : language
             let reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 
                          'Entschuldigung, ich hatte ein Problem. Bitte versuchen Sie es erneut.';
 
-            // Проверяем что ответ полный
             reply = reply.trim();
-            const endsCorrectly = /[.!?»"')]$/.test(reply);
-            
-            // Если обрезан - исправляем
-            if (!endsCorrectly && reply.length > 20) {
-              const lastSentenceMatch = reply.match(/^(.*[.!?])\s*[^.!?]*$/);
-              if (lastSentenceMatch) {
-                reply = lastSentenceMatch[1];
-              } else {
-                const ctaByLang = {
-                  de: '. Möchten Sie mehr erfahren?',
-                  ru: '. Хотите узнать подробнее?',
-                  en: '. Would you like to know more?'
-                };
-                reply += ctaByLang[language] || ctaByLang.de;
-              }
-            }
 
-            // ПРОВЕРКА НА СМЕШИВАНИЕ ЯЗЫКОВ
-            if (language === 'ru') {
-              // Если в русском ответе есть латиница (кроме OK, CRM, CMS, SEO и т.д.)
-              const latinWords = reply.match(/\b[A-Za-z]{4,}\b/g) || [];
-              const allowedWords = ['ok', 'cms', 'crm', 'seo', 'ssl', 'http', 'https', 'email', 'shop', 'blog'];
-              const hasGermanWords = latinWords.some(word => 
-                !allowedWords.includes(word.toLowerCase()) && 
-                /^[A-Z][a-z]+/.test(word) // Слова с заглавной буквы (немецкие существительные)
-              );
-              
-              if (hasGermanWords) {
-                console.warn('Language mixing detected in Russian response, retrying...');
-                continue; // Пробуем следующую модель
-              }
-            }
-
-            // ПРОВЕРКА НА ЗАПРЕЩЁННЫЕ ПУСТЫЕ ФРАЗЫ
-            const forbiddenPhrases = [
-              'хотите узнать подробнее',
-              'могу рассказать больше',
-              'möchten sie mehr wissen',
-              'soll ich erzählen',
-              'would you like to know more',
-              'shall i tell you'
-            ];
-            const hasForbiddenPhrase = forbiddenPhrases.some(phrase => 
-              reply.toLowerCase().includes(phrase)
-            );
-            
-            if (hasForbiddenPhrase && reply.length < 200) {
-              console.warn('Forbidden empty question detected, retrying...');
-              continue; // Пробуем следующую модель
-            }
-
-            // ПРОВЕРКА НА СЛИШКОМ КОРОТКИЙ ОТВЕТ (вероятно обрезан)
-            if (reply.length < 80) {
-              console.warn('Response too short, retrying...');
+            // Минимальная проверка - просто убеждаемся что есть хоть какой-то текст
+            if (reply.length < 10) {
+              console.warn('Reply too short, retrying with next model...');
               continue;
             }
 
-            // Добавляем CTA если нет
-            const hasCTA = /\?$/.test(reply) || 
-                          reply.toLowerCase().includes('möchten') ||
-                          reply.toLowerCase().includes('хотите') ||
-                          reply.toLowerCase().includes('would you') ||
-                          reply.toLowerCase().includes('kontaktformular');
-            
-            if (!hasCTA && reply.length < 250) {
-              const ctas = {
-                de: [' Möchten Sie mehr Details erfahren?', ' Soll ich Ihnen mehr dazu sagen?'],
-                ru: [' Хотите узнать подробнее?', ' Могу рассказать больше?'],
-                en: [' Would you like more details?', ' Should I tell you more?']
-              };
-              const langCtas = ctas[language] || ctas.de;
-              reply += langCtas[Math.floor(Math.random() * langCtas.length)];
-            }
+            // УБРАЛИ все строгие проверки - они блокировали валидные ответы!
+            // Gemini сам знает как правильно отвечать, доверяем ему
 
             // Проверяем готовность к отправке формы
             const shouldContact = reply.toLowerCase().includes('kontaktformular') || 
