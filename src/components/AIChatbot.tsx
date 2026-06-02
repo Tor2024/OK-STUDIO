@@ -151,12 +151,107 @@ export default function AIChatbot() {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 260, damping: 20 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform"
+            className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-2xl hover:scale-110 transition-transform overflow-hidden"
             style={{ backgroundColor: settings.appearance?.primaryColor || '#616752' }}
             aria-label="Open chat"
           >
-            <MessageCircle className="text-white" size={28} />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full animate-pulse" />
+            {/* Градиентный фон с анимацией */}
+            <motion.div
+              className="absolute inset-0"
+              animate={{
+                background: [
+                  'linear-gradient(135deg, #616752 0%, #7a7a5f 100%)',
+                  'linear-gradient(135deg, #7a7a5f 0%, #616752 100%)',
+                  'linear-gradient(135deg, #616752 0%, #7a7a5f 100%)'
+                ]
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+            
+            {/* Лицо бота */}
+            <div className="relative w-full h-full flex flex-col items-center justify-center">
+              {/* Глаза */}
+              <div className="flex gap-2 mb-1">
+                <motion.div 
+                  className="w-2 h-2 rounded-full bg-white"
+                  animate={{
+                    scaleY: [1, 0.2, 1]
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    repeatDelay: 2
+                  }}
+                />
+                <motion.div 
+                  className="w-2 h-2 rounded-full bg-white"
+                  animate={{
+                    scaleY: [1, 0.2, 1]
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    repeatDelay: 2
+                  }}
+                />
+              </div>
+              
+              {/* Улыбка */}
+              <motion.div
+                animate={{
+                  scale: [1, 1.2, 1]
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <svg width="16" height="8" viewBox="0 0 16 8" fill="none">
+                  <path 
+                    d="M2 2C3 5 5 6 8 6C11 5 13 5 14 2" 
+                    stroke="white" 
+                    strokeWidth="2" 
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </motion.div>
+            </div>
+            
+            {/* Пульсирующая точка уведомления */}
+            <motion.span 
+              className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full"
+              animate={{
+                scale: [1, 1.3, 1],
+                opacity: [1, 0.5, 1]
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+            
+            {/* Искорки вокруг */}
+            <motion.div
+              className="absolute -top-2 -right-2"
+              animate={{
+                rotate: [0, 360],
+                scale: [0, 1, 0],
+                opacity: [0, 1, 0]
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatDelay: 1
+              }}
+            >
+              <Sparkles className="text-white" size={16} />
+            </motion.div>
           </motion.button>
         )}
       </AnimatePresence>
@@ -187,9 +282,114 @@ export default function AIChatbot() {
               }}
             >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                  <Sparkles className="text-white" size={20} />
-                </div>
+                {/* Анимированная аватарка бота */}
+                <motion.div 
+                  className="relative w-10 h-10 rounded-full overflow-hidden"
+                  animate={{
+                    boxShadow: [
+                      '0 0 0 0 rgba(241, 243, 234, 0.7)',
+                      '0 0 0 8px rgba(241, 243, 234, 0)',
+                      '0 0 0 0 rgba(241, 243, 234, 0)'
+                    ]
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  {/* Градиентный фон */}
+                  <motion.div 
+                    className="absolute inset-0"
+                    animate={{
+                      background: [
+                        'linear-gradient(135deg, #F1F3EA 0%, #C5C5C5 100%)',
+                        'linear-gradient(135deg, #C5C5C5 0%, #F1F3EA 100%)',
+                        'linear-gradient(135deg, #F1F3EA 0%, #C5C5C5 100%)'
+                      ]
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
+                  
+                  {/* Лицо бота */}
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    {/* Глаза */}
+                    <div className="flex gap-2 mb-1">
+                      <motion.div 
+                        className="w-1.5 h-1.5 rounded-full bg-[#616752]"
+                        animate={{
+                          scaleY: [1, 0.1, 1],
+                          y: [0, 0, 0]
+                        }}
+                        transition={{
+                          duration: 3,
+                          repeat: Infinity,
+                          repeatDelay: 2,
+                          ease: "easeInOut"
+                        }}
+                      />
+                      <motion.div 
+                        className="w-1.5 h-1.5 rounded-full bg-[#616752]"
+                        animate={{
+                          scaleY: [1, 0.1, 1],
+                          y: [0, 0, 0]
+                        }}
+                        transition={{
+                          duration: 3,
+                          repeat: Infinity,
+                          repeatDelay: 2,
+                          ease: "easeInOut"
+                        }}
+                      />
+                    </div>
+                    
+                    {/* Улыбка */}
+                    <motion.div 
+                      className="absolute bottom-3"
+                      animate={{
+                        scale: [1, 1.1, 1],
+                        rotate: [0, 5, -5, 0]
+                      }}
+                      transition={{
+                        duration: 4,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    >
+                      <svg width="12" height="6" viewBox="0 0 12 6" fill="none">
+                        <path 
+                          d="M1 1C2 4 4 5 6 5C8 5 10 4 11 1" 
+                          stroke="#616752" 
+                          strokeWidth="1.5" 
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </motion.div>
+                    
+                    {/* Искорки интереса */}
+                    <motion.div
+                      className="absolute -top-1 -right-1"
+                      animate={{
+                        scale: [0, 1, 0],
+                        rotate: [0, 180, 360],
+                        opacity: [0, 1, 0]
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        repeatDelay: 1,
+                        ease: "easeOut"
+                      }}
+                    >
+                      <Sparkles className="text-white" size={12} />
+                    </motion.div>
+                  </div>
+                </motion.div>
+                
                 <div>
                   <h3 className="font-display text-sm font-bold text-white uppercase tracking-wide">
                     {settings.name || 'OK Studio'}
