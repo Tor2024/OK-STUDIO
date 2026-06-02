@@ -240,13 +240,54 @@ export default function AIChatbot() {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 260, damping: 20 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-2xl hover:scale-110 transition-transform overflow-hidden"
+            className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-2xl hover:scale-110 transition-transform overflow-visible relative"
             style={{ backgroundColor: settings.appearance?.primaryColor || '#616752' }}
             aria-label="Open chat"
           >
+            {/* Бантик СВЕРХУ СЛЕВА - красный */}
+            <motion.div
+              className="absolute -left-3 -top-3 z-10"
+              animate={{
+                rotate: [-5, 5, -5],
+                scale: [1, 1.15, 1]
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                <ellipse cx="6" cy="10" rx="5" ry="7" fill="#ef4444"/>
+                <ellipse cx="14" cy="10" rx="5" ry="7" fill="#ef4444"/>
+                <circle cx="10" cy="10" r="3" fill="#dc2626"/>
+              </svg>
+            </motion.div>
+            
+            {/* Бантик СВЕРХУ СПРАВА - красный */}
+            <motion.div
+              className="absolute -right-3 -top-3 z-10"
+              animate={{
+                rotate: [5, -5, 5],
+                scale: [1, 1.15, 1]
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.5
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                <ellipse cx="6" cy="10" rx="5" ry="7" fill="#ef4444"/>
+                <ellipse cx="14" cy="10" rx="5" ry="7" fill="#ef4444"/>
+                <circle cx="10" cy="10" r="3" fill="#dc2626"/>
+              </svg>
+            </motion.div>
+            
             {/* Градиентный фон с анимацией */}
             <motion.div
-              className="absolute inset-0"
+              className="absolute inset-0 rounded-full"
               animate={{
                 background: [
                   'linear-gradient(135deg, #616752 0%, #7a7a5f 100%)',
@@ -263,47 +304,6 @@ export default function AIChatbot() {
             
             {/* Лицо бота */}
             <div className="relative w-full h-full flex flex-col items-center justify-center">
-              {/* Бантик СЛЕВА */}
-              <motion.div
-                className="absolute left-2 top-3"
-                animate={{
-                  rotate: [-5, 5, -5],
-                  scale: [1, 1.15, 1]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-                  <ellipse cx="6" cy="10" rx="5" ry="7" fill="white" opacity="0.95"/>
-                  <ellipse cx="14" cy="10" rx="5" ry="7" fill="white" opacity="0.95"/>
-                  <circle cx="10" cy="10" r="3" fill="white"/>
-                </svg>
-              </motion.div>
-              
-              {/* Бантик СПРАВА */}
-              <motion.div
-                className="absolute right-2 top-3"
-                animate={{
-                  rotate: [5, -5, 5],
-                  scale: [1, 1.15, 1]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 0.5
-                }}
-              >
-                <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-                  <ellipse cx="6" cy="10" rx="5" ry="7" fill="white" opacity="0.95"/>
-                  <ellipse cx="14" cy="10" rx="5" ry="7" fill="white" opacity="0.95"/>
-                  <circle cx="10" cy="10" r="3" fill="white"/>
-                </svg>
-              </motion.div>
-              
               {/* Глаза */}
               <div className="flex gap-2 mb-1">
                 <motion.div 
@@ -414,7 +414,7 @@ export default function AIChatbot() {
               <div className="flex items-center gap-3">
                 {/* Анимированная аватарка бота */}
                 <motion.div 
-                  className="relative w-10 h-10 rounded-full overflow-hidden"
+                  className="relative w-10 h-10 rounded-full overflow-visible"
                   animate={{
                     boxShadow: [
                       '0 0 0 0 rgba(241, 243, 234, 0.7)',
@@ -428,9 +428,56 @@ export default function AIChatbot() {
                     ease: "easeInOut"
                   }}
                 >
+                  {/* Бантик СВЕРХУ СЛЕВА - красный */}
+                  <motion.div
+                    className="absolute -left-2 -top-2 z-10"
+                    animate={{
+                      rotate: [-5, 5, -5],
+                      scale: [1, 1.1, 1]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    <svg width="12" height="12" viewBox="0 0 20 20" fill="none">
+                      {/* Левая часть бантика */}
+                      <ellipse cx="6" cy="10" rx="5" ry="7" fill="#ef4444"/>
+                      {/* Правая часть бантика */}
+                      <ellipse cx="14" cy="10" rx="5" ry="7" fill="#ef4444"/>
+                      {/* Центр бантика */}
+                      <circle cx="10" cy="10" r="3" fill="#dc2626"/>
+                    </svg>
+                  </motion.div>
+                  
+                  {/* Бантик СВЕРХУ СПРАВА - красный */}
+                  <motion.div
+                    className="absolute -right-2 -top-2 z-10"
+                    animate={{
+                      rotate: [5, -5, 5],
+                      scale: [1, 1.1, 1]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: 0.5
+                    }}
+                  >
+                    <svg width="12" height="12" viewBox="0 0 20 20" fill="none">
+                      {/* Левая часть бантика */}
+                      <ellipse cx="6" cy="10" rx="5" ry="7" fill="#ef4444"/>
+                      {/* Правая часть бантика */}
+                      <ellipse cx="14" cy="10" rx="5" ry="7" fill="#ef4444"/>
+                      {/* Центр бантика */}
+                      <circle cx="10" cy="10" r="3" fill="#dc2626"/>
+                    </svg>
+                  </motion.div>
+                  
                   {/* Градиентный фон */}
                   <motion.div 
-                    className="absolute inset-0"
+                    className="absolute inset-0 rounded-full"
                     animate={{
                       background: [
                         'linear-gradient(135deg, #F1F3EA 0%, #C5C5C5 100%)',
@@ -445,55 +492,8 @@ export default function AIChatbot() {
                     }}
                   />
                   
-                  {/* Бантик СЛЕВА */}
-                  <motion.div
-                    className="absolute -left-1 top-1"
-                    animate={{
-                      rotate: [-5, 5, -5],
-                      scale: [1, 1.1, 1]
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                  >
-                    <svg width="10" height="10" viewBox="0 0 20 20" fill="none">
-                      {/* Левая часть бантика */}
-                      <ellipse cx="6" cy="10" rx="5" ry="7" fill="#F1F3EA" opacity="0.9"/>
-                      {/* Правая часть бантика */}
-                      <ellipse cx="14" cy="10" rx="5" ry="7" fill="#F1F3EA" opacity="0.9"/>
-                      {/* Центр бантика */}
-                      <circle cx="10" cy="10" r="3" fill="#F1F3EA"/>
-                    </svg>
-                  </motion.div>
-                  
-                  {/* Бантик СПРАВА */}
-                  <motion.div
-                    className="absolute -right-1 top-1"
-                    animate={{
-                      rotate: [5, -5, 5],
-                      scale: [1, 1.1, 1]
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: 0.5
-                    }}
-                  >
-                    <svg width="10" height="10" viewBox="0 0 20 20" fill="none">
-                      {/* Левая часть бантика */}
-                      <ellipse cx="6" cy="10" rx="5" ry="7" fill="#F1F3EA" opacity="0.9"/>
-                      {/* Правая часть бантика */}
-                      <ellipse cx="14" cy="10" rx="5" ry="7" fill="#F1F3EA" opacity="0.9"/>
-                      {/* Центр бантика */}
-                      <circle cx="10" cy="10" r="3" fill="#F1F3EA"/>
-                    </svg>
-                  </motion.div>
-                  
                   {/* Лицо бота */}
-                  <div className="relative w-full h-full flex items-center justify-center">
+                  <div className="relative w-full h-full flex items-center justify-center rounded-full">
                     {/* Глаза */}
                     <div className="flex gap-2 mb-1">
                       <motion.div 
