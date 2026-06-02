@@ -1,0 +1,62 @@
+{
+  "enabled": true,
+  "name": "OK Studio Assistant",
+  "greeting": {
+    "de": "Hallo! 👋 Ich bin Ihr digitaler Assistent von OK Studio. Wie kann ich Ihnen helfen?",
+    "en": "Hello! 👋 I'm your digital assistant from OK Studio. How can I help you?",
+    "ru": "Привет! 👋 Я ваш цифровой ассистент от OK Studio. Чем могу помочь?"
+  },
+  "quickReplies": {
+    "de": [
+      "Was kostet eine Website?",
+      "Wie lange dauert ein Projekt?",
+      "Bieten Sie SEO an?",
+      "Kann ich die Website selbst aktualisieren?"
+    ],
+    "en": [
+      "How much does a website cost?",
+      "How long does a project take?",
+      "Do you offer SEO?",
+      "Can I update the website myself?"
+    ],
+    "ru": [
+      "Сколько стоит сайт?",
+      "Сколько времени займёт проект?",
+      "Вы предлагаете SEO?",
+      "Смогу ли я сам обновлять сайт?"
+    ]
+  },
+  "pricing": {
+    "landingPage": {
+      "min": 2000,
+      "max": 4000,
+      "currency": "€"
+    },
+    "corporateWebsite": {
+      "min": 4000,
+      "max": 12000,
+      "currency": "€"
+    },
+    "ecommerce": {
+      "min": 8000,
+      "max": 40000,
+      "currency": "€"
+    }
+  },
+  "workingHours": {
+    "timezone": "Europe/Berlin",
+    "monday": "09:00-18:00",
+    "tuesday": "09:00-18:00",
+    "wednesday": "09:00-18:00",
+    "thursday": "09:00-18:00",
+    "friday": "09:00-18:00",
+    "saturday": "closed",
+    "sunday": "closed"
+  },
+  "appearance": {
+    "position": "bottom-right",
+    "primaryColor": "#616752",
+    "backgroundColor": "#F1F3EA",
+    "borderColor": "#C5C5C5"
+  }
+}

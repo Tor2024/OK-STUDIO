@@ -28,7 +28,7 @@ interface ImpressumData { title: string; subtitle: string; sections: LegalSectio
 interface Settings { [key: string]: string; }
 interface SpecialOffer { enabled: boolean; title: string; message: string; buttonText: string; buttonLink: string; validUntil?: string; }
 
-type Tab = 'dashboard' | 'projects' | 'insights' | 'landings' | 'clients' | 'faqs' | 'settings' | 'privacy' | 'impressum' | 'special-offer' | 'homepage';
+type Tab = 'dashboard' | 'projects' | 'insights' | 'landings' | 'clients' | 'faqs' | 'settings' | 'privacy' | 'impressum' | 'special-offer' | 'homepage' | 'chatbot';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
@@ -337,6 +337,15 @@ export default function Admin() {
       animation: 'typewriter'
     }
   });
+  const [chatbotSettings, setChatbotSettings] = useState<any>({
+    enabled: true,
+    name: 'OK Studio Assistant',
+    greeting: {
+      de: 'Hallo! 👋 Ich bin Ihr digitaler Assistent von OK Studio. Wie kann ich Ihnen helfen?',
+      en: 'Hello! 👋 I\'m your digital assistant from OK Studio. How can I help you?',
+      ru: 'Привет! 👋 Я ваш цифровой ассистент от OK Studio. Чем могу помочь?'
+    }
+  });
 
   // SHA cache (needed for GitHub API updates)
   const [shas, setShas] = useState<Record<string, string>>({});
@@ -376,7 +385,7 @@ export default function Admin() {
       try {
         if (isDemoMode) {
           // Load from local public folder
-          const [p, i, l, c, f, s, pr, im, so, hs] = await Promise.all([
+          const [p, i, l, c, f, s, pr, im, so, hs, cs] = await Promise.all([
             fetch('/data/projects/index.json').then(r => r.json()).catch(() => []),
             fetch('/data/insights/index.json').then(r => r.json()).catch(() => []),
             fetch('/data/landings.json').then(r => r.json()).catch(() => []),
@@ -387,6 +396,7 @@ export default function Admin() {
             fetch('/data/impressum.json').then(r => r.json()).catch(() => ({ title:'', subtitle:'', sections:[], disclaimer:'' })),
             fetch('/data/special-offer.json').then(r => r.json()).catch(() => ({ enabled: false, title:'', message:'', buttonText:'', buttonLink:'' })),
             fetch('/data/homepage-settings.json').then(r => r.json()).catch(() => null),
+            fetch('/data/chatbot-settings.json').then(r => r.json()).catch(() => null),
           ]);
           if (!isMounted) return;
           setProjects(p);
@@ -399,10 +409,11 @@ export default function Admin() {
           setImpressum(im);
           setSpecialOffer(so);
           if (hs) setHomepageSettings(hs);
+          if (cs) setChatbotSettings(cs);
           setDataLoaded(true);
         } else if (cfg) {
           // Load from GitHub
-          const [p, i, l, c, f, s, pr, im, so, hs] = await Promise.all([
+          const [p, i, l, c, f, s, pr, im, so, hs, cs] = await Promise.all([
             readDataFile<Project[]>(cfg, 'projects').catch(() => ({data:[], sha:''})),
             readDataFile<Insight[]>(cfg, 'insights').catch(() => ({data:[], sha:''})),
             readDataFile<LocationLanding[]>(cfg, 'landings').catch(() => ({data:[], sha:''})),
@@ -413,6 +424,7 @@ export default function Admin() {
             readDataFile<ImpressumData>(cfg, 'impressum').catch(() => ({data:{ title:'', subtitle:'', sections:[], disclaimer:'' }, sha:''})),
             readDataFile<SpecialOffer>(cfg, 'special-offer').catch(() => ({data:{ enabled: false, title:'', message:'', buttonText:'', buttonLink:'' }, sha:''})),
             readDataFile<any>(cfg, 'homepage-settings').catch(() => ({data: null, sha:''})),
+            readDataFile<any>(cfg, 'chatbot-settings').catch(() => ({data: null, sha:''})),
           ]);
           if (!isMounted) return;
           setProjects(p.data); setShas(prev => ({...prev, projects: p.sha}));
@@ -427,6 +439,10 @@ export default function Admin() {
           if (hs.data) {
             setHomepageSettings(hs.data);
             setShas(prev => ({...prev, 'homepage-settings': hs.sha}));
+          }
+          if (cs.data) {
+            setChatbotSettings(cs.data);
+            setShas(prev => ({...prev, 'chatbot-settings': cs.sha}));
           }
           setDataLoaded(true);
         }
@@ -906,11 +922,22 @@ export default function Admin() {
     await save('homepage-settings', homepageSettings, 'Hauptseite Einstellungen aktualisiert');
   };
 
+  // Chatbot Settings save
+  const saveChatbotSettings = async () => {
+    if (isDemoMode) {
+      setSaveMsg('⚠ Demo Modus - Änderungen werden nicht gespeichert');
+      setTimeout(() => setSaveMsg(''), 3000);
+      return;
+    }
+    await save('chatbot-settings', chatbotSettings, 'Chatbot Einstellungen aktualisiert');
+  };
+
   if (!cfg && !isDemoMode) return <LoginScreen onLogin={setCfg} onDemoMode={() => setIsDemoMode(true)} />;
 
   const tabs: { id: Tab; label: string }[] = [
     { id: 'dashboard', label: 'ÜBERSICHT' },
     { id: 'homepage',  label: 'HAUPTSEITE' },
+    { id: 'chatbot',   label: 'KI-CHATBOT' },
     { id: 'projects',  label: 'PORTFOLIO' },
     { id: 'insights',  label: 'JOURNAL' },
     { id: 'landings',  label: 'LANDINGS' },
@@ -1061,6 +1088,164 @@ export default function Admin() {
                 onSave={saveHomepageSettings}
                 saving={saving}
               />
+            )}
+
+            {/* ── CHATBOT ── */}
+            {tab === 'chatbot' && (
+              <div className="space-y-8">
+                {/* Status & Toggle */}
+                <div className="border-2 border-[#616752] bg-white p-6">
+                  <div className="flex items-center justify-between mb-6">
+                    <div>
+                      <h2 className="font-display font-black text-2xl uppercase mb-2">KI-CHATBOT STATUS</h2>
+                      <p className="font-mono text-[10px] text-[#616752]">
+                        24/7 automatischer Verkaufsassistent für Ihre Website
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className={`font-mono text-[10px] font-bold ${chatbotSettings.enabled ? 'text-green-600' : 'text-red-600'}`}>
+                        {chatbotSettings.enabled ? '● AKTIV' : '○ DEAKTIVIERT'}
+                      </span>
+                      <button
+                        onClick={() => {
+                          setChatbotSettings({...chatbotSettings, enabled: !chatbotSettings.enabled});
+                          setTimeout(() => saveChatbotSettings(), 100);
+                        }}
+                        className={`px-6 py-3 font-mono text-[11px] tracking-widest transition-colors ${
+                          chatbotSettings.enabled 
+                            ? 'bg-red-500 hover:bg-red-600 text-white' 
+                            : 'bg-green-500 hover:bg-green-600 text-white'
+                        }`}
+                      >
+                        {chatbotSettings.enabled ? 'DEAKTIVIEREN' : 'AKTIVIEREN'}
+                      </button>
+                    </div>
+                  </div>
+
+                  {chatbotSettings.enabled && (
+                    <div className="bg-green-50 border-2 border-green-500 p-4 font-mono text-[10px] text-green-700">
+                      <strong>✓ CHATBOT IST LIVE</strong><br/>
+                      Besucher sehen jetzt den Chat-Button unten rechts auf der Website.
+                    </div>
+                  )}
+
+                  {!chatbotSettings.enabled && (
+                    <div className="bg-orange-50 border-2 border-orange-500 p-4 font-mono text-[10px] text-orange-700">
+                      <strong>⚠ CHATBOT IST DEAKTIVIERT</strong><br/>
+                      Besucher sehen keinen Chat-Button. Aktivieren Sie ihn, um Leads zu sammeln.
+                    </div>
+                  )}
+                </div>
+
+                {/* Bot Name */}
+                <div className="border border-[#C5C5C5] p-6 bg-white">
+                  <h3 className="font-display font-black text-lg uppercase mb-4">BOT NAME</h3>
+                  <input
+                    className="admin-input"
+                    placeholder="z.B. OK Studio Assistant"
+                    value={chatbotSettings.name}
+                    onChange={e => setChatbotSettings({...chatbotSettings, name: e.target.value})}
+                  />
+                </div>
+
+                {/* Greetings */}
+                <div className="border border-[#C5C5C5] p-6 bg-white">
+                  <h3 className="font-display font-black text-lg uppercase mb-4">BEGRÜSSUNGEN (3 SPRACHEN)</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="telemetry-label block mb-2">🇩🇪 DEUTSCH</label>
+                      <textarea
+                        className="admin-input"
+                        rows={2}
+                        value={chatbotSettings.greeting?.de || ''}
+                        onChange={e => setChatbotSettings({
+                          ...chatbotSettings,
+                          greeting: {...chatbotSettings.greeting, de: e.target.value}
+                        })}
+                      />
+                    </div>
+                    <div>
+                      <label className="telemetry-label block mb-2">🇬🇧 ENGLISH</label>
+                      <textarea
+                        className="admin-input"
+                        rows={2}
+                        value={chatbotSettings.greeting?.en || ''}
+                        onChange={e => setChatbotSettings({
+                          ...chatbotSettings,
+                          greeting: {...chatbotSettings.greeting, en: e.target.value}
+                        })}
+                      />
+                    </div>
+                    <div>
+                      <label className="telemetry-label block mb-2">🇷🇺 РУССКИЙ</label>
+                      <textarea
+                        className="admin-input"
+                        rows={2}
+                        value={chatbotSettings.greeting?.ru || ''}
+                        onChange={e => setChatbotSettings({
+                          ...chatbotSettings,
+                          greeting: {...chatbotSettings.greeting, ru: e.target.value}
+                        })}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Info Box */}
+                <div className="border-2 border-blue-500 bg-blue-50 p-6">
+                  <h3 className="font-display font-bold text-sm uppercase mb-3 text-blue-900">💡 WIE DER CHATBOT ARBEITET</h3>
+                  <div className="font-mono text-[10px] text-blue-800 space-y-2">
+                    <p><strong>SPRACHEN:</strong> Erkennt automatisch Deutsch, Englisch, Russisch</p>
+                    <p><strong>PREISE:</strong> 20% unter Marktpreis (Landing: 2.000-4.000€, Corporate: 4.000-12.000€)</p>
+                    <p><strong>VERKAUFSSTRATEGIE:</strong> Versteht Problem → Zeigt Lösung → Führt zu Erstgespräch</p>
+                    <p><strong>BENACHRICHTIGUNGEN:</strong> Bei interessierten Kunden → Telegram Nachricht an Sie</p>
+                    <p><strong>24/7 VERFÜGBAR:</strong> Arbeitet auch nachts und am Wochenende</p>
+                  </div>
+                </div>
+
+                {/* Success Stories */}
+                <div className="border border-[#C5C5C5] p-6 bg-gradient-to-br from-green-50 to-white">
+                  <h3 className="font-display font-black text-lg uppercase mb-3 text-green-900">📈 ERWARTETE ERGEBNISSE</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-[10px]">
+                    <div className="bg-white border-2 border-green-500 p-4 text-center">
+                      <div className="text-3xl font-bold text-green-600 mb-1">+150%</div>
+                      <div className="text-green-800">Mehr Leads</div>
+                    </div>
+                    <div className="bg-white border-2 border-blue-500 p-4 text-center">
+                      <div className="text-3xl font-bold text-blue-600 mb-1">24/7</div>
+                      <div className="text-blue-800">Erreichbarkeit</div>
+                    </div>
+                    <div className="bg-white border-2 border-purple-500 p-4 text-center">
+                      <div className="text-3xl font-bold text-purple-600 mb-1">0€</div>
+                      <div className="text-purple-800">Extra Kosten</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Save Button */}
+                <div className="flex justify-end gap-4">
+                  <button
+                    onClick={() => window.open('/', '_blank')}
+                    className="px-6 py-3 border-2 border-[#616752] text-[#616752] font-mono text-[10px] tracking-widest hover:bg-[#F1F3EA] transition-colors"
+                  >
+                    🔍 CHATBOT TESTEN
+                  </button>
+                  <button
+                    onClick={saveChatbotSettings}
+                    disabled={saving}
+                    className="px-8 py-3 bg-[#616752] text-white font-mono text-[11px] tracking-widest hover:bg-[#737A5E] disabled:opacity-50 transition-colors flex items-center gap-2"
+                  >
+                    {saving ? (
+                      <>
+                        <Loader2 size={16} className="animate-spin" />
+                        SPEICHERN...
+                      </>
+                    ) : (
+                      '✓ ÄNDERUNGEN SPEICHERN'
+                    )}
+                  </button>
+                </div>
+              </div>
             )}
 
             {/* ── PROJECTS ── */}

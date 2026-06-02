@@ -4,6 +4,7 @@ import { Menu, Loader2 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import Logo from './Logo';
 import Cursor from './Cursor';
+import AIChatbot from './AIChatbot';
 
 interface LayoutProps {
   children: ReactNode;
@@ -185,6 +186,9 @@ export default function Layout({ children }: LayoutProps) {
           </div>
         </div>
       </footer>
+
+      {/* AI Chatbot */}
+      <AIChatbot />
     </div>
   );
 }
