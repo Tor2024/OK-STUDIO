@@ -241,7 +241,12 @@ export default function AIChatbot() {
             transition={{ type: 'spring', stiffness: 260, damping: 20 }}
             onClick={() => setIsOpen(true)}
             className="fixed bottom-6 right-6 z-[60] w-16 h-16 rounded-full shadow-2xl hover:scale-110 transition-transform relative"
-            style={{ backgroundColor: settings.appearance?.primaryColor || '#616752' }}
+            style={{ 
+              backgroundColor: settings.appearance?.primaryColor || '#616752',
+              position: 'fixed',
+              bottom: '1.5rem',
+              right: '1.5rem'
+            }}
             aria-label="Open chat"
           >
             {/* Бантик СВЕРХУ СЛЕВА - красный */}
