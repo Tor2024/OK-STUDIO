@@ -240,7 +240,7 @@ export default function AIChatbot() {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 260, damping: 20 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-2xl hover:scale-110 transition-transform overflow-visible relative"
+            className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-2xl hover:scale-110 transition-transform relative"
             style={{ backgroundColor: settings.appearance?.primaryColor || '#616752' }}
             aria-label="Open chat"
           >
@@ -285,27 +285,27 @@ export default function AIChatbot() {
               </svg>
             </motion.div>
             
-            {/* Градиентный фон с анимацией */}
-            <motion.div
-              className="absolute inset-0 rounded-full"
-              animate={{
-                background: [
-                  'linear-gradient(135deg, #616752 0%, #7a7a5f 100%)',
-                  'linear-gradient(135deg, #7a7a5f 0%, #616752 100%)',
-                  'linear-gradient(135deg, #616752 0%, #7a7a5f 100%)'
-                ]
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            />
-            
             {/* Лицо бота */}
-            <div className="relative w-full h-full flex flex-col items-center justify-center">
+            <div className="relative w-full h-full flex flex-col items-center justify-center rounded-full overflow-hidden">
+              {/* Градиентный фон с анимацией */}
+              <motion.div
+                className="absolute inset-0 rounded-full"
+                animate={{
+                  background: [
+                    'linear-gradient(135deg, #616752 0%, #7a7a5f 100%)',
+                    'linear-gradient(135deg, #7a7a5f 0%, #616752 100%)',
+                    'linear-gradient(135deg, #616752 0%, #7a7a5f 100%)'
+                  ]
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
+              
               {/* Глаза */}
-              <div className="flex gap-2 mb-1">
+              <div className="relative flex gap-2 mb-1 z-10">
                 <motion.div 
                   className="w-2 h-2 rounded-full bg-white"
                   animate={{
@@ -332,6 +332,7 @@ export default function AIChatbot() {
               
               {/* Улыбка */}
               <motion.div
+                className="relative z-10"
                 animate={{
                   scale: [1, 1.2, 1]
                 }}
