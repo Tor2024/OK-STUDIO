@@ -2,11 +2,11 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 // Модели Gemini для использования (в порядке приоритета)
 const MODELS_TO_TRY = [
-  'gemini-2.5-flash',
-  'gemini-2.0-flash-lite',
-  'gemini-flash-latest',
-  'gemini-2.0-flash',
-  'gemini-flash',
+  'gemini-1.5-flash',
+  'gemini-1.5-flash-latest',
+  'gemini-1.5-pro-latest',
+  'gemini-pro',
+  'gemini-1.5-pro',
 ];
 
 // Системный промпт для AI - правила ведения диалога
