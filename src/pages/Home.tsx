@@ -7,6 +7,7 @@ import { useMeta } from '../hooks/useMeta';
 import { SchemaOrg, localBusinessSchema } from '../components/SchemaOrg';
 import { FadeIn, SlideIn, ScaleIn, StaggerContainer, StaggerItem } from '../components/animations';
 import SpecialOffer from '../components/SpecialOffer';
+import { AnimatedElement, TypewriterText, GlitchText } from '../components/HeroAnimations';
 
 export default function Home() {
   useMeta({
@@ -17,7 +18,29 @@ export default function Home() {
   const { data: insights } = useCollection<any>('insights');
   const { data: clients } = useData<any[]>('clients.json');
   const { data: projects } = useCollection<any>('projects');
+  const { data: homepageSettings } = useData<any>('homepage-settings.json');
   const { get } = useSettings();
+  
+  // Настройки по умолчанию
+  const hero = homepageSettings?.hero || {
+    mainTitle: 'Digitaler',
+    mainTitleAnimation: 'fadeSlideUp',
+    subTitle: 'Erfolg für KMU',
+    subTitleAnimation: 'fadeSlideRight',
+    description: 'Mit Sitz in Kreuztal entwickeln wir hochperformante, schlüsselfertige Web-Systeme für den deutschen Mittelstand. Wir verbinden industriellen Anspruch mit digitaler Verkaufspsychologie.',
+    descriptionAnimation: 'fadeIn',
+    button1Text: 'REFERENZEN',
+    button1Link: '/work',
+    button1Animation: 'scaleIn',
+    button2Text: 'ANFRAGE',
+    button2Link: '/contact',
+    button2Animation: 'scaleIn'
+  };
+  
+  const quote = homepageSettings?.quote || {
+    text: 'Struktur ist die ultimative Form von Schönheit.',
+    animation: 'typewriter'
+  };
 
   // Функция для преобразования даты в сортируемый формат
   const parseDate = (dateStr: string): number => {
@@ -64,21 +87,36 @@ export default function Home() {
       <SpecialOffer />
       <section className="grid grid-cols-1 lg:grid-cols-12 min-h-[480px] border-b border-[#C5C5C5]">
         <div className="col-span-1 lg:col-span-8 p-6 md:p-12 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-[#C5C5C5] relative overflow-hidden">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="relative z-10">
-            <h1 className="display-xl z-10 relative text-5xl md:text-8xl">Digitaler</h1>
-            <span className="display-serif md:absolute md:top-[110px] md:left-[260px] z-20 block mt-2 md:mt-0 text-4xl md:text-7xl">Erfolg für KMU</span>
+          <div className="relative z-10">
+            <AnimatedElement animation={hero.mainTitleAnimation} delay={0} as="h1" className="display-xl z-10 relative text-5xl md:text-8xl">
+              {hero.mainTitle}
+            </AnimatedElement>
+            <AnimatedElement 
+              animation={hero.subTitleAnimation} 
+              delay={0.2} 
+              as="span" 
+              className="display-serif md:absolute md:top-[110px] md:left-[260px] z-20 block mt-2 md:mt-0 text-4xl md:text-7xl"
+            >
+              {hero.subTitle}
+            </AnimatedElement>
             <div className="mt-24 md:mt-48 max-w-sm">
-              <p className="body-md">Mit Sitz in Kreuztal entwickeln wir hochperformante, schlüsselfertige Web-Systeme für den deutschen Mittelstand. Wir verbinden industriellen Anspruch mit digitaler Verkaufspsychologie.</p>
+              <AnimatedElement animation={hero.descriptionAnimation} delay={0.4} as="p" className="body-md">
+                {hero.description}
+              </AnimatedElement>
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
-                <Link to="/work" className="inverted-block px-8 py-4 text-[13px] font-mono tracking-[0.2em] flex items-center justify-center hover:bg-neutral-800 transition-all cursor-pointer">
-                  REFERENZEN <ArrowUpRight size={16} className="ml-2" />
-                </Link>
-                <Link to="/contact" className="border border-[#616752] px-8 py-4 text-[13px] font-mono tracking-[0.2em] flex items-center justify-center hover:bg-[#616752] hover:text-[#F1F3EA] transition-all cursor-pointer">
-                  ANFRAGE <ArrowUpRight size={16} className="ml-2" />
-                </Link>
+                <AnimatedElement animation={hero.button1Animation} delay={0.6}>
+                  <Link to={hero.button1Link} className="inverted-block px-8 py-4 text-[13px] font-mono tracking-[0.2em] flex items-center justify-center hover:bg-neutral-800 transition-all cursor-pointer">
+                    {hero.button1Text} <ArrowUpRight size={16} className="ml-2" />
+                  </Link>
+                </AnimatedElement>
+                <AnimatedElement animation={hero.button2Animation} delay={0.7}>
+                  <Link to={hero.button2Link} className="border border-[#616752] px-8 py-4 text-[13px] font-mono tracking-[0.2em] flex items-center justify-center hover:bg-[#616752] hover:text-[#F1F3EA] transition-all cursor-pointer">
+                    {hero.button2Text} <ArrowUpRight size={16} className="ml-2" />
+                  </Link>
+                </AnimatedElement>
               </div>
             </div>
-          </motion.div>
+          </div>
           <div className="flex flex-col md:flex-row border-t border-[#C5C5C5] -mx-6 md:-mx-12 mt-12 bg-[#F1F3EA]">
             <div className="flex-1 p-6 md:p-8 border-b md:border-b-0 md:border-r border-[#C5C5C5]">
               <span className="telemetry-label mb-4 block">LEISTUNGEN</span>
@@ -95,7 +133,17 @@ export default function Home() {
                 ))}
                 <div className="mt-1 opacity-50">STATUS: {get('site_status', 'BETRIEBSBEREIT')}</div>
               </div>
-              <div className="font-serif text-xl md:text-2xl italic leading-tight mt-4">"Struktur ist die ultimative Form von Schönheit."</div>
+              <div className="font-serif text-xl md:text-2xl italic leading-tight mt-4">
+                {quote.animation === 'typewriter' ? (
+                  <TypewriterText text={`"${quote.text}"`} />
+                ) : quote.animation === 'glitch' ? (
+                  <GlitchText text={`"${quote.text}"`} />
+                ) : (
+                  <AnimatedElement animation={quote.animation} delay={0.5}>
+                    "{quote.text}"
+                  </AnimatedElement>
+                )}
+              </div>
             </div>
           </div>
           <div className="absolute inset-0 opacity-5 pointer-events-none overflow-hidden font-mono text-[8px] leading-none whitespace-pre select-none -z-10">

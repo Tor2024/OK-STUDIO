@@ -1,0 +1,20 @@
+{
+  "hero": {
+    "mainTitle": "Digitaler",
+    "mainTitleAnimation": "fadeSlideUp",
+    "subTitle": "Erfolg für KMU",
+    "subTitleAnimation": "fadeSlideRight",
+    "description": "Mit Sitz in Kreuztal entwickeln wir hochperformante, schlüsselfertige Web-Systeme für den deutschen Mittelstand. Wir verbinden industriellen Anspruch mit digitaler Verkaufspsychologie.",
+    "descriptionAnimation": "fadeIn",
+    "button1Text": "REFERENZEN",
+    "button1Link": "/work",
+    "button1Animation": "scaleIn",
+    "button2Text": "ANFRAGE",
+    "button2Link": "/contact",
+    "button2Animation": "scaleIn"
+  },
+  "quote": {
+    "text": "Struktur ist die ultimative Form von Schönheit.",
+    "animation": "typewriter"
+  }
+}

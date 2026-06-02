@@ -14,6 +14,7 @@ import {
 import { parseMonthYear } from '../lib/dateUtils';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import HomepageEditor from '../components/HomepageEditor';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface Project { id: string; title: string; category: string; image: string; description: string; fullDescription?: string; completedAt?: string; order: number; published?: boolean; keywords?: string; seoTitle?: string; seoDescription?: string; }
@@ -27,7 +28,7 @@ interface ImpressumData { title: string; subtitle: string; sections: LegalSectio
 interface Settings { [key: string]: string; }
 interface SpecialOffer { enabled: boolean; title: string; message: string; buttonText: string; buttonLink: string; validUntil?: string; }
 
-type Tab = 'dashboard' | 'projects' | 'insights' | 'landings' | 'clients' | 'faqs' | 'settings' | 'privacy' | 'impressum' | 'special-offer';
+type Tab = 'dashboard' | 'projects' | 'insights' | 'landings' | 'clients' | 'faqs' | 'settings' | 'privacy' | 'impressum' | 'special-offer' | 'homepage';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
@@ -316,6 +317,26 @@ export default function Admin() {
   const [privacy, setPrivacy]     = useState<PrivacyData>({ title: '', subtitle: '', sections: [] });
   const [impressum, setImpressum] = useState<ImpressumData>({ title: '', subtitle: '', sections: [], disclaimer: '' });
   const [specialOffer, setSpecialOffer] = useState<SpecialOffer>({ enabled: false, title: 'Sonderangebot', message: '', buttonText: 'Jetzt anfragen', buttonLink: '/contact', validUntil: '' });
+  const [homepageSettings, setHomepageSettings] = useState<any>({
+    hero: {
+      mainTitle: 'Digitaler',
+      mainTitleAnimation: 'fadeSlideUp',
+      subTitle: 'Erfolg für KMU',
+      subTitleAnimation: 'fadeSlideRight',
+      description: 'Mit Sitz in Kreuztal entwickeln wir hochperformante, schlüsselfertige Web-Systeme für den deutschen Mittelstand. Wir verbinden industriellen Anspruch mit digitaler Verkaufspsychologie.',
+      descriptionAnimation: 'fadeIn',
+      button1Text: 'REFERENZEN',
+      button1Link: '/work',
+      button1Animation: 'scaleIn',
+      button2Text: 'ANFRAGE',
+      button2Link: '/contact',
+      button2Animation: 'scaleIn'
+    },
+    quote: {
+      text: 'Struktur ist die ultimative Form von Schönheit.',
+      animation: 'typewriter'
+    }
+  });
 
   // SHA cache (needed for GitHub API updates)
   const [shas, setShas] = useState<Record<string, string>>({});
@@ -355,7 +376,7 @@ export default function Admin() {
       try {
         if (isDemoMode) {
           // Load from local public folder
-          const [p, i, l, c, f, s, pr, im, so] = await Promise.all([
+          const [p, i, l, c, f, s, pr, im, so, hs] = await Promise.all([
             fetch('/data/projects/index.json').then(r => r.json()).catch(() => []),
             fetch('/data/insights/index.json').then(r => r.json()).catch(() => []),
             fetch('/data/landings.json').then(r => r.json()).catch(() => []),
@@ -365,6 +386,7 @@ export default function Admin() {
             fetch('/data/privacy.json').then(r => r.json()).catch(() => ({ title:'', subtitle:'', sections:[] })),
             fetch('/data/impressum.json').then(r => r.json()).catch(() => ({ title:'', subtitle:'', sections:[], disclaimer:'' })),
             fetch('/data/special-offer.json').then(r => r.json()).catch(() => ({ enabled: false, title:'', message:'', buttonText:'', buttonLink:'' })),
+            fetch('/data/homepage-settings.json').then(r => r.json()).catch(() => null),
           ]);
           if (!isMounted) return;
           setProjects(p);
@@ -376,10 +398,11 @@ export default function Admin() {
           setPrivacy(pr);
           setImpressum(im);
           setSpecialOffer(so);
+          if (hs) setHomepageSettings(hs);
           setDataLoaded(true);
         } else if (cfg) {
           // Load from GitHub
-          const [p, i, l, c, f, s, pr, im, so] = await Promise.all([
+          const [p, i, l, c, f, s, pr, im, so, hs] = await Promise.all([
             readDataFile<Project[]>(cfg, 'projects').catch(() => ({data:[], sha:''})),
             readDataFile<Insight[]>(cfg, 'insights').catch(() => ({data:[], sha:''})),
             readDataFile<LocationLanding[]>(cfg, 'landings').catch(() => ({data:[], sha:''})),
@@ -389,6 +412,7 @@ export default function Admin() {
             readDataFile<PrivacyData>(cfg, 'privacy').catch(() => ({data:{ title:'', subtitle:'', sections:[] }, sha:''})),
             readDataFile<ImpressumData>(cfg, 'impressum').catch(() => ({data:{ title:'', subtitle:'', sections:[], disclaimer:'' }, sha:''})),
             readDataFile<SpecialOffer>(cfg, 'special-offer').catch(() => ({data:{ enabled: false, title:'', message:'', buttonText:'', buttonLink:'' }, sha:''})),
+            readDataFile<any>(cfg, 'homepage-settings').catch(() => ({data: null, sha:''})),
           ]);
           if (!isMounted) return;
           setProjects(p.data); setShas(prev => ({...prev, projects: p.sha}));
@@ -400,6 +424,10 @@ export default function Admin() {
           setPrivacy(pr.data); setShas(prev => ({...prev, privacy: pr.sha}));
           setImpressum(im.data); setShas(prev => ({...prev, impressum: im.sha}));
           setSpecialOffer(so.data); setShas(prev => ({...prev, 'special-offer': so.sha}));
+          if (hs.data) {
+            setHomepageSettings(hs.data);
+            setShas(prev => ({...prev, 'homepage-settings': hs.sha}));
+          }
           setDataLoaded(true);
         }
       } catch (err) {
@@ -868,10 +896,21 @@ export default function Admin() {
     await save('settings', settings, 'Einstellungen aktualisiert');
   };
 
+  // Homepage Settings save
+  const saveHomepageSettings = async () => {
+    if (isDemoMode) {
+      setSaveMsg('⚠ Demo Modus - Änderungen werden nicht gespeichert');
+      setTimeout(() => setSaveMsg(''), 3000);
+      return;
+    }
+    await save('homepage-settings', homepageSettings, 'Hauptseite Einstellungen aktualisiert');
+  };
+
   if (!cfg && !isDemoMode) return <LoginScreen onLogin={setCfg} onDemoMode={() => setIsDemoMode(true)} />;
 
   const tabs: { id: Tab; label: string }[] = [
     { id: 'dashboard', label: 'ÜBERSICHT' },
+    { id: 'homepage',  label: 'HAUPTSEITE' },
     { id: 'projects',  label: 'PORTFOLIO' },
     { id: 'insights',  label: 'JOURNAL' },
     { id: 'landings',  label: 'LANDINGS' },
@@ -1012,6 +1051,16 @@ export default function Admin() {
                   </div>
                 </div>
               </div>
+            )}
+
+            {/* ── HOMEPAGE ── */}
+            {tab === 'homepage' && (
+              <HomepageEditor
+                settings={homepageSettings}
+                onChange={setHomepageSettings}
+                onSave={saveHomepageSettings}
+                saving={saving}
+              />
             )}
 
             {/* ── PROJECTS ── */}
