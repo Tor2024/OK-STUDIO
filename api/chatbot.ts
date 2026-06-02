@@ -1,5 +1,14 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
+// Модели Gemini для использования (в порядке приоритета)
+const MODELS_TO_TRY = [
+  'gemini-2.5-flash',
+  'gemini-2.0-flash-lite',
+  'gemini-flash-latest',
+  'gemini-2.0-flash',
+  'gemini-flash',
+];
+
 // Системный промпт для AI - правила ведения диалога
 const SYSTEM_PROMPT = `Du bist ein professioneller Verkaufsassistent für OK Studio, eine Webdesign-Agentur in Kreuztal, Deutschland.
 
@@ -96,60 +105,107 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { message, language, history, settings } = req.body;
+    const { message, language, history } = req.body;
 
     if (!message) {
       return res.status(400).json({ error: 'Message is required' });
     }
 
-    // Формируем контекст из истории
-    const contextMessages = history?.slice(-6).map((msg: any) => ({
-      role: msg.sender === 'user' ? 'user' : 'assistant',
-      content: msg.text
-    })) || [];
-
-    // API запрос к OpenAI-совместимому сервису
-    const aiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY || process.env.VITE_OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          ...contextMessages,
-          { role: 'user', content: message }
-        ],
-        temperature: 0.7,
-        max_tokens: 300
-      })
-    });
-
-    if (!aiResponse.ok) {
-      console.error('AI API error:', await aiResponse.text());
-      throw new Error('AI service unavailable');
+    const apiKeysString = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+    if (!apiKeysString) {
+      return res.status(500).json({ error: 'API Key not configured' });
     }
 
-    const aiData = await aiResponse.json();
-    const reply = aiData.choices[0]?.message?.content || 'Entschuldigung, ich hatte ein Problem. Bitte versuchen Sie es erneut.';
+    const apiKeys = apiKeysString.split(',').map(k => k.trim());
 
-    // Проверяем, нужно ли связаться с клиентом
-    const shouldContact = reply.toLowerCase().includes('e-mail') || 
-                          reply.toLowerCase().includes('kontaktdaten') ||
-                          reply.toLowerCase().includes('терmin') ||
-                          message.toLowerCase().includes('@');
+    // Формируем контекст из истории
+    let conversationHistory = '';
+    if (history && history.length > 0) {
+      conversationHistory = history.slice(-6).map((msg: any) => 
+        `${msg.sender === 'user' ? 'Kunde' : 'Assistent'}: ${msg.text}`
+      ).join('\n');
+    }
 
-    // Извлекаем email если есть
-    const emailMatch = message.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/);
-    const email = emailMatch ? emailMatch[0] : null;
+    const fullPrompt = `${SYSTEM_PROMPT}
+
+BISHERIGE KONVERSATION:
+${conversationHistory}
+
+NEUE NACHRICHT VOM KUNDEN:
+${message}
+
+DEINE ANTWORT (auf ${language === 'de' ? 'Deutsch' : language === 'ru' ? 'Russisch' : 'Englisch'}):`;
+
+    let lastError = null;
+
+    // Пробуем модели по очереди
+    for (const model of MODELS_TO_TRY) {
+      for (const key of apiKeys) {
+        try {
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+          
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{
+                parts: [{ text: fullPrompt }]
+              }],
+              generationConfig: {
+                temperature: 0.7,
+                maxOutputTokens: 300,
+                topP: 0.8,
+                topK: 40
+              }
+            })
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 
+                         'Entschuldigung, ich hatte ein Problem. Bitte versuchen Sie es erneut.';
+
+            // Проверяем, нужно ли связаться с клиентом
+            const shouldContact = reply.toLowerCase().includes('e-mail') || 
+                                  reply.toLowerCase().includes('kontaktdaten') ||
+                                  reply.toLowerCase().includes('терmin') ||
+                                  message.toLowerCase().includes('@');
+
+            // Извлекаем email если есть
+            const emailMatch = message.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/);
+            const email = emailMatch ? emailMatch[0] : null;
+
+            return res.status(200).json({
+              reply: reply.trim(),
+              shouldContact,
+              email,
+              model,
+              timestamp: new Date().toISOString()
+            });
+          }
+
+          lastError = await response.text();
+        } catch (error: any) {
+          lastError = error.message;
+          continue;
+        }
+      }
+    }
+
+    console.error('All models failed. Last error:', lastError);
+    
+    // Fallback ответ
+    const fallbackMessage = language === 'de' 
+      ? 'Entschuldigung, ich bin momentan nicht verfügbar. Bitte kontaktieren Sie uns direkt per E-Mail oder Telefon.'
+      : language === 'ru'
+      ? 'Извините, я временно недоступен. Пожалуйста, свяжитесь с нами напрямую по email или телефону.'
+      : 'Sorry, I am temporarily unavailable. Please contact us directly via email or phone.';
 
     return res.status(200).json({
-      reply,
-      shouldContact,
-      email,
-      timestamp: new Date().toISOString()
+      reply: fallbackMessage,
+      shouldContact: false,
+      email: null,
+      fallback: true
     });
 
   } catch (error: any) {
