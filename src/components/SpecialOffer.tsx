@@ -23,7 +23,7 @@ export default function SpecialOffer() {
     
     if (dismissed === 'true') {
       setIsDismissed(true);
-      return; // Это нормально, ничего не возвращаем
+      return;
     }
 
     // Загружаем данные о специальном предложении

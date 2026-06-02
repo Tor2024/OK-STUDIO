@@ -21,9 +21,6 @@ export default function AIChatbot() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Не показывать если отключен в настройках
-  if (!settings || !settings.enabled) return null;
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -139,6 +136,9 @@ export default function AIChatbot() {
     setInputText(text);
     setTimeout(() => handleSendMessage(), 100);
   };
+
+  // Не показывать если отключен в настройках
+  if (!settings || !settings.enabled) return null;
 
   return (
     <>
