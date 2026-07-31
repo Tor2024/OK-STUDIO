@@ -26,6 +26,19 @@
     "id": "carstylegarage"
   },
   {
+    "title": "DermaCare — Website für eine dermatologische Klinik",
+    "category": "Design & Automation",
+    "image": "https://raw.githubusercontent.com/okcompany/web-studio/main/apps/web/public/uploads/img_1777217902289_7345.png",
+    "description": "Eine moderne, saubere und vertrauenswürdige Website für eine dermatologische Klinik zu erstellen. Die Website soll gleichzeitig als medizinische Visitenkarte, als Plattform zur Terminbuchung und als Onlineshop für professionelle Kosmetik funktionieren — alles in einem einheitlichen, stilvollen Interface.",
+    "completedAt": "NOV 2025",
+    "order": 8,
+    "published": true,
+    "keywords": "Dermatologische Website, Online Terminbuchung, Kosmetik Onlineshop, Medizinische Website",
+    "seoTitle": "Dermatologische Website: Online-Termine & Kosmetik-Shop",
+    "seoDescription": "Entdecken Sie unsere moderne dermatologische Website mit intuitiver Online-Terminbuchung, professionellem Kosmetik-Onlineshop und responsivem Design. Steigern Sie Patientenbindung & Umsatz!",
+    "id": "dermacare-website-fuer-eine-dermatologische-klinik"
+  },
+  {
     "title": "Moderne Website - Pizza Roma Siegen",
     "category": "Webseite & Automation",
     "image": "https://raw.githubusercontent.com/okcompany/web-studio/main/apps/web/public/uploads/img_1777641858847_2922.png",
@@ -87,16 +100,16 @@
     "seoDescription": "Erfolgreiche Autowerkstatt in Kreuztal: Moderne Website mit Online-Terminbuchung, automatischen Erinnerungen & Kundenverwaltung. Effizienter Service, mehr Kunden. Jetzt entdecken!"
   },
   {
-    "title": "DermaCare — Website für eine dermatologische Klinik",
-    "category": "Design & Automation",
-    "image": "https://raw.githubusercontent.com/okcompany/web-studio/main/apps/web/public/uploads/img_1777217902289_7345.png",
-    "description": "Eine moderne, saubere und vertrauenswürdige Website für eine dermatologische Klinik zu erstellen. Die Website soll gleichzeitig als medizinische Visitenkarte, als Plattform zur Terminbuchung und als Onlineshop für professionelle Kosmetik funktionieren — alles in einem einheitlichen, stilvollen Interface.",
-    "completedAt": "NOV 2025",
-    "order": 8,
+    "title": "Pic — AI Image Generator",
+    "category": "Image creation",
+    "image": "https://picfree.onrender.com/",
+    "description": "",
+    "completedAt": "JUL 2026",
+    "order": 9,
     "published": true,
-    "keywords": "Dermatologische Website, Online Terminbuchung, Kosmetik Onlineshop, Medizinische Website",
-    "seoTitle": "Dermatologische Website: Online-Termine & Kosmetik-Shop",
-    "seoDescription": "Entdecken Sie unsere moderne dermatologische Website mit intuitiver Online-Terminbuchung, professionellem Kosmetik-Onlineshop und responsivem Design. Steigern Sie Patientenbindung & Umsatz!",
-    "id": "dermacare-website-fuer-eine-dermatologische-klinik"
+    "keywords": "KI Bildgenerierung, KI Videogenerierung, Text zu Bild KI, Kostenlose KI Tools",
+    "seoTitle": "KI Bildgenerierung kostenlos: Text zu Bild & Video",
+    "seoDescription": "Generiere kostenlos beeindruckende Bilder & Videos mit KI! Nutze Text zu Bild, Videogenerierung, schnelle Modelle & über 35 Presets. Ideal für Content Creator.",
+    "id": "pic-ai-image-generator"
   }
 ]
