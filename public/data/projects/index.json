@@ -1,5 +1,18 @@
 [
   {
+    "title": "Pic — AI Image Generator",
+    "category": "Image creation",
+    "image": "https://imgur.com/a/nWiqb1X",
+    "description": "",
+    "completedAt": "JUL 2026",
+    "order": 9,
+    "published": true,
+    "keywords": "KI Bildgenerierung, KI Videogenerierung, Text zu Bild KI, Kostenlose KI Tools",
+    "seoTitle": "KI Bildgenerierung kostenlos: Text zu Bild & Video",
+    "seoDescription": "Generiere kostenlos beeindruckende Bilder & Videos mit KI! Nutze Text zu Bild, Videogenerierung, schnelle Modelle & über 35 Presets. Ideal für Content Creator.",
+    "id": "pic-ai-image-generator"
+  },
+  {
     "title": "Website für das Unternehmen Garten Siegerland",
     "category": "Design",
     "image": "https://raw.githubusercontent.com/okcompany/web-studio/main/apps/web/public/uploads/img_1777385673217_3923.png",
@@ -98,18 +111,5 @@
     "keywords": "Autowerkstatt Kreuztal, Online-Terminbuchung, Kfz-Reparatur, Werkstatt-Website",
     "seoTitle": "Autowerkstatt Kreuztal: Moderne Website mit Online-Buchung",
     "seoDescription": "Erfolgreiche Autowerkstatt in Kreuztal: Moderne Website mit Online-Terminbuchung, automatischen Erinnerungen & Kundenverwaltung. Effizienter Service, mehr Kunden. Jetzt entdecken!"
-  },
-  {
-    "title": "Pic — AI Image Generator",
-    "category": "Image creation",
-    "image": "https://picfree.onrender.com/",
-    "description": "",
-    "completedAt": "JUL 2026",
-    "order": 9,
-    "published": true,
-    "keywords": "KI Bildgenerierung, KI Videogenerierung, Text zu Bild KI, Kostenlose KI Tools",
-    "seoTitle": "KI Bildgenerierung kostenlos: Text zu Bild & Video",
-    "seoDescription": "Generiere kostenlos beeindruckende Bilder & Videos mit KI! Nutze Text zu Bild, Videogenerierung, schnelle Modelle & über 35 Presets. Ideal für Content Creator.",
-    "id": "pic-ai-image-generator"
   }
 ]
