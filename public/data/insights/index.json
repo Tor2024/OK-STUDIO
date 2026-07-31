@@ -1,5 +1,16 @@
 [
   {
+    "title": "Anthropic ruft durch Unterzeichnung einer Petition zur Verlangsamung der KI-Entwicklung auf – wegen der RSI-Bedrohung",
+    "date": "31 JUL 2026",
+    "tag": "NEWS",
+    "author": "Oleh Kalchenko",
+    "published": true,
+    "keywords": "Anthropic, KI Regulierung, KI Entwicklung, Pacing the Frontier",
+    "seoTitle": "Anthropic: Offener Brief zur KI-Regulierung & Entwicklungstempo",
+    "seoDescription": "Anthropic und OpenAI fordern im Brief „Pacing the Frontier“ eine Drosselung der KI-Entwicklung. Warum die US-Regierung handeln soll und was rekursive Selbstverbesserung bedeutet.",
+    "id": "anthropic-ruft-durch-unterzeichnung-einer-petition-zur-verlangsamung-der-ki-entwicklung-auf-wegen-der-rsi-bedrohung"
+  },
+  {
     "title": "Google bleibt der wichtigste Kanal für den Einstieg in das Shopping.",
     "date": "MAI 2026",
     "tag": "SHOPPING",
@@ -67,14 +78,14 @@
     "author": "Oleh Kalchenko"
   },
   {
-    "title": "Anthropic ruft durch Unterzeichnung einer Petition zur Verlangsamung der KI-Entwicklung auf – wegen der RSI-Bedrohung",
-    "date": "31 JUL 2026",
-    "tag": "NEWS",
+    "title": "Gemini Spark jetzt für Nutzer der Pläne Google AI Pro und Ultra verfügbar – mit regionalen Einschränkungen",
+    "date": "JUL 2026",
+    "tag": "NEWS KI",
     "author": "Oleh Kalchenko",
     "published": true,
-    "keywords": "Anthropic, KI Regulierung, KI Entwicklung, Pacing the Frontier",
-    "seoTitle": "Anthropic: Offener Brief zur KI-Regulierung & Entwicklungstempo",
-    "seoDescription": "Anthropic und OpenAI fordern im Brief „Pacing the Frontier“ eine Drosselung der KI-Entwicklung. Warum die US-Regierung handeln soll und was rekursive Selbstverbesserung bedeutet.",
-    "id": "anthropic-ruft-durch-unterzeichnung-einer-petition-zur-verlangsamung-der-ki-entwicklung-auf-wegen-der-rsi-bedrohung"
+    "keywords": "Gemini Spark, Google KI-Agent, Google Gemini, KI-Funktionen",
+    "seoTitle": "Google Gemini Spark: Erweiterter Zugang & Funktionen",
+    "seoDescription": "Ihr persönlicher Google KI-Agent Gemini Spark wird ausgerollt! Erfahren Sie, wie dieser smarte Assistent Ihren Alltag mit Gmail, Docs & Co. revolutioniert. Jetzt mehr erfahren!",
+    "id": "gemini-spark-jetzt-fuer-nutzer-der-plaene-google-ai-pro-und-ultra-verfuegbar-mit-regionalen-einschraenkungen"
   }
 ]
