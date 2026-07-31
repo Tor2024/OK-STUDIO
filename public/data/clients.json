@@ -12,12 +12,6 @@
     "order": 2
   },
   {
-    "id": "3",
-    "name": "Logistik Pro",
-    "link": "",
-    "order": 3
-  },
-  {
     "name": "Web Studio Kalchenko Oleh",
     "link": "https://web-studio-ok.vercel.app/",
     "order": 4,
