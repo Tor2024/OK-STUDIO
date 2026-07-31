@@ -1,7 +1,7 @@
 {
   "title": "Pic — AI Image Generator",
   "category": "Image creation",
-  "image": "https://picfree.onrender.com/",
+  "image": "https://imgur.com/a/nWiqb1X",
   "description": "",
   "fullDescription": "## Webanwendung zur Generierung von Bildern und Videos mit KI\n\n**Pic** ist ein kostenloser Dienst zur Erstellung visueller Inhalte aus Textanfragen, der mehrere KI-Anbieter in einer einheitlichen Oberfläche vereint.\n\n### Funktionsumfang\n\n-   **Drei Arbeitsmodi**: Text → Bild, Bild → Bild, Videogenerierung\n-   Integration mit **vier Anbietern** (**Pollinations**, **HuggingFace**, **Cloudflare Workers AI**, **Qwen**) mit Echtzeit-Statusprüfung\n-   **Drei Generierungsmodelle** — **FLUX**, **Sana**, **Turbo** — mit unterschiedlicher Balance zwischen **Geschwindigkeit** und **Qualität** (bis zu 1024px in ca. 9 Sekunden)\n-   Ein ausblendbarer Bereich mit Zugriff auf die **neuesten Bild- und Videogenerierungsmodelle** für erweiterte Anwendungsfälle\n-   **8 Ausgabeformate**: vom Quadrat und Hochformat für TikTok bis hin zu breitformatigen Bannern\n-   **35 vorgefertigte Presets** für einen schnellen Einstieg\n-   Integrierter **EN↔RU-Übersetzer**\n-   **Text-Overlay** auf Bildern\n-   **Flexible Konfiguration** über einen eigenen **Cloudflare-Token**\n\n### Technologien\n\n**Next.js**, **PWA** (apple-mobile-web-app-capable) — sorgt für eine native Nutzererfahrung auf mobilen Geräten.\n\n### Positionierung\n\nEin **zugängliches Tool** **ohne Nutzungsbeschränkungen** — geeignet für **schnelle Prototypen**, **Content-Creator** und alle, die **KI-Generierung ohne kostenpflichtiges Abonnement** benötigen.",
   "completedAt": "JUL 2026",
