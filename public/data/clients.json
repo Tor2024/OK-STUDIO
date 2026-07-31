@@ -10,5 +10,11 @@
     "link": "https://web-studio-ok.vercel.app/",
     "order": 4,
     "id": "mp5qbyvzuf71"
+  },
+  {
+    "name": "Car Style Garage",
+    "link": "https://car-style-garage.vercel.app",
+    "order": 0,
+    "id": "ms8q52jnvj2j"
   }
 ]
