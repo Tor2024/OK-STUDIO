@@ -1,11 +1,5 @@
 [
   {
-    "id": "1",
-    "name": "Kraftwerk GmbH",
-    "link": "",
-    "order": 1
-  },
-  {
     "id": "2",
     "name": "Kreuztaler Werkstatt",
     "link": "https://my-flask-site-5pkl.onrender.com/",
