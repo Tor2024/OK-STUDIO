@@ -111,5 +111,18 @@
     "keywords": "Autowerkstatt Kreuztal, Online-Terminbuchung, Kfz-Reparatur, Werkstatt-Website",
     "seoTitle": "Autowerkstatt Kreuztal: Moderne Website mit Online-Buchung",
     "seoDescription": "Erfolgreiche Autowerkstatt in Kreuztal: Moderne Website mit Online-Terminbuchung, automatischen Erinnerungen & Kundenverwaltung. Effizienter Service, mehr Kunden. Jetzt entdecken!"
+  },
+  {
+    "title": "Umzug Service – Umzugsplattform für ganz Deutschland",
+    "category": "Umzug Service",
+    "image": "https://umzug-seven.vercel.app/de",
+    "description": "Umzug Service – Umzugsplattform für ganz Deutschland",
+    "completedAt": "NOV 2026",
+    "order": 10,
+    "published": true,
+    "keywords": "Umzugsunternehmen, Umzugsplattform, Online-Rechner, Festpreis",
+    "seoTitle": "Umzugsunternehmen: Online-Rechner, GPS & digitale Prozesse",
+    "seoDescription": "Optimieren Sie Ihr Umzugsunternehmen! Unsere Plattform bietet Online-Festpreis-Rechner, GPS-Tracking, digitale Dokumente & CRM. Steigern Sie Effizienz & Kundenzufriedenheit.",
+    "id": "umzug-service-umzugsplattform-fuer-ganz-deutschland"
   }
 ]
