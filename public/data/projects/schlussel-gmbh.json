@@ -1,0 +1,14 @@
+{
+  "title": "SCHLUSSEL GmbH",
+  "category": "Promo",
+  "image": "https://6ae8d91d87027fb6113b36a8.imgix.net/sandbox/11.png",
+  "description": "SCHLÜSSEL GmbH Kreuztal — Cinematic Holo-Website",
+  "fullDescription": "## SCHLÜSSEL GmbH Kreuztal — Cinematic Holo-Website\n\n🌐 Live: [schlussel.vercel.app](https://schlussel.vercel.app)\n💻 Code: [github.com/Tor2024/schlussel](https://github.com/Tor2024/schlussel)\n\n**Rolle:** Design & Entwicklung · **Stack:** Three.js, GSAP ScrollTrigger, Lenis, Web Audio API · **Format:** Single-File, 60 fps\n\n### Kurzbeschreibung\n\nEine **cinematic One-Page-Experience** für einen traditionellen Schlüsseldienst-Betrieb: Beim Scrollen wird ein fluoreszierend blaues **3D-Hologramm** eines Sicherheitszylinders layer für layer „projiziert\" — wie ein technischer Zeichnungsfilm im Hochtechnik-Labor. Kein Bildmaterial, keine 3D-Modelle: die komplette Geometrie ist **prozedural im Code generiert**.\n\n### Highlights\n\n-   **Scroll-getriebene Kamerafahrt** durch 6 Kapitel — ein einziger **Master-Progress P ∈ [0..1]** orchestriert Kamera, Choreografie, CAD-Labels und Sound\n-   **Prozedurales 3D-Hologramm**: Schlüssel mit echter **Bissung-Geometrie** (5 Stifte, 45°-Facetten), Zylinder-Schnittansicht mit Stift-Paketen, Doppelfedern und 45°-Schraffur\n-   **CAD-Zeichnungs-Ästhetik**: selbstzeichnende Bemaßungslinien mit Pfeilspitzen, Stückliste mit BOM-Ballons, Blattrahmen mit Titelfeld („Zeichnung Nr. SK-1985-05 · Maßstab 5:1\"), Zone A–C\n-   **Lebendiger Set-Dressing**: Orbitalsatelliten, kämmende Zahnräder, Topografie-Konturen, aufsteigende Telemetrie, Stadt-Silhouette — jede Szene hat ihre eigene Atmosphäre\n-   **Web-Audio-Sounddesign**: vollständig synthetisierte Klick-, Tick- und Tüngeräusche, keine Audiodateien\n-   **Handwerk trifft Hightech**: prefers-reduced-motion-Support, WebGL-Fallback, Mobile-optimiert\n\n### Ergebnis\n\nEine Website, die sich anfühlt wie ein **Sci-Fi-Film** — aber ein Handwerksbetrieb verkauft. Beweis, dass auch ein „langweiliges\" lokales Geschäft zu einem **erinnerbaren digitalen Erlebnis** werden kann.",
+  "completedAt": "NOV 2026",
+  "order": 11,
+  "published": true,
+  "keywords": "cinematic Holo-Website, 3D Hologramm, Schlüsseldienst Website, Three.js",
+  "seoTitle": "Cinematic Holo-Website: 3D Hologramm für Schlüsseldienst",
+  "seoDescription": "Erleben Sie die Cinematic Holo-Website für SCHLÜSSEL GmbH Kreuztal! Ein prozedural generiertes 3D Hologramm eines Sicherheitszylinders macht den Schlüsseldienst zum Sci-Fi-Erlebnis. Jetzt entdecken!",
+  "id": "schlussel-gmbh"
+}
