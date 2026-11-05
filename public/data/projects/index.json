@@ -13,6 +13,19 @@
     "id": "umzug-service-umzugsplattform-fuer-ganz-deutschland"
   },
   {
+    "title": "SCHLUSSEL GmbH",
+    "category": "Promo",
+    "image": "https://6ae8d91d87027fb6113b36a8.imgix.net/sandbox/11.png",
+    "description": "SCHLÜSSEL GmbH Kreuztal — Cinematic Holo-Website",
+    "completedAt": "NOV 2026",
+    "order": 11,
+    "published": true,
+    "keywords": "cinematic Holo-Website, 3D Hologramm, Schlüsseldienst Website, Three.js",
+    "seoTitle": "Cinematic Holo-Website: 3D Hologramm für Schlüsseldienst",
+    "seoDescription": "Erleben Sie die Cinematic Holo-Website für SCHLÜSSEL GmbH Kreuztal! Ein prozedural generiertes 3D Hologramm eines Sicherheitszylinders macht den Schlüsseldienst zum Sci-Fi-Erlebnis. Jetzt entdecken!",
+    "id": "schlussel-gmbh"
+  },
+  {
     "title": "Pic — AI Image Generator",
     "category": "Image creation",
     "image": "https://i.imgur.com/elxyJJw.png",
@@ -124,18 +137,5 @@
     "keywords": "Autowerkstatt Kreuztal, Online-Terminbuchung, Kfz-Reparatur, Werkstatt-Website",
     "seoTitle": "Autowerkstatt Kreuztal: Moderne Website mit Online-Buchung",
     "seoDescription": "Erfolgreiche Autowerkstatt in Kreuztal: Moderne Website mit Online-Terminbuchung, automatischen Erinnerungen & Kundenverwaltung. Effizienter Service, mehr Kunden. Jetzt entdecken!"
-  },
-  {
-    "title": "SCHLUSSEL GmbH",
-    "category": "Promo",
-    "image": "https://6ae8d91d87027fb6113b36a8.imgix.net/sandbox/11.png",
-    "description": "SCHLÜSSEL GmbH Kreuztal — Cinematic Holo-Website",
-    "completedAt": "NOV 2026",
-    "order": 11,
-    "published": true,
-    "keywords": "cinematic Holo-Website, 3D Hologramm, Schlüsseldienst Website, Three.js",
-    "seoTitle": "Cinematic Holo-Website: 3D Hologramm für Schlüsseldienst",
-    "seoDescription": "Erleben Sie die Cinematic Holo-Website für SCHLÜSSEL GmbH Kreuztal! Ein prozedural generiertes 3D Hologramm eines Sicherheitszylinders macht den Schlüsseldienst zum Sci-Fi-Erlebnis. Jetzt entdecken!",
-    "id": "schlussel-gmbh"
   }
 ]
