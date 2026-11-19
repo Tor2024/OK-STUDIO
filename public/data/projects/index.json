@@ -114,5 +114,18 @@
     "keywords": "Autowerkstatt Kreuztal, Online-Terminbuchung, Kfz-Reparatur, Werkstatt-Website",
     "seoTitle": "Autowerkstatt Kreuztal: Moderne Website mit Online-Buchung",
     "seoDescription": "Erfolgreiche Autowerkstatt in Kreuztal: Moderne Website mit Online-Terminbuchung, automatischen Erinnerungen & Kundenverwaltung. Effizienter Service, mehr Kunden. Jetzt entdecken!"
+  },
+  {
+    "title": "Buchungssystem für Tennisanlagen",
+    "category": "Buchungssystem",
+    "image": "https://6ae8d91d87027fb6113b36a8.imgix.net/sandbox/tennishalleok.webp",
+    "description": "Buchungssystem für Tennisanlagen – von der Idee bis zum Live-Betrieb\nLive ansehen: https://tennishalle.dpdns.org/",
+    "completedAt": "NOV 2026",
+    "order": 15,
+    "published": true,
+    "keywords": "Tennisplätze online buchen, Tennisplatz mieten, Tennisanlage Software, Platzbuchungssystem",
+    "seoTitle": "TENNISHALLE: Tennisplätze online buchen & verwalten",
+    "seoDescription": "Nie wieder Doppelbuchungen! Mit TENNISHALLE buchen Gäste Tennisplätze 24/7 online. Betreiber steuern ihre Anlage digital, transparent & ohne teure Software. Jetzt entdecken!",
+    "id": "buchungssystem-fuer-tennisanlagen"
   }
 ]
